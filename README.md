@@ -218,7 +218,7 @@ int result = value + 10; //변수 value 값을 읽고 10을 더한 결과값(40)
 
 - 변수는 선언된 블록 내에서만 사용이 가능하다.
 
--메소드 블록 내에서도 여러 가지 중괄호 {}블록들이 있을 수 있다. 조건문에 해당하는 if, 반복문에 해당하는 for, while 등이 중괄호를 가질 수 있다. If, for, while을 제어문이라고 하는데, 제어문 블록에서 선언된 변수는 해당 제어문 블록 내에서만 사용이 가능하고 블록 밖에서는 사용할 수 없다.
+- 메소드 블록 내에서도 여러 가지 중괄호 {}블록들이 있을 수 있다. 조건문에 해당하는 if, 반복문에 해당하는 for, while 등이 중괄호를 가질 수 있다. If, for, while을 제어문이라고 하는데, 제어문 블록에서 선언된 변수는 해당 제어문 블록 내에서만 사용이 가능하고 블록 밖에서는 사용할 수 없다.
 
 - 따라서 변수를 선언할 때에는 변수가 어떤 범위에서 사용될 것인지를 생각하고, 선언 위치를 결정해야 한다.
 
@@ -250,3 +250,189 @@ System.out.println(i+j*3-10); //12
 }
 }
 ```
+
+## 📚2.2 데이터 타입
+### 2.2.1 기본 타입
+- 정수 : byte, char, short, int, long(실제론 거의 int와 long만 사 )
+- 실수 : float, double
+- 논리 : boolean
+
+### 2.2.2 정수 타입(byte, char, short, int, long)
+-  byte의 경우 -128(최소값)부터 시작해서 127(최대값)을 넘으면다시 -128부터 시작하게 된다. 다른 정수 타입인 short, int, long 역시 마찬가지다.
+```js
+package day3;
+
+public class Garbage {
+	public static void main(String[] args) {
+		byte var1 = 125;
+		int var2 = 125;
+		
+		for(int i = 0; i<5; i++) {
+			var1++;	//i = i = 1
+			var2++;
+			System.out.println("var1 : " + var1 + "\t" + "var2: " + var2);
+		}
+	}
+}
+/*
+var1 : 126	var2: 126
+var1 : 127	var2: 127
+var1 : -128	var2: 128
+var1 : -127	var2: 129
+var1 : -126	var2: 130
+
+이와 같이 저장할 수 있는 값의 범위를 초과해서 값이 저장될 경우 엉터리 값이 변수에 저장되는데, 이걸 쓰레기 값이라고 한다. 개발자는 쓰레기값이 생기지 않도록 주의해야 한다.
+Byte 변수는 127을 넘어서는 순간 최소값인 -128부터 다시 저장되는 것을 볼 수있고, int타입의 변수는 정상적으로 1 증가된 값을 계속 저장하는 것을 볼 수 있다.
+*/
+
+- char 타입 : 자바는 모든 문자를 유니코드로 처리한다. 유니코드는 세계 각국의 문자들을 코드값으로 매핑한 국제 표준 규약이다. 유니코드는 하나의 문자에 대해 하나의 코드값을 부여하기 때문에 영문 ‘A’ 및 한글 ‘가’도 하나의 코드값을 가진다. http://www.unicode.org 에서 찾을 수 있다.
+- char 타입 변수에 작은 따옴표로 감싼 문자를 대입하면 해당 문자의 유니코드가 저장된다.
+
+```js
+package day3;
+
+public class sasw {
+	public static void main(String[] args) {
+		char c1 = 'A' ;					//A : 문자를 직접 저장
+		char c2 = 65;						//A : 10진수로 저장
+		char c3 = '\u0041';				//A : 16진수로 저장
+		
+		char c4 = '가';					//가 : 문자를 직접 저장
+		char c5 = 44032;					//가 : 10진수로 저장
+		char c6 = '\uac00';				//가 : 16진수로 저장
+		
+		int uniCode = c1;					//65 : 유니코드 얻기
+
+		System.out.println(c1);
+		System.out.println(c2);
+		System.out.println(c3);
+		System.out.println(c4);
+		System.out.println(c5);
+		System.out.println(c6);
+		System.out.println(uniCode);
+	}
+}
+```
+
+- System.out.println(); 은 변수의 타입이 char이면 유니코드에 해당하는 문자를 출력하는 것을 볼 수 있다. Char 타입 변수는 단 하나의 문자만 저장한다. 만약 문자열을 저장하고 싶다면 String 타입을 사용해야 하는데  String 변수를 선언하고 큰 따옴표로 감싼 문자열 리터럴을 대입하면 된다.
+```js
+package day3;
+
+public class testwon {
+	public static void main(String[] args) {
+		String c1 = "홍길동" ;	//String 변수 선
+		System.out.println(c1);	// 홍길동
+	}
+}
+```
+```js
+package day3;
+public class testwon {
+	public static void main(String[] args) {
+		String c1 = "홍길동";					
+		System.out.println("나는" + c1);	//나는홍길동  
+	}
+}
+
+- A~Z까지 해보기
+```
+```js
+package day3;
+
+public class asd {
+	public static void main(String[] args) {
+		char c1 = 'A';
+		for(int i = 0; i<26; i++) {	//for 에는 i
+			System.out.println(c1);		
+		c1++;							//A~Z 흐름 보고 뭐가 어디에 들어가는지 보
+		}
+	}
+}
+```
+
+- int타입 : 자바에서 정수 연산을 하기 위한 기본 타입이다. Byte 와 short의 변수를 연산하면 int 타입으로 변환되고 결과 역시 int 타입이 된다.
+
+
+### 2.2.3 실수 타입(float, double)
+
+- long
+```js
+package day3;
+
+public class Vari {
+
+	public static void main(String[] args) {
+		byte a = 3;
+		byte b = 5;
+		//byte c = a + b; // 산술연산시 내부적으로 int 결과가 나옴
+		byte c = (byte)(a+b); 				// casting
+		System.out.println("c=" + c);		// c=8
+		long d = 100000000000L; 				// 수치가 큰 데이터가 들어가 l값이 들어가야 됨
+		float f1 = 0.1F;
+		float f2 = 0.2F;
+		float f3 = f1 + f2;
+		System.out.println("f3=" + f3);
+	}
+
+}
+```
+
+### 2.2.4 논리타입(boolean)
+
+- boolean은 true/false를 저장할 수 있는 데이터 타입이다. 두 가지 상태값을 저장할 필요성이 있을 때 사용됨
+
+## 📚2.3 타입변환
+### 2.3.1 자동 타입 변환
+- 자동 타입 변환은 프로그램 실행 도중에 자동적으로 타입 변환이 일어나는 것을 말한다. 작은 크기를 가지는 타입이 큰 크기를 가지는 타입에 저장될 때 발생한다.
+```
+- byte1 → short2 → int4 → long8 → float4 → double8
+```
+
+### 2.3.2 강제 타입 변환
+- 큰 크기의 타입은 작은 크기의 타입으로 자동 타입 변환을 할 수 없다. 강제적으로 큰 데이터 타입을 작은 데이터 타입으로 쪼개어서 저장하는 것을 강제 타입 변환이라고 한다. 강제 타입 변환은 캐스팅 연산자 ()를 사용하는데, 괄호 안에 들어가는 타입은 쪼개는 단위이다.
+
+## 📚3.1 연산자와 연산식
+
+- 산술 : + - * % / 		숫자			사칙연산, 나머지 계산
+- 부호 : + -			숫자			음수와 양수의 부호
+- 문자열 : +			문자열			두 문자열을 연결
+- 대입 := += -= *= /=…	다양 			우변의 값을 좌변의 변수에 대입
+- 증감 : ++ – 		숫자			1만큼 증감
+- 비교 : == != < > >= <= 	boolean		값의 비교
+- 논리 : ! & | && || 	boolean		논리적 not and or
+- 조건 : (조건식)?A:B	숫자, boolean	조건식에 따라 A또는B 중 하나를 선택
+- 비트 : ~ & | ^ 		숫자, boolean 	비트 not and or xor연산
+- 쉬프트 : >> << >>> 	숫자 			비트를 좌우로 밀어서 이동
+
+### 3.1.1 증감 연산자
+- ++피연산자 : 다른 연산자를 수행하기 전! 피연산자의 값을 1 증가시킴
+- 피연산자++ : 다른 연산을 수행한 후! 피연산자의 값을 1 증가시킴
+```js
+package day3;
+public class Vari {
+
+	public static void main(String[] args) {
+		int a = 10;
+		int b = a++;
+		System.out.println("b=" + b);		//b=10
+		
+		int c = ++b;
+		System.out.println("c=" + c);		//c=11
+```
+```js
+Package day3;
+
+public class Vari {
+
+	public static void main(String[] args) {
+		int a = 10;
+		int b = a++ + a++ + a++ ; 		//10+11+12 = 33
+		System.out.println("b=" + b);
+```
+### 3.1.2비트 연산자(&&, ||, &, |, ^, !)
+- AND : 두 비트 모두 1일 경우에만 1
+- OR : 두 비트 중 하나만 1이면 1
+- XOR : 두 비트 중 하나는 1이고 다른 하나가 0일 경우 1
+- NOT :  보수(반대의 값,1이면 0, 0이면 1)
+ 
+
