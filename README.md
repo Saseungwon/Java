@@ -353,6 +353,69 @@ public class asd {
 - int타입 : 자바에서 정수 연산을 하기 위한 기본 타입이다. Byte 와 short의 변수를 연산하면 int 타입으로 변환되고 결과 역시 int 타입이 된다.
 
 
+```js
+package day4;				//변환으로 인한 데이터 손실이 발생되지 않도록 한다.
+public class sswon {
+
+	public static void main(String[] args) {
+		int i = 128;
+		
+		if((i<Byte.MIN_VALUE) || (i>Byte.MAX_VALUE)) {					//(i<-128)||(i>127)과 동일
+			System.out.println("byte 타입으로 변환할 수 없습니다.");
+			System.out.println("값을 다시 확인해 주세요");
+
+		}else{
+		byte b = (byte) i ;
+		System.out.println(b);
+		}
+ 
+	}
+
+}
+
+```
+```js
+package day4;
+
+public class sswontest {
+
+	public static void main(String[] args) {
+			int i = 25;
+			
+			if((i<Byte.MIN_VALUE) || (i>Byte.MAX_VALUE)) {					//(i<-128)||(i>127)과 동일
+				System.out.println("byte 타입으로 변환할 수 없습니다.");
+				System.out.println("값을 다시 확인해 주세요");
+
+			}else{
+			byte b = (byte) i ;
+			System.out.println(b);			// i가 -128 ~ 127 사이이므로 값이 나옴
+			}
+	
+		}
+	}
+```
+
+- 정수 타입을 실수 타입으로 변환할 때 정밀도 손실을 피한다.
+Int 값을 손실 없이 float 타입 값으로 변환할 수 있으려면 가수 23비트로 표현 가능한 값이어야 한다. 123456780은 23비트로 표현할 수 없기 때문에 근사치로 변환된다. 즉 정밀도 손실이 발생한다. 그렇기 
+때문에 float 값을 다시 int 타입으로 변환하면 원래의 int 값을 얻지 못한다.
+
+### 2.3.3 연산식에서의 자동 타입 변환
+- 연산은 기본적으로 같은 타입의 피연산자 간에만 수행되기 때문에 서로 다른 타입의 피연산자가 있을 경우 두 피연산자 중 크기가 큰 타입으로 자동 변환된 후 연산을 수행한다.
+```js
+package day4;
+
+public class FromIntToFloat {
+
+	public static void main(String[] args) {
+		String a = "A";
+		char a2 = (char)a;  // String은 char 캐스팅 안 된다. String은 특이
+		
+	}
+
+}
+```
+
+
 ### 2.2.3 실수 타입(float, double)
 
 - long
@@ -404,6 +467,35 @@ public class Vari {
 - 비트 : ~ & | ^ 		숫자, boolean 	비트 not and or xor연산
 - 쉬프트 : >> << >>> 	숫자 			비트를 좌우로 밀어서 이동
 
+
+```js
+package day4;
+
+public class Oper {
+	public static void main(String[] args) {
+		/* 	우선순위
+		 * 	1. ()
+		 * 	2. *, /,&
+		 * 	3. + , -
+		 *  4. !
+		 *  5. &&
+		 *  6. ||
+		 */
+		int a = 10;
+		// a에 1을 더해라
+		//a++;
+		//a = a + 1 ;
+		a += 1; // a = a + 1 간략하게 바꾼 것, -도 마찬가지로 생각하면  
+		System.out.println(a);
+		
+	}
+
+}
+```
+
+
+
+
 ### 3.1.1 증감 연산자
 - ++피연산자 : 다른 연산자를 수행하기 전! 피연산자의 값을 1 증가시킴
 - 피연산자++ : 다른 연산을 수행한 후! 피연산자의 값을 1 증가시킴
@@ -435,4 +527,106 @@ public class Vari {
 - XOR : 두 비트 중 하나는 1이고 다른 하나가 0일 경우 1
 - NOT :  보수(반대의 값,1이면 0, 0이면 1)
  
+
+### 3.1.2 논리 부정 연산자(!)
+- 논리 부정 연산자는 true를 false로, false를 true로 변경하기 때문에 boolean 타입에만 사용가능하다.
+
+### 3.1.3 비트 반전 연산자(~)
+- 비트 반전 연산자는 정수 타입의 피연산자에만 사용되며, 피연산자를 2진수로 표현했을 때 비트값인 0을 1로, 1은 0으로 반전한다. 연산 후, 모든 비트가 반전되기 때문에, 부호가 반대인 새로운 값이 산출된다.
+
+```js
+package day4;
+
+public class Oper {
+	public static void main(String[] args) {
+
+		int v1 = 10;
+		int v2 = ~v1 + 1;
+		int v3 = -v1;
+		
+		System.out.println(("v2=" + v2 ));
+		System.out.println("v3=" + v3);
+		System.out.println("v1=" + Integer. toBinaryString(v1));
+		System.out.println("v2=" + Integer. toBinaryString(v2));
+	}
+
+}
+```
+
+### 3.2.1  산술 연산자
+- + : 덧셈
+- - : 뺄셈
+- * : 곱셈
+- / : 나눗셈
+- % : 좌측을 우측으로 나눈 나머지를 구하는 연산
+
+```js
+package day4;
+
+public class FromIntToFloat {
+
+	public static void main(String[] args) {
+		int size = 1048000 ;
+		if(size < 1024) {	
+			System.out.printf("%d byte %n",size);
+		}else if(size <(1024 * 1024)) {
+			System.out.printf("%.2f Kb %n", size / 1024.0);
+		}else {
+			System.out.printf("%,2f Mb %n",size / (1024* 1024.0));		//10203.44Kb
+		}
+		
+		String name = "홍길동";
+		int age = 26 ;
+		String address = "대전 중구 ..";
+		System.out.printf("%5s님 은 %3d살 사는 곳은 %-20s %n", name, age, address);
+int x1= 5;
+int x2 = x1 / 0;			//에러가 나면 예외처리를 해야된다. 10장에서 배움...
+		System.out.println("어제 새벽에 바람 많이불음..");
+
+		try {
+			int x1= 5;
+			int x2 = x1 / 0;				//컴파일에서는 오류X, 실행시 오류 발
+			
+		} catch (Exception e) {	
+			// 예외가 나면 catch가 잡아서 밑에 걸 실행, 예외 안 나면 그대로 쭉
+			System.out.println("예외가 발생했어요.."+e.getMessage());
+			e.printStackTrace();
+	}	
+	}
+
+```
+
+### 3.2.2 문자열 연결 연산자(+)
++ 연산자는 산술 연산자, 부호 연산자인 동시에 문자열 연결 연산자이기도 하다. 피연산자 중 한쪽이 문자열이면 +연산자는 문자열 연결 연산자로 사용되어 다른 피연산자를 문자열로 변환하고 서로 결합한다.
+```js
+String str1 = “JDK” + 6.0; // JDK6.0
+```
+```js
+		System.out.println(3*4+"십이");		//12십이
+		System.out.println("Hi" + (3 * 4));		//Hi12
+```
+
+### 3.2.3 비교연산자
+
+```js
+String strVar1 = “사승원”;
+String strVar2 = “사승원”;
+String strVar3 = new String(“사승원”);
+
+```
+- 자바는 문자열 리터럴이 동일하다면 동일한 String 객체를 참조하도록 되어있다. 그래서 변수 strVar1과 strVar2는 동일한 String 객체의 번지값을 가지고 있다. 그러나 변수 strVar3은 객체 생성 연산자인 new로 생성한 새로운 string 객체의 번지값을 가지고 있다.
+
+```js
+strVar1 == strVar2 // true
+strVar2 == strVar3 // false
+```
+
+- 이경우 변수 strVar1과 strVar2의 == 연산은 true를 산출하고 strVar2와 strVar3의 == 연산은 false를 산출한다.
+
+- String 객체의 문자열만 비교하고 싶다면 == 연산자 대신 equals()메소드를 사용해야 한다. equals()메소드는 문자열이 동일한지 비교한 후 true 또는 false를 리턴한다.
+
+```js
+strVar1.equals(strVar2) //true
+strVar2.equals(strVar3) //true
+```
 
