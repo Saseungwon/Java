@@ -711,7 +711,7 @@ public class dddddddd {
 	
 		int score = 95;
 		String grade = "";
-		if(score > 90) {						//if문 뒤에 ; 붙이면 끝난 것으로 보기 때문에 else 뒤에 ;하기 
+		if(score > 90) {	//if문 뒤에 ; 붙이면 끝난 것으로 보기 때문에 else 뒤에 ;하기 
 			grade = "참 잘했어요!!";
 			} else { 
 			grade = "그래도 잘했어!!";
@@ -731,4 +731,5 @@ public class dddddddd {
 ```
 
 # 04 조건문과 반복문
+
 ## 📚4.1 데이터 타입
