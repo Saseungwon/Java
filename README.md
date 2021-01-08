@@ -630,3 +630,115 @@ strVar1.equals(strVar2) //true
 strVar2.equals(strVar3) //true
 ```
 
+3.2.4 논리연산자 
+
+&&는 앞의 피연산자가 false라면 뒤의 피 연산자를 평가하지 않고 바로 false라는 결과를 낸다. 하나라도 false라면 전체 연산식은 flase이기 때문이다. 그러나 &는 두 피연산자 모두를 평가해서 산출 결과를 낸다. 따라서 &보다 &&가 더 효율적으로 동작한다.  || 와 |도 같은 형식으로 동작한다. 따라서 || 가 더 효율적으로 작동한다. 
+논리연산은 흐름제어문인 조건문(if), 반복문(for, while) 등에서 주로 이용된다. 
+
+
+비트 이동 연산(<<, >>, >>>)
+비트 이동 (shift) 연산자는 정수 데이터의 비트를 죄측 또는 우측으로 밀어서 이동시키는 연산을 수
+행한다
+
+a << b : 정수a 의 각 비트를 b만큼 왼쪽으로 이동(빈자리는 0 으로 채워진다.)
+a << b : 정수 a 의 각 비트를 b 만큼 오른쪽으로(빈자리는 정수 a의 최상위 부호 비트 (MSB)와 같은 값으로 채워진다.)
+a >>>b : 정수 a 의 각 비트를 b만큼 오른쪽으로 이동(빈자리는0 으로 채워진다.)
+```js
+package day5;
+
+public class dddddddd {
+
+	public static void main(String[] args) {
+		System.out.println('A'==65);			//true
+		System.out.println(3==3.0);				//true
+		System.out.println(0.1==0.1f);			//false
+		System.out.println("------------------");
+	
+		//문자열인 경우 비교
+		String strA = "홍길동";
+		String strB = "홍길동";
+		String strC = new String("홍길동");
+		System.out.println("strA == strB" + (strA == strB)); //strA == strBtrue
+		System.out.println("strA == strC" + (strA == strC)); //strA == strCfalse	
+		// 문자열은 비교연산자를 사용 못함(>,< >=, <=)
+		// System.out.println("strA > strC =" + (strA > strC))
+		
+		strA = "A";
+		strB = "a";
+		char chrA = 'c';
+		char chrB = 'a';
+		System.out.println("chrA > chrB=" +(chrA > chrB));		//chrA > chrB=true
+		System.out.println(strA.compareTo(strB));					//-32
+		System.out.println(strA.compareToIgnoreCase(strB));		//0
+		
+		System.out.println("------------------");
+		
+		int intA = 678;
+		System.out.println("(intA >> 1)=" + (intA >> 1));		//(intA >> 1)=339
+		System.out.println("(intA >> 2)=" + (intA >> 2));		//(intA >> 2)=169
+		System.out.println("(intA >> 3)=" + (intA >> 3));		//(intA >> 3)=84
+
+		System.out.println("(intA << 1)=" + (intA << 1));		//(intA << 1)=1356
+		System.out.println("(intA << 2)=" + (intA << 2));		//(intA << 2)=2712
+		System.out.println("(intA << 3)=" + (intA << 3));		//(intA << 3)=5424
+		
+		System.out.println("-------운동취미---------");
+		
+			//4 : 축구, 3 : 야구, 2 : 농구, 1 : 배구
+			//0000 1111 : 15
+			//0000 1000 : 8
+			//0000 0100 : 4
+			//0000 0010 : 2
+			//0000 0001	: 1 
+		 int hobby = 15;
+		// 출력을 "취미는 축구, 야구, 농구, 배구 입니다."
+		String result = "";
+		if (((hobby >> 3) & 1) == 1) {
+			//result = result + "축구";
+			result += "축구";  // 짧게 이렇게 표현할 수도 있
+		}
+		if (((hobby >> 2) & 1) == 1) {
+			result = result + "야구";
+		}
+		if (((hobby >> 1) & 1) == 1) {
+			result = result + "농구";
+		}
+		if ((hobby & 1) == 1) {
+			result = result + "배구";
+		
+		result = "취미는" + result + "입니다.";
+		System.out.println(result);
+			
+		}
+	}
+}
+
+		System.out.println("---------삼항연산자---------");
+	
+		int score = 95;
+		String grade = "";
+		if(score > 90) {						//if문 뒤에 ; 붙이면 끝난 것으로 보기 때문에 else 뒤에 ;하기 
+			grade = "참 잘했어요!!";
+			} else { 
+			grade = "그래도 잘했어!!";
+		}
+				System.out.println(grade);
+		
+		System.out.println("---------삼항연산자 문제---------");
+		
+		// 위 score에 따라서 grade를 삼항연산자로 해주세요 
+		
+		int score = 55;
+		String grade = (score > 90) ? "참 잘했어요!!" : "그래도 잘했어!!";
+		System.out.println(grade);			// 그래도 잘했어!! 
+	}
+		// 삼항연산자로 더 간결하게 표현 가
+```
+
+
+
+
+## Chapter04 조건문과 반복문
+
+### 4.1 코드 실행 흐름 제어
+
