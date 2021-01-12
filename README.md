@@ -734,5 +734,112 @@ public class dddddddd {
 # 04 조건문과 반복문
 
 ## 📚4.1 데이터 타입
-=======
->>>>>>> 6d2608b73e4113760a623f33612fffc97a2c5e78
+---------------------------------------------------------------
+Java
+
+### if문
+```js
+package day5;
+public class If {
+
+	public static void main(String[] args) {
+		int score = 99 ;
+		String grade = "";
+		
+		if(score >= 90) {
+			grade = "참 잘했어요";
+		}
+		if(score >= 80) {
+			grade = "잘했어요";
+		}
+		if(score >= 70) {
+			grade = "했어요";
+		}
+		if(score < 70) {
+			grade = "뭐해..?";
+		}
+		System.out.println(grade);	//했어요
+			
+		// 참 잘했어요가 나와야 하는데  했어요가 실행됨..
+		// 이런 것 때문에 if-else 가 필요.
+	
+	}
+
+}
+```
+
+### else if문
+```js
+package day5;
+
+public class If {
+	public static void main(String[] args) {
+		int score = 97 ;
+		String grade = "";
+		
+		if(score >= 90) {
+			grade = "참 잘했어요";		//그냥 if문과 달리 else if 문은 위에가 참이면 밑에는 실행되지 않음.
+		}else if(score >= 80) {
+			grade = "잘했어요";
+		}else if(score >= 70) {
+			grade = "했어요";
+		}else {
+			grade = "뭐해..?";
+		}
+		System.out.println(grade);		//참 잘했어요
+	}
+}
+```
+### Math.random
+```js
+package day6;
+
+public class IfDiceExample {
+
+	public static void main(String[] args) {
+		
+		int num = (int)(Math.random()*6) + 1;	
+		//int(정수값을 얻기 위해), Math.random()*6(마지막 숫자는 6), +1(시작 숫자)
+		
+		if(num == 1) {
+			System.out.println("1번이 나왔습니다.");
+		}	else if(num == 2) {
+			System.out.println("2번이 나왔습니다.");
+		}	else if(num == 3) {
+			System.out.println("3번이 나왔습니다.");
+		}	else if(num == 4) {
+			System.out.println("4번이 나왔습니다.");
+		}	else if(num == 5) {
+			System.out.println("5번이 나왔습니다.");
+		}	else	{
+			System.out.println("6번이 나왔습니다.");
+		}
+	}
+
+}
+```
+- 오늘의 문제
+```package day6;
+public class elseif02 {
+
+	public static void main(String[] args) {
+		//국어,영어,수학 값을 랜덤하게 생성해서
+		//점수는 1~100사이, 평균은 구한 합의 /3
+		//평균, 합계를 구해주세요
+		
+		double avg = 0;
+
+		int kor = (int)(Math.random()*100) +1;
+		int eng = (int)(Math.random()*100) +1;
+		int mat = (int)(Math.random()*100) +1;
+		int sum = (int)(kor + eng + mat) ; 
+		avg = (double)(kor + eng + mat / 3);
+		
+		System.out.println("국어\t영어\t수학\t총점\t평균");
+		System.out.printf("%d\t%d\t%d\t%d\t%f\n"
+								,kor, eng, mat, sum, avg);
+	}
+}
+//int kor = 0, eng = 0, mat = 0, sum = 0;
+//double avg = 23.34556454;
+```
