@@ -760,11 +760,10 @@ public class If {
 			
 		// 참 잘했어요가 나와야 하는데  했어요가 실행됨..
 		// 이런 것 때문에 if-else 가 필요.
-	
 	}
-
 }
 ```
+
 ### 4.1.2 else if문
 ```js
 package day5;
@@ -775,12 +774,10 @@ public class If {
 		String grade = "";
 		
 		if(score >= 90) {
-<<<<<<< HEAD
 			grade = "참 잘했어요";	//그냥 if문과 달리 else if 문은
 							//위에가 참이면 밑에는 실행되지 않음.
-=======
 			grade = "참 잘했어요";		//그냥 if문과 달리 else if 문은 위에가 참이면 밑에는 실행되지 않음.
->>>>>>> 938f3309f616ac6ecceaa96dde985aa52192bdbe
+
 		}else if(score >= 80) {
 			grade = "잘했어요";
 		}else if(score >= 70) {
@@ -792,6 +789,7 @@ public class If {
 	}
 }
 ```
+
 ### 4.1.3 Math.random
 
 ```js
