@@ -847,3 +847,223 @@ public class elseif02 {
 //int kor = 0, eng = 0, mat = 0, sum = 0;
 //double avg = 23.34556454;
 ```
+- 변형문제
+```js
+package day6;
+public class elseif02 {
+
+	public static void main(String[] args) {
+		//국어,영어,수학 값을 랜덤하게 생성해서
+		//점수는 1~100사이, 평균은 구한 합의 /3
+		//평균, 합계를 구해주세요
+		//평균 점수가 90이상이면 "A", 80이상이면 "B",
+		//70이상이면 "C", 60이상이면 "D" 그외는 "F" 출력
+		
+		double avg = 0;
+		String grade = "";	//F를 주고 else를 안 쓰는 방법도 있음
+
+		int kor = (int)(Math.random()*100) +1;
+		int eng = (int)(Math.random()*100) +1;
+		int mat = (int)(Math.random()*100) +1;
+		int sum = (int)(kor + eng + mat) ;
+		avg = (double)((kor + eng + mat) / 3);
+		//avg = sum / 3.0 ; -> 이렇게도 가능(정수 나누기 정수는 정수. 소수점 이하는 버림)
+		
+		if(avg >= 90) {
+			grade = "A";
+		} else if(avg >= 80) {
+			grade = "B" ;
+		} else if(avg >= 70) {
+			grade = "C" ;
+		} else if(avg >= 60) {
+			grade = "D" ;
+		} else {
+			grade = "F" ;
+		}
+		
+		System.out.println("국어\t영어\t수학\t총점\t평균\t등급");
+		System.out.printf("%d\t%d\t%d\t%d\t%.2f\t%s\n"
+								,kor, eng, mat, sum, avg, grade);
+	}
+}
+```
+
+### 4.1.4 Scanner
+```js
+package day7;
+import java.util.Scanner ; //이걸 갖다 놓고 사용해야함
+public class IfIf {
+	
+	public static void main(String[] args) {
+		//이름, 국어, 영어, 수학 점수를 콘솔에서 입력받아서
+		//국어,영어,수학 값을 랜덤하게 생성해서
+		//점수는 1~100사이, 평균은 구한 합의 /3
+		//평균, 합계를 구해주세요
+		//평균 점수가 90이상이면 "A", 80이상이면 "B",
+		//70이상이면 "C", 60이상이면 "D" 그외는 "F" 출력
+		
+		double avg = 0;
+		String name = "";	
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("이름, 국어, 영어, 수학 점수를 순서대로 입력해주세요");
+		
+		name = scanner.next() ;  
+		int kor = scanner.nextInt() ;
+		int eng = scanner.nextInt() ;
+		int mat = scanner.nextInt() ;
+		int sum =(kor + eng + mat) ;
+		avg = 56 / 3.0 ;
+		//avg = sum / 3.0 ; -> 이렇게도 가능(정수 나누기 정수는 정수. 소수점 이하는 버림)
+		String grade ;
+		if(avg >= 90) {
+			grade = "A";
+		} else if(avg >= 80) {
+			grade = "B" ;
+		} else if(avg >= 70) {
+			grade = "C" ;
+		} else if(avg >= 60) {
+			grade = "D" ;
+		} else {
+			grade = "F" ;
+		}
+		
+		System.out.println("이름\t국어\t영어\t수학\t총점\t평균\t등급");
+		System.out.printf("%s\t%d\t%d\t%d\t%d\t%d\t%.2f\t%s\n"
+								, name, kor, eng, mat, sum, avg, grade);
+		
+	}
+```
+```js
+
+	public static void mainScan(String[] args) {
+		// p.126 사용자 입력
+		//System.in.read() 바이트 단위 입력(0~255, 스트림의 끝이면 -1)
+		//System.in.read()
+		Scanner scanner = new Scanner(System.in);
+		//next() : 공백이전까지의 문자열 리턴
+		//next + 타입() : nextInt(), nextDouble()
+		//nextLine() : 문자열 전체 리턴
+		//홍길동 25 True
+		System.out.println("이름과 나이 결혼여부(true/false)");
+		String name = scanner.next();
+		int age = scanner.nextInt();
+		boolean marriage = scanner.hasNextBoolean() ;
+		System.out.println( name + "님" + age + "살, 결혼은" + marriage);
+		
+		scanner.close() ;
+	}
+}
+```
+
+
+### 4.1.5 switch문
+
+```js
+package day7;
+
+public class Switch01 {
+
+	public static void main(String[] args) {
+		int num = (int)(Math.random() *6) + 1 ;
+		System.out.println("구한 num=" + num);
+		// switch(표현식) : 표현식은 기본적으로 정수형 + JDK 1.7부터 문자열 가능
+		switch (num) { //(num -1) 같은 연산이 올 수도 있음
+		case 1 : System.out.println("1이 나왔어요"); break ;
+		case 2 : System.out.println("2이 나왔어요");break ;
+		case 3 : System.out.println("3이 나왔어요");break ;
+		case 4 : System.out.println("4이 나왔어요");break ;
+		case 5 : System.out.println("5이 나왔어요");break ;
+		default : System.out.println("6이 나왔어요");break ;
+		}
+	}
+}
+```
+```js
+package day7;
+import java.util.Scanner;
+public class ex {
+
+	public static void main(String[] args) {
+		Scanner scan = new Scanner(System.in);
+		System.out.println("원하시는 월을 입력하세요[1~12]");
+		int month = scan.nextInt();
+		int maxday = 0; 	// =0에 의미를 두지말
+		
+//		switch (month) {
+//		case 1 : maxday = 31; break ;
+//		case 2 : maxday = 28; break ;
+//		case 3 : maxday = 31; break ;
+//		case 4 : maxday = 30; break ;
+//		case 5 : maxday = 31; break ;
+//		case 6 : maxday = 30; break ;
+//		case 7 : maxday = 31; break ;
+//		case 8 : maxday = 31; break ;
+//		case 9 : maxday = 30; break ;
+//		case 10 : maxday = 31; break ;
+//		case 11 : maxday = 30; break ;
+//		default : maxday = 31; break ;
+		
+		switch (month) {
+		case 1 :
+		case 3 :
+		case 5 :
+		case 7 :
+		case 8 :
+		case 10 :
+		case 12 : maxday = 31; break ;
+		case 2 : maxday = 28; break ;
+		case 4 :
+		case 6 :
+		case 9 :
+		case 11 : maxday = 30; break ;
+		default : System.out.println("월이 정확하지 않습니다.");break ;
+	}
+		System.out.println(month + "월은" + maxday + "일까지 존재합니다.");	
+		//syso 마지막에 출력하려면 괄호를 나와서 마지막에
+	}
+}
+```
+
+## 📚 4.2 반복문(for문, while문, do~while문)
+
+### 4.2.1 for
+- 기본적인 구조
+```js
+int sum = 0;
+for (int i = 1; i <=100; i++ ) {
+	sum = sum +1 ;
+}
+System.out.println("1~100까지의 합:"+sum);
+```
+>for ((1)초기회식; (2)조건식; (4)증감식)
+>		     (3)실행문 – true일 때
+>false일 경우 for문 종료
+
+```js
+package day7;
+
+public class Question {
+
+	public static void main(String[] args) {
+	 //1부터 100까지의 홀수의 합 얼마인가요?
+		int sum = 0 ;
+		for(int i = 1 ; i < 100 ; i++) {
+			sum =  sum + (i+2);
+		}
+		System.out.println("1부터 100까지의 홀수의 합 =" +sum);
+	}
+}
+```
+```js
+package day7;
+public class Q2 {
+
+	public static void main(String[] args) {
+		int sum =0 ;
+		for(int i = 0; i <(100/3)  ; i++) {
+		   sum = sum + (i*3);
+			
+			System.out.println("1부터 100까지의 3의 배수의 합=" + sum);
+	}
+}}
+```
