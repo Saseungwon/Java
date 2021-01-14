@@ -1039,6 +1039,7 @@ System.out.println("1~100까지의 합:"+sum);
 >		     (3)실행문 – true일 때
 >false일 경우 for문 종료
 
+- 1부터 100까지의 홀수의 합을 구해라(오답)
 ```js
 package day7;
 
@@ -1054,6 +1055,25 @@ public class Question {
 	}
 }
 ```
+- 1부터 100까지의 홀수의 합을 구해라(정답)
+```js
+package day7;
+
+public class Question {
+
+	public static void main(String[] args) {
+	 //1부터 100까지의 홀수의 합 얼마인가요?
+		int sum = 0 ;
+		for(int i = 1 ; i < 100 ; i++) { //i = i + 2
+			if(i % 2 ==1)
+			sum =  sum + i; // sum += i;
+		}
+		System.out.println("1부터 100까지의 홀수의 합 =" +sum);
+	}
+}
+```
+
+- 1부터 100까지의 3의 배수의 합(오답)
 ```js
 package day7;
 public class Q2 {
@@ -1066,4 +1086,252 @@ public class Q2 {
 			System.out.println("1부터 100까지의 3의 배수의 합=" + sum);
 	}
 }}
+```
+- 1부터 100까지의 3의 배수의 합(정답)
+```js
+package day7;
+
+public class Q2 {
+
+	public static void main(String[] args) {
+		int sum =0 ;
+		for(int i = 1; i <= (100/3)  ; i++) {
+		   sum = sum + (i*3);
+	}
+		System.out.println("1부터 100까지의 3의 배수의 합=" + sum);
+}}
+
+```
+
+- 6단을 출력
+```js
+package day8;
+
+public class For3 {
+
+	public static void main(String[] args) {
+		//6단을 출력
+		//문자열 "i"와 숫자변수 i는 전혀 다른 것이다.
+		for(int i = 1 ; i < 10 ; i++) {
+			System.out.println("6 * " + i + " = " + (6 * i ));
+		}
+	}
+}
+```
+- 고객이 원하는 숫자를 넣으면 원하는 구구단 나오게 하기
+```js
+package day8;
+
+public class For3 {
+
+	public static void main(String[] args) {
+		//문자열 "i"와 숫자변수 i는 전혀 다른 것이다.
+		//고객이 원하는 숫자 넣으면 원하는 답 나오게 하기
+		danPrint(5);	// 절차형언어 : 함수, OOP:메서드
+		danPrint(8);
+		}
+	public static void danPrint(int dan) {
+		System.out.println(dan + "단");
+		for(int i = 1 ; i < 10 ; i++) {
+			System.out.println(dan+ " X " + i + " = " + (dan * i ));
+	}
+}
+}
+```
+- 구구단
+```js
+package day8;
+
+public class For05 {
+
+	public static void main(String[] args) {
+		/*
+		  구구단
+		 */
+		for(int i = 1; i <= 9 ; i++) {
+			System.out.println(i+"단");
+			for(int j = 1 ; j <= 9 ; j++) {
+				System.out.println(i+ "X" + j + " = " + i*j);
+			}
+		}
+	}
+}
+
+```
+- 별표출력하기
+```js
+package day8;
+
+public class For03 {
+
+	public static void main(String[] args) {
+		/*
+		  별 다섯개 출력하기*****
+		 */
+		System.out.println("*****");	
+		System.out.print("*");		//ln은 엔터쳐주는 거구나
+		System.out.print("*");
+		System.out.print("*");
+		System.out.print("*");
+		System.out.print("*");
+		for(int i = 0 ; i < 5 ; i++) {
+			System.out.println("*");}	//ln과 차이
+	    	System.out.print("*");
+		System.out.println("");
+		/* 1번 피라미드
+ 		  *
+		  **
+		  ***
+		  ****
+		  *****
+		 */
+		for(int i = 0 ; i < 5; i++) {
+			switch(1) {
+			case 0 : System.out.println("*"); break ;
+			case 1 : System.out.println("**"); break ;
+			case 2 : System.out.println("***"); break ;
+			case 3: System.out.println("****"); break ;
+			case 4 : System.out.println("*****"); break ;
+			}
+		}
+}
+}
+```
+
+- 피라미드
+```js
+package day8;
+
+public class For04 {
+
+	public static void main(String[] args) {
+		/* 1번 피라미드
+		1 *
+		2 **
+		3 ***
+		4 ****
+		5 *****
+		 */
+		for(int i = 1 ; i <= 5; i++) {
+			for(int j =1 ; j <= i ; j++ ) {
+				System.out.print("*");
+				
+			}
+				System.out.println(" ");
+		}
+		/* 2번 피라미드
+		i	j 변수의 시작값 또는 for 문의 조건식을 고민
+ 		1	*****
+ 		2	****
+ 		3	***
+ 		4	**
+ 		5	*
+ 
+		*/
+		for (int i = 5; i >= 1; i--) {
+			for (int j = 1; j <= i; j++) {
+				System.out.print("*");
+
+			}
+			System.out.println();
+
+		}
+		System.out.println("-------------------------------");
+			/* 3번 피라미드
+			i	j 변수의 시작값 또는 for 문의 조건식을 고민
+	 		1	|     *	1=1
+	 		2	|    ***	2=3
+	 		3	|   *****	3=5
+	 		4	|  *******	4=7
+	 		5	| *********	5=9
+			*/
+		
+		for(int i = 1 ; i <= 5; i++) {
+			//별은별, 공백은 처리
+			for(int k = 5; k > i ; k--) {
+				System.out.print(" ");
+				
+			}
+			for(int j = 1; j <= (i*2-1) ; j++) {
+				System.out.print("*");
+			}
+			System.out.println();
+		}
+	}
+}
+```
+
+
+### 4.3.2 while문
+- for문이 정해진 횟수만큼 반복한다면, while문은 조건식이 true일 경우에 계속해서 반복한다. 조건식에는 비교 또는 논리 연산식이 주로 오는데 조건식이 false가 되면 반복 행위를 멈추고 while문을 종료한다.
+
+```js
+package day8;
+
+import java.util.Scanner;
+
+public class While01 {
+
+	public static void main(String[] args) {
+		// 이름, 국어, 영어, 수학 점수를 콘솔에서 입력받아서
+		// 국어,영어,수학 값을 랜덤하게 생성해서
+		// 점수는 1~100사이, 평균은 구한 합의 /3
+		// 평균, 합계를 구해주세요
+		// 평균 점수가 90이상이면 "A", 80이상이면 "B",
+		// 70이상이면 "C", 60이상이면 "D" 그외는 "F" 출력
+		// 홍길동 45 78 99 [엔터]
+		// q 또는 Q [엔터]
+
+		boolean run = true;
+		Scanner scanner = new Scanner(System.in);
+		while (run) {
+			String name = "";
+			double avg = 0.0;
+			System.out.println("이름, 국어, 영어, 수학 점수를 순서대로 입력해주세요[종료:Q]");
+			name = scanner.next();
+			// name에 "Q" 또는 'q'인 경우 종료되는 조건을 설정
+			// 그렇지 않다면
+			if (name.equals("Q") || name.equals("q")) {
+				run = false ;
+			}else {
+					
+		
+			int kor = scanner.nextInt();
+			int eng = scanner.nextInt();
+			int mat = scanner.nextInt();
+			scanner.nextLine();
+			int sum = kor + eng + mat;
+			avg = sum / 3.0;
+			String grade;
+			if (avg >= 90) {
+				grade = "A";
+			} else if (avg >= 80) {
+				grade = "B";
+			} else if (avg >= 70) {
+				grade = "C";
+			} else if (avg >= 60) {
+				grade = "D";
+			} else {
+				grade = "F";
+			}
+
+			System.out.println("이름\t국어\t영어\t수학\t총점\t평균\t등급");
+			System.out.printf("%s\t%d\t%d\t%d\t%d\t%.2f\t%s\n", name, kor, eng, mat, sum, avg, grade);
+			}
+		}
+		System.out.println("종료되었습니다.");
+	}
+	
+//	이름, 국어, 영어, 수학 점수를 순서대로 입력해주세요[종료:Q]
+//			홍길동 90 80 80
+//			이름	국어	영어	수학	총점	평균	등급
+//			홍길동	90	80	80	250	83.33	B
+//			이름, 국어, 영어, 수학 점수를 순서대로 입력해주세요[종료:Q]
+//			사승원 80 80 80
+//			이름	국어	영어	수학	총점	평균	등급
+//			사승원	80	80	80	240	80.00	B
+//			이름, 국어, 영어, 수학 점수를 순서대로 입력해주세요[종료:Q]
+//			q
+//			종료되었습니다.
+//	
 ```
