@@ -1262,7 +1262,7 @@ public class For04 {
 ```
 
 
-### 4.3.2 while문
+### 4.2.2 while문
 - for문이 정해진 횟수만큼 반복한다면, while문은 조건식이 true일 경우에 계속해서 반복한다. 조건식에는 비교 또는 논리 연산식이 주로 오는데 조건식이 false가 되면 반복 행위를 멈추고 while문을 종료한다.
 
 ```js
@@ -1335,3 +1335,243 @@ public class While01 {
 //			종료되었습니다.
 //	
 ```
+
+### 4.2.3 do while
+- do whlie 문은 조건식에 의해 반복 실행한다는 점에서는 while문과 동일하다. 
+- while문은 시작할 때부터 조건식을 검사하여 블록 내부를 실행할지 결정하지만, 경우에 따라서는 블록 내분의 실행문을 우선 실행시키고 실행 결과에 따라서 반복 실행을 계속할지 결정하는 경우도 발생한다.
+
+```js
+do
+{
+(1) 실행문
+} while (2) 조건식 : true면 실행문으로 가서 반복
+false면  do whlie문 종료
+```
+```js
+package day9;
+
+import java.util.Scanner;										// Scanner 클래스를 사용하기 위해 필요
+
+public class DoWhile {
+
+	public static void main(String[] args) {
+		boolean run = true;
+		Scanner scanner = new Scanner(System.in);				//Scanner 객체 생성
+		do {
+			String name = "";
+			double avg = 0.0;
+			System.out.println("-----------------------------------------------");
+			System.out.println("이름, 국어, 영어, 수학 점수를 순서대로 입력해주세요[종료:Q]");
+			System.out.println("-----------------------------------------------");
+			System.out.println("이름[종료:Q]");
+			name = scanner.nextLine();							//키보드로 입력한 문자열을 얻음
+			
+			if(name.equals("Q") || name.equals("q"))	{		//문자열을 비교할 때는 equals("") 메소드 사
+				run = false ;
+			} else {
+			System.out.println("국어 : ");
+			int kor = Integer.parseInt(scanner.nextLine());
+			System.out.println("영어 : ");
+			int eng = Integer.parseInt(scanner.nextLine());
+			System.out.println("수학 : ");
+			int mat = Integer.parseInt(scanner.nextLine());
+
+			int sum = kor + eng + mat;
+			avg = sum / 3.0;
+			String grade = "F";
+	
+			switch ((int)(avg/10)) {
+			case 10 :
+			case 9: grade = "A"; break ;
+			case 8: grade = "B"; break ;
+			case 7: grade = "C"; break ;
+			case 6: grade = "D"; break ;
+			default : grade = "F"; break ;
+			}
+
+			System.out.println("이름\t국어\t영어\t수학\t총점\t평균\t등급");
+			System.out.printf("%s\t%d\t%d\t%d\t%d\t%.2f\t%s\n", name, kor, eng, mat, sum, avg, grade);
+			}	
+		}while (run);
+		System.out.println("종료되었습니다.");
+		scanner.close();
+	}
+	}
+```
+
+
+### 4.2.4 Scanner
+- scanner를 사용하려면 import문이 필요하다 : import java.util.Scanner;
+- Scanner 객체 생성 : Scanner scanner = new Scanner(System.in);
+- 키보드로 입력한 문자열을 얻음 : scanner.nextLine()
+- 문자열을 비교할 때는 equals(“”) 메소드 사용
+
+
+### 4.2.5 break문
+
+- break문은 반복적인 for문 while문 do-while문,  switch문을 실행 중지할 때 사용된다.
+- 먄약 반복문이 중첩되어 있을 경우 break문은 가장 가까운 반복문만 종료하고 바깥쪽 반복문은 종료시키지 않는다.
+```js
+package day9;
+
+import java.util.Scanner;	// Scanner 클래스를 사용하기 위해 필요
+public class Break {
+
+	public static void main(String[] args) {
+
+				//boolean run = true;	-- break를 쓰면 run이 필요 없게됨
+				Scanner scanner = new Scanner(System.in);	//Scanner 객체 생성
+				do {
+					String name = "";
+					double avg = 0.0;
+					System.out.println("-----------------------------------------------");
+					System.out.println("이름, 국어, 영어, 수학 점수를 순서대로 입력해주세요[종료:Q]");
+					System.out.println("-----------------------------------------------");
+					System.out.println("이름[종료:Q]");
+					name = scanner.nextLine();//키보드로 입력한 문자열을 얻음
+					
+					if(name.equals("Q") || name.equals("q")){//문자열을 비교할 때는
+															// equals("") 메소드 사용
+						System.out.println("종료를 선택했음.");
+						break;
+						
+					} else {
+					System.out.println("국어 : ");
+					int kor = Integer.parseInt(scanner.nextLine());
+					System.out.println("영어 : ");
+					int eng = Integer.parseInt(scanner.nextLine());
+					System.out.println("수학 : ");
+					int mat = Integer.parseInt(scanner.nextLine());
+
+					int sum = kor + eng + mat;
+					avg = sum / 3.0;
+					String grade = "F";
+			
+					switch ((int)(avg/10)) {
+					case 10 :
+					case 9: grade = "A"; break ;
+					case 8: grade = "B"; break ;
+					case 7: grade = "C"; break ;
+					case 6: grade = "D"; break ;
+					default : grade = "F"; break ;
+					}
+
+					System.out.println("이름\t국어\t영어\t수학\t총점\t평균\t등급");
+					System.out.printf("%s\t%d\t%d\t%d\t%d\t%.2f\t%s\n", name, kor, eng, mat, sum, avg, grade);
+					}	
+				}while (true);
+				System.out.println("종료되었습니다.");
+				scanner.close();
+			}
+	}
+
+```
+-  1부터 100까지 합을 구하던 중 합이 1000이 넘을 때 정수값 구하기
+```js
+package day9;
+
+public class Break01 {
+
+	public static void main(String[] args) {
+		//1부터 100까지의 합을 출력해주세요
+		//1부터 100까지 합을 구하던 중 합이 1000이 넘을 때
+		//그때의 정수값을 알고싶어
+		int sum = 0 ;
+		int i = 0;
+
+		for(i = 1 ; i <= 100 ; i++ ) {
+			sum = sum + i ;
+			if(sum > 1000) break;
+		}
+		System.out.println("sum = " + sum);
+		System.out.println("1부터 100까지 합 중 1000을 넘을 때 정수"+ i);
+	}
+}
+```
+
+### 4.2.6 Continue문
+- continue문은 반복적인 for문, while문, do-while문에서만 사용되는데, 블록 내부에서 continue문이 실행되면 for문의 증감식 또는 while문, do-while문의 조건식으로 이동한다.
+```js
+package day9;
+
+public class Continue {
+
+	public static void main(String[] args) {
+		// 1부터 100까지 6의 배수의 합 출력(continue 사용)
+		int sum = 0;
+		for(int i = 1 ; i<=100; i++) {
+			if(i%6 != 0) {
+				continue;
+			}
+			sum = sum + i ;
+		}
+		System.out.println("1부터 100까지 6의 배수의 합 = " + sum);
+		// 1부터 100까지 6의 배수의 합 = 816
+	}
+
+}
+```
+
+- 달력 만들기
+```js
+package day9;
+
+import java.util.Scanner;
+
+public class CalendarMake {
+
+	public static void main(String[] args) {
+		// 임의의 년도는 윤년인가?
+		//1년은 365일(실제는 365.2) 4년마다 윤년 100년은 평년, 400년, 윤년  
+		//		
+		Scanner scanner = new Scanner(System.in);	
+		System.out.print("년도를 입력 : ");
+		boolean isLeapYear = false ; // 평년  (true : 윤년)		
+		
+		int year = Integer.parseInt(scanner.nextLine());
+		int lastYear = year - 1 ;
+		System.out.println("월을 입력(1~12) : ");
+		int month = Integer.parseInt(scanner.nextLine());
+		
+		
+		if ((year % 100 != 0	&&	year % 4 == 0) || (year % 400 ==0)) {
+			isLeapYear = true ;
+		}
+		System.out.println(year + "년은 " + (isLeapYear ? "윤년" : "평년"));
+		//365 % 7 = 1
+		// 그레고리력(양력)
+		// 1년 1월 1일 = 월
+		// 2년 1월 1일 = 화
+		// 3년 1월 1일 = 수
+		
+		
+		// 2021년 입력 -> 전년도 까지의 일수 % 7
+		// 일수 (전년도 * 365) + (전년도 까지의 윤년수)
+		int totalDay = (lastYear *365)
+				+ (lastYear / 4)  + (lastYear / 400) - (lastYear / 100);
+		
+		//해당 월 1월1일
+		//구하는 월 전까지의 일을 totalDay에 추가
+		for(int i = 1 ; i < month; i++) {
+			if(i == 1 || i ==3 || i == 5 || i == 7 || i == 8 || i == 10 || i ==12) {
+				totalDay = totalDay + 31;
+			}else if(i == 2) {
+				if(isLeapYear ) {//isLeapYear == true
+					totalDay = totalDay + 29;			
+				}else {
+					totalDay = totalDay + 28;					
+				}
+			}else {
+				totalDay = totalDay + 30;
+			}
+		}
+		System.out.println(totalDay + "=" + ((totalDay + 1) % 7));
+		int dayOfMonth = (totalDay +1) % 7; // 0 일, 1월, ~~6 토
+		
+		
+		System.out.println("     " + year + "년" + month + "월");
+		System.out.println("일  월  화  수  목  금  토 ");
+		
+```
+
+
