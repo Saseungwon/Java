@@ -1513,65 +1513,314 @@ public class Continue {
 ```
 
 - 달력 만들기
+
 ```js
 package day9;
 
 import java.util.Scanner;
 
-public class CalendarMake {
+public class CalendarMake2 {
 
 	public static void main(String[] args) {
-		// 임의의 년도는 윤년인가?
-		//1년은 365일(실제는 365.2) 4년마다 윤년 100년은 평년, 400년, 윤년  
-		//		
-		Scanner scanner = new Scanner(System.in);	
-		System.out.print("년도를 입력 : ");
-		boolean isLeapYear = false ; // 평년  (true : 윤년)		
-		
-		int year = Integer.parseInt(scanner.nextLine());
-		int lastYear = year - 1 ;
-		System.out.println("월을 입력(1~12) : ");
-		int month = Integer.parseInt(scanner.nextLine());
-		
-		
-		if ((year % 100 != 0	&&	year % 4 == 0) || (year % 400 ==0)) {
-			isLeapYear = true ;
-		}
-		System.out.println(year + "년은 " + (isLeapYear ? "윤년" : "평년"));
-		//365 % 7 = 1
-		// 그레고리력(양력)
+		// 사용자가 요청한 달력생성
+		// 고레고리력(양력)
 		// 1년 1월 1일 = 월
 		// 2년 1월 1일 = 화
 		// 3년 1월 1일 = 수
+		// 4년 1월 1일 = 목 (4년 2월에 윤년)
+		// 5년 1월 1일 = 토
+		// (1900 년 1월 1일이 월요일이어서 이곳을 기점으로 하셔도 됩니다.)  
+		// 구하는 월의 1일은 무슨 요일이까?
+		// 지금까지의 일수를 다 더해서 7로 나눈 나머지 = 시작요일
 		
+		// 임의의 년도는 윤년인가?
+		// 1년은 365일(실제는 365.2) 4년마다 윤년,  100년은 평년, 400년 윤년
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("년도를 입력 : ");
+		int year = Integer.parseInt(scanner.nextLine());
+		System.out.print("월을 입력[1~12] : ");
+		int month = Integer.parseInt(scanner.nextLine());		
+		int lastYear = year - 1;
 		
+		boolean isLeapYear = false; // 평년 (true : 윤년)		
+		// 올해가 윤가/평년 구분
+		/* if(year % 400 == 0) {
+			isLeapYear = true;
+		}else if(year % 100 == 0) {
+			isLeapYear = false;
+		}else if(year % 4 == 0) {
+			isLeapYear = true;
+		} */
+		
+		if((year % 100 != 0 && year % 4 == 0) || (year % 400 == 0)) {
+			isLeapYear = true;
+		}
+		System.out.println(year + "년은 " +  ( isLeapYear ? "윤년" : "평년" ) );
 		// 2021년 입력 -> 전년도 까지의 일수 % 7
-		// 일수 (전년도 * 365) + (전년도 까지의 윤년수)
-		int totalDay = (lastYear *365)
-				+ (lastYear / 4)  + (lastYear / 400) - (lastYear / 100);
-		
-		//해당 월 1월1일
-		//구하는 월 전까지의 일을 totalDay에 추가
-		for(int i = 1 ; i < month; i++) {
-			if(i == 1 || i ==3 || i == 5 || i == 7 || i == 8 || i == 10 || i ==12) {
+		// 일수 : (전년도 * 365) + (전년도 까지의 윤년수)
+		int totalDay = (lastYear * 365)
+				        + (lastYear / 4) + (lastYear / 400) - (lastYear / 100);
+		// 해당월 4월1일의 요일을 구하기 위해  (1월 ~ 3월 일수) + 1
+		// 구하는 월전까지의 일을 totalDay 에 추가
+		for(int i = 1; i < month; i++) {
+			if(i == 1 || i == 3 || i == 5 || i == 7 || i == 8 || i == 10 || i == 12 ){
 				totalDay = totalDay + 31;
 			}else if(i == 2) {
-				if(isLeapYear ) {//isLeapYear == true
-					totalDay = totalDay + 29;			
-				}else {
-					totalDay = totalDay + 28;					
+				if(isLeapYear) { // isLeapYear == true
+					totalDay = totalDay + 29;
+				}else{
+					totalDay = totalDay + 28;
 				}
 			}else {
 				totalDay = totalDay + 30;
 			}
 		}
-		System.out.println(totalDay + "=" + ((totalDay + 1) % 7));
-		int dayOfMonth = (totalDay +1) % 7; // 0 일, 1월, ~~6 토
+		// 해당월의 일수 담기
+		int lastDay = 30;
+		if(month == 1 || month == 3 || month == 5 || month == 7 || month == 8 || month == 10 || month == 12 ){
+			lastDay = 31;
+		}else if(month == 2) {
+			if(isLeapYear) { // isLeapYear == true
+				lastDay = 29;
+			}else{
+				lastDay = 28;
+			}
+		}		
 		
+		int dayOfMonth = (totalDay + 1) % 7; // 0 일, 1 월, ~~ 6 토
+		System.out.println(totalDay + "=" + totalDay + ", dayOfMonth=" + dayOfMonth);
 		
-		System.out.println("     " + year + "년" + month + "월");
-		System.out.println("일  월  화  수  목  금  토 ");
+		System.out.println("       " + year + "년 " + month + "월");
+		System.out.println("일\t월\t화\t수\t목\t금\t토");
 		
+		/* // 메인 for 전에 요일만큼 tab 하기
+		for(int i = 0; i < dayOfMonth; i++) {
+			System.out.printf("\t");
+		}		
+		//dayofmonth 4 일때  i = 3, 10, 17, ...일에  개행이 필요			
+		for(int i = 1; i <= lastDay; i++) {
+			System.out.printf("%d\t", i);
+			if( (i + dayOfMonth) % 7 == 0) {
+				System.out.println();
+			}
+		}
+		*/
+		
+		// 다르게 for
+		// day 일을 출력하가 위한 변수
+		for(int i = 1, day = 1; i <= 42; i++) {
+			// i 가 dayofMonth 보다 작다면 스킵
+			if(i <= dayOfMonth) {
+				System.out.print("\t");				
+				continue;
+			}
+			System.out.printf("%d\t", day);
+			if( (day + dayOfMonth) % 7 == 0) {
+				System.out.println();
+			}
+			day++;
+			// day가 lastDay 보다 크다면 반복문을 빠져나가자
+			if(day > lastDay) {
+				break;
+			}
+		}
+	}
+}
 ```
 
+# 🐋 Chapter 5
+## 📚 5.1 데이터 타입 분류
+- 기본 타입
+-	 정수타입
+      - byte
+      - char
+       - short
+       - int
+       - long
+
+-	실수 타입
+	- float
+	- double
+
+- 참조 타입
+	-	배열 타입
+	-	열거타입
+	-	클래스
+    - 인터페이스
+
+
+## 📚 5.2 메모리 사용 영역
+### 5.2.1 메소드 영역
+- 메소드 영역에는 코드에서 사용되는 클래스들을 클래스 로더로 읽어 클래스 별로 런타임 상수풀, 핅드 데이터, 메소드 코드, 생성자 코드 등을 분류해서 저장한다.
+
+- 힙 영역
+힙 영역은 객체와 배열이 생성되는 영역이다.
+
+- jvm 스택 영역
+	- jvm 스택 영역은 각 스레드마다 하나씩 존재하며 스레드가 시작될 때 할당된다. 자바 프로그램에서 추가적으로 스레드를 생성하지 않았다면 main 스레드만 존재하므로 jvm 스택도 하나다.
+	- Jvm 스택은 메소드를 호출할 때마다 프레임을 추가하고 메소드가 종료되면 해당 프레임을 제거하는 동작을 수행한다.
+
+## 📚 5.3 참조 변수의 ==,!= 연산
+
+## 📚 5.4 null과 NullpointerException
+- 참조 타입 변수는 힙 영역의 객체를 참조하지 않는다는 뜻으로 널값을 가질 수 있다. 
+- null값도 초기값으로 사용할 수 있기 때문에 초기화된 참조 변수는 스택 영역에서 생성된다.
+- 참조 타입 변수가 null값을 가지는지 확인하려면 ==, != 연산을 수행하면 된다.
+> refVar1 == null //결과 : false
+> refVar1 != null  // 결과 : true
+
+```js
+package day11;
+
+public class Refer01 {
+
+	public static void main(String[] args) {
+	
+		//기본형은 null 설정 안됨
+		//int a = null;
+		//char b = null;
+		String str = "사랑해요 밀키스";
+		System.out.println(str);
+		System.out.println("-------------");
+		if(str != null) {
+			System.out.println(str.length());
+		}else {
+			System.out.println("str 변수는 널입니다.");
+		}
+	
+
+	}
+
+}
+```
+
+## 📚 5.5 String 타입
+
+- String 변수 ;
+- 변수 = “문자열”;
+- String 변수 = “문자열”;
+- 자바는 문자열 리터럴이 동일하다면 String 객체를 공유하도록 되어 있다.
+-하지만 new 연산자를 사용하면 새로운 객체를 만든다.
+String name1 = new String (“신용권”)
+
+## 📚 5.6 배열 타입
+### 5.6.1 배열이란
+- 같은 타입의 많은 양의 데이터를 다루는 프로그렘에서는 좀 더 효율적인 방법이 필요한데 이것이 배열이다.
+
+```js
+package day11;
+
+public class Array01 {
+
+	public static void main(String[] args) {
+
+		int a = 32 ;
+		int b = 31 ;
+		int c = 35 ;
+		int d = 32 ;
+		int e = 29 ;
+		int f = 26;
+
+		int sum = a + b + c + d ;
+		System.out.println("나이의 합  + " sum);
+		System.out.println("평균나이" + (sum / 4.0));
+
+	}
+
+}
+```
+### 5.6.3 값 목록으로 배열 생성
+
+- 데이터 타입 [] 변수 = {값0,  값1, 값2, 값3…}
+
+- 중괄호 {}는 주어진 값들을 항목으로 가지는 배열 객체를 힙에 생성하고 배열 객체의 번지를 리턴한다.
+```js
+String[] names = {“신용권”, “홍길동”, “감자바”};
+```
+```js
+package day11;
+
+public class Array01 {
+
+
+	public static void main(String[] args) {
+		int[]arr = {32, 31, 35, 32, 29, 26};
+		int sum = 0;
+		System.out.println("arr[1]= " + arr[1]);
+		arr[1] = 55;
+		System.out.println("arr.length=" + arr.length);
+//		sum += arr{0};
+//		sum += arr{1};
+//		sum += arr{2};
+//		sum += arr{3};
+		
+		for(int i = 0 ; i < 4; i++) {
+			sum = sum + arr[i];
+		}
+		
+		System.out.println("나이의 합" + sum);
+		System.out.println("평균 나이" + (sum /(double)arr.length));
+	}
+}
+```
+
+### 5.6.4 new 연산자로 배열 생성
+- 값을 목록을 가지고 있지 않지만, 향후 값들을 저장할  배열을 미리 만들고 싶다면 new 연산자로 다음과 같이 배열 객체를 생성시킬 수 있다.
+- new 연산자로 배열을 처음 생성할 경우, 배열은 자동적으로 기본값으로 초기화된다.
+> 타입[] 변수 = new 타입 [길이];
+- ex
+```js
+int[] intArray = new int[5];
+```
+```js
+package day11;
+
+public class Array01 {
+
+	public static void arr(String[] args) {
+		int[]arr = {32, 31, 35, 32, 29, 26};
+		int sum = 0;
+		System.out.println("arr[1]= " + arr[1]);
+		arr[1] = 55;
+		System.out.println("arr.length=" + arr.length);
+
+		for(int i = 0 ; i < 4; i++) {
+			sum = sum + arr[i];
+		}
+		sum = add(arr);
+		System.out.println("나이의 합" + sum);
+		System.out.println("평균 나이" + (sum /(double)arr.length));
+		sum = add(new int[] {334, 234, 7655, 7756, 1}) ; //새로 생성하려면 new 붙여라
+		System.out.println("sum =" + sum);
+	} //main end
+	
+	//배열을 맏아서 합을 구해서 정수를 리턴하는 함수
+	public static int add(int[] ar) {
+		int s = 0 ;
+		for(int i = 0 ; i <  ar.length ; i++) {
+			s = s + ar[1];
+			}
+		return s ;
+		
+	}
+	
+	public static void main(String[] args) {
+		// 정수배열 10개 배열을 생성
+		int[] arr = new int[10] ;
+		int sum = 0 ;
+		// 랜덤한 값을 채우고(50부터 100사이)
+		// 배열에 있는 모든 값을 출력
+		for (int i = 0 ; i < arr.length ; i++ ) {
+			arr[i] = (int)(Math.random()*50) +50;	
+			System.out.print(arr[i] + " ");
+			sum = sum + arr[i] ;  
+		}
+		// 합계 출력
+		// 합계 = 675
+		 System.out.println(sum);
+		{
+		}
+	}
+}
+```
 
