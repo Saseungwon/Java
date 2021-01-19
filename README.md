@@ -1706,6 +1706,7 @@ String name1 = new String (“신용권”)
 ## 📚 5.6 배열 타입
 ### 5.6.1 배열이란
 - 같은 타입의 많은 양의 데이터를 다루는 프로그렘에서는 좀 더 효율적인 방법이 필요한데 이것이 배열이다.
+- 배열의 길이란 배열에 저장할 수 있는 전체 항목 수를 말한다. 코드에서 배열의 길이를 얻으려면 배열 객체의 length 필드를 읽으면 된다. 배열의 length 필드를 읽기 위해서는 배열 변수에 .을 붙이고 length를 적어주면 된다.
 
 ```js
 package day11;
@@ -1824,3 +1825,214 @@ public class Array01 {
 }
 ```
 
+```js
+package day12;
+
+public class Array03 {
+
+	public static void main(String[] args) {
+		// 정수 배열 10개 배열을 생성
+		int[] arr = new int [10];
+		int len = arr.length ;
+		//랜덤한 값을 채우고 (50부터100 사이)
+		for(int i = 0 ; i < len ; i++) {
+			arr[i] = (int)(Math.random()* 50) + 50 ;
+			
+		}
+		//배열에 있는 모든 값을 출력
+		for(int i = 0 ; i < len; i++) {
+			System.out.print(arr[i] + " ") ;
+				}
+	System.out.println("-------------");
+	int maxValue = arr[0]; // 해당 배열의 첫번째값을 초기값으로
+	int minValue = arr[0]; // 최대값, 최소값을 구하시오
+	
+	for(int i = 0 ; i < len ; i ++) {
+		if(maxValue < arr[i]) {
+			 maxValue = arr[i] ;
+		}
+		if(minValue > arr[i]){
+			minValue = arr[i];
+		}  
+	}
+	
+	System.out.println("최대값 : " + maxValue);
+	System.out.println("최소값 : " + minValue);
+	}
+	
+	
+	
+	public static void arr03(String[] args) {
+			// 정수 배열 10개 배열을 생성
+			int[] arr = new int [10];
+			int len = arr.length;
+			//랜덤한 값을 채우고 (50부터100 사이)
+			for(int i = 0 ; i < arr.length ; i++) {
+				arr[i] = (int)(Math.random()* 50) + 50 ;
+				
+			}
+			//배열에 있는 모든 값을 출력
+			for(int i = 0 ; i < arr.length ; i++) {
+				arr[0] = (int)(Math.random()* 50) + 50 ;
+				System.out.println(arr[i] + " ");
+		}
+			int sum = 0;
+			for(int i = 0 ; i < arr.length; i++) {
+				sum = sum + arr[i];
+				
+			}
+			System.out.println("합계 = " + sum);
+			}
+		
+			//합계 출력
+		
+		}
+```
+### Swap
+
+```js
+package day12;
+
+public class Swap01 {
+
+	public static void main(String[] args) {
+		int a = 10 ;
+		int b = 25 ;
+		// a = 25, b = 10으로 swap  하세요
+		
+		
+		int temp;
+		temp = a;  // a값을 temp에 옮김
+		a = b;		// b값을 a에 옮김
+		b = temp ; // temp에 옮겨놨던 a 값을 b에 옮김
+		System.out.println(a);	// 25
+		System.out.println(b);	// 10
+	}
+
+}
+```
+
+## 정렬
+### 1. 선택정렬
+```sql
+package day12;
+
+public class SortSelection01 {
+
+	public static void main(String[] args) {
+		int[] arr = new int[1000];
+		int len = arr.length ;
+
+		for(int i = 0 ; i < len ; i++) {
+			arr[i] = (int)(Math.random()* 100) + 1 ;
+		}
+		//배열에 있는 모든 값을 출력
+		for(int i = 0 ; i < len; i++) {
+			System.out.print(arr[i] + " ") ;
+				}
+		System.out.println("\n------------------------");
+		for(int i = 0 ; i < (len - 1); i++ ) {
+			for(int j = i + 1; j < len; j++) {
+				//System.out.println("i = " + i + "j = " + j );
+				if(arr[i] > arr[j]) {
+					int temp = arr[1] ;
+					arr[i] = arr[j] ;
+					arr[j] = temp ;
+				
+				}
+				
+			}
+			System.out.println((i +1) + "Pass Comlete");
+		}
+		System.out.println("-------------------");
+		
+
+	}
+
+}
+```
+### 2. 버블정렬
+```js
+package day12;
+
+public class BubbleSort {
+
+	public static void main(String[] args) {
+		int[] arr = new int[10];
+		int len = arr.length ;
+
+		for(int i = 0 ; i < len ; i++) {
+			arr[i] = (int)(Math.random()* 100) + 1 ;
+		}
+		//배열에 있는 모든 값을 출력
+		for(int i = 0 ; i < len; i++) {			
+			for (int j = 0; j < len -1 -i  ; j++) {
+				System.out.print(j+ arr[j]);
+				System.out.println((j+1) + arr[j+1]);
+				if(arr[j] > arr[j+1]) {
+					int temp = arr[j];
+					arr[j] = arr[j+1];
+					arr[j+1] = temp ;
+					System.out.print(j+ arr[j]);
+					System.out.println((j+1) + arr[j+1]);
+				}
+			}
+			System.out.println((i + 1) + "Pass Comlete");		
+		}
+
+		for(int i=0; i <len ; i++) {
+			System.out.print(arr[i] + " ");
+		}
+	
+	}
+}
+
+```
+```js
+package day12;
+
+public class BreakSort {
+
+	public static void main(String[] args) {
+		int[] arr = new int[10];
+		int len = arr.length ;
+
+		for(int i = 0 ; i < len ; i++) {
+			arr[i] = (int)(Math.random()* 100) + 1 ;
+		}
+		//배열에 있는 모든 값을 출력
+		for(int i = 0 ; i < len; i++) {			
+			boolean isSwap = false;
+			for (int j = 0; j < len -1 -i  ; j++) {
+				
+				System.out.print(j+ arr[j]);
+				System.out.println((j+1) + arr[j+1]);
+				
+				
+				if(arr[j] > arr[j+1]) {
+					int temp = arr[j];
+					arr[j] = arr[j+1];
+					arr[j+1] = temp ;
+					isSwap = true;
+					
+					System.out.print(j+ arr[j]);
+					System.out.println((j+1) + arr[j+1]);
+					
+				}
+			}
+			if(isSwap == false) {
+				break ;
+			}
+			System.out.println((i + 1) + "Pass Comlete");		
+		
+		}
+
+		for(int i=0; i <len ; i++) {
+			System.out.print(arr[i] + " ");
+		}
+	
+	}
+}
+
+
+```
