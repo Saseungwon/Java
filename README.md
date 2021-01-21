@@ -2036,3 +2036,83 @@ public class BreakSort {
 
 
 ```
+```js
+public class ar212121 {
+	/*
+	 * 배열에 두 값을 교환한다.
+	 * @param ar int[]형 원본배열
+	 * @param x 배열의 index 번호
+	 * @param y 배열의 index 번호
+	 */
+	public static void main(String[] args) {
+		// 임의 배열 100개 (1 ~ 100)
+		int[] arr = new int[1000];
+		int len = arr.length;
+		int temp = 0;
+		
+		for(int i = 0 ; i < len ; i++) {
+			arr[i] = (int)(Math.random() * 100) + 1;	// 0.0 <= x < 1.0
+		}
+		for(int i = 0 ; i < len ; i++) {
+			System.out.print(arr[i] + " ");
+		}
+		
+//		System.arraycopy(src, srcPos, dest, destPos, length);
+//		int[] arr = Arrays.copyOf(original, newLength);
+		int[] arr1 = arr.clone();	// 현재상황을 복제값으로 가져오는것, 원본값 유지
+		int[] arr2 = arr.clone();
+		
+		//Bubble 이 selection 보다 정렬 빠름
+		selectionSort(arr1);		// reference 원본값 유지
+		for(int i = 0 ; i < len ; i++) {
+			System.out.print(arr1[i] + " ");
+		}
+		System.out.println();
+		System.out.println("--------------------------");
+		
+		bubbleSort(arr2);
+		for(int i = 0 ; i < len ; i++) {
+			System.out.print(arr2[i] + " ");
+		}
+	}
+	public static void swap(int[] ar, int x, int y) {
+		int temp = ar[x];
+		ar[x] = ar[y];
+		ar[y] = temp;
+	}
+	public static void selectionSort(int[] arr) {
+		long startTime = System.currentTimeMillis();
+		boolean isSwap = false;
+		int len = arr.length;
+		for(int i = 0 ; i < len ; i++) {
+			isSwap = false;
+			for(int j = 0 ; j < len - 1 - i ; j++) {
+				
+				if(arr[j] > arr[j+1]) {
+					swap(arr, j, j+1);	
+					isSwap = true;
+				}
+			}
+			if(!isSwap) {
+				break;
+			}
+		}
+		System.out.println("\nselectionSort 소요시간 : " + (System.currentTimeMillis() - startTime));
+	}
+	
+	public static void bubbleSort(int[] arr) {
+		long startTime = System.currentTimeMillis();
+		int len = arr.length;
+		for(int i = 0 ; i < (len - 1) ; i++) {
+			for(int j = i + 1 ; j < len ; j++) {
+				if(arr[i] > arr[j]) {
+					swap(arr, i, j);	
+				}				
+			}			
+		}
+		System.out.println("\nbubbleSort 소요시간 : " + (System.currentTimeMillis() - startTime));
+	}
+}
+
+```
+
