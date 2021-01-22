@@ -2116,3 +2116,370 @@ public class ar212121 {
 
 ```
 
+### 5.6.5 커맨드라인 입력
+```js
+package day14;
+
+public class Array01 {
+	public static void main(String[] args) {
+		if(args.length !=2) {
+			System.out.println("=======================");
+			System.out.println("  프로그램 사용법");
+	       System.out.println("	example : java day14.Array01 10 100");
+	       System.out.println("                 10부터 100까지의 합을 출력");
+	       System.out.println("  java day14.array01 10 100");
+			System.out.println("=======================");
+			//종료
+			System.exit(0); //정상적으로 강제 종료 // Runtime.getRuntime().exit(0);과 동일	
+		}
+		int num1 = Integer.parseInt(args[0]);	//값을 받는 것
+		int num2 = Integer.parseInt(args[1]);
+		int sum = 0 ;
+		
+		for(int i = num1 ; i <= num2 ; i++ ) {
+			sum = sum + i;
+		}
+		System.out.println(sum);
+		//5부터 99까지의 합은 4940
+		
+		System.out.println(num1 + "부터" + num2 + "까지의 합은 " +sum);
+		//5부터 99까지의 합은 4940
+		//run configurations 에서도 실행 가능
+		
+		
+	}
+
+}
+```
+### 5.6.6 향상된 for 문
+```js
+package day14;
+
+public class ForEach01 {
+
+	public static void main(String[] args) {
+		//원래 for문
+		int[] arr = {34, 23 , 5, 90, 1};
+		for(int i = 0; i < arr.length; i++) {
+			System.out.println((i+1) + "번째 =" + arr[i]);
+		}
+		System.out.println("\n-----------------");
+		
+		//향상된 for문
+		int i = 1;
+		for(int x : arr) {
+			System.out.println(i  + "번째 = " + x );
+			i++;
+		}
+	}
+}
+```
+
+- 로또
+```js
+package day14;
+
+import java.util.Scanner;
+
+public class Lott03 {
+
+	public static void main(String[] args) {
+		// 사용자로부터 숫자 6개를 입력받아서(입력한 숫자는 모두 다르다고 가정함)
+		// 두배열(lotto, user)을 비교해 매칭된 건수 저장
+		// 로또번호 : 17 34 41 4 32 40
+		// 입력번호 : 25 41 4 31 27 17
+		// 3개 미만이면 다음 기회에
+		// 3개면 "당첨되었습니다. 5,000원"
+		// 4개면 "당첨되었습니다. 50,000원"
+		// 5개면 "당첨되었습니다. 총 매출금액의 12.5%를 지급합니다."
+		// 6개면 "당첨되었습니다. 총 매출금액의 75%를 지급합니다."
+
+		System.out.print("로또번호 : ");
+		int[] lotto = new int[6];
+		int len = lotto.length;
+
+		for (int i = 0; i < len; i++) {
+			lotto[i] = (int) ((Math.random() * 10) + 1);
+			for (int j = 0; j < i; j++) {
+				if (lotto[i] == lotto[j]) {
+					i--;
+					break;
+				}
+			}
+		}
+		for (int i = 0; i < len; i++) {
+			System.out.print(lotto[i] + " ");
+		}
+
+		System.out.println();
+		System.out.print("입력번호 : ");
+
+		int[] user = new int[6];
+		int us = user.length;
+		int k = 0 ;
+		Scanner scanner = new Scanner(System.in);
+		System.out.println("번호 6개를 입력하세요");
+		for(k = 0 ; k < len ; k++) {
+			user[k] = scanner.nextInt();
+		}
+		
+		System.out.print("입력번호 : ");
+		
+		for(k = 0 ; k < len ; k++) {
+			System.out.print(user[k]+ " ");
+		}
+		scanner.close();
+		
+		int count = 0;
+		for (int i = 0; i < len; i++) {
+			for (int j = 0; j < us; j++) {
+				if (lotto[i] == user[j]) {
+					count++;
+					break;
+				}
+			}
+		}
+		
+		System.out.println("");
+		if (count < 3) {
+			System.out.println("낙첨되었습니다");
+
+		} else if (count == 3) {
+			System.out.println("당첨되었습니다. 5,000원");
+		} else if (count == 4) {
+			System.out.println("당첨되었습니다. 50,000원");
+		} else if (count == 5) {
+			System.out.println("당첨되었습니다. 총 매출금액의 12.5%를 지급합니다.");
+		} else {
+			System.out.println("당첨되었습니다. 총 매출금액의 75%를 지급합니다.");
+		}
+		System.out.println(count);
+	}
+}
+```
+### 5.6.7 배열
+- 성적표 만들기
+```js
+package day14;
+
+ import java.util.Scanner;
+
+public class MultiArray {
+
+	public static void main(String[] args) {
+		int cnt = 2; //학생수
+		String[] names = new String[cnt] ;
+		int[][] scores = new int[cnt][4];
+		double[] avg = new double[cnt] ;
+		Scanner sc = new Scanner(System.in);
+		for(int i = 0 ; i < names.length; i++) {
+			System.out.print("학생이름 : " );
+			names[i] = sc.nextLine();
+			System.out.print("국어 점수 : ");
+			scores[i][0] = sc.nextInt();	
+			System.out.print("영어 점수 : ");
+			scores[i][1] = sc.nextInt();
+			System.out.print("수학 점수 : ");
+			scores[i][2] = sc.nextInt();
+			sc.nextLine() ;
+			//총점 및 평균
+			scores[i][3] = scores[i][0] + scores[i][1] +scores[i][2] ;
+			avg[i] = scores[i][3] / 3.0 ;
+		}
+		//학생 점수 출력
+		System.out.println("=====================");
+		System.out.println("       성적표           ");
+		System.out.println("=====================");
+		System.out.println("성명\t국어\t영어\t수학\t총점\t평균\t");
+		for(int i = 0; i < cnt ; i++) {
+			System.out.print(names[i] + "\t");
+			System.out.print(scores[i][0] + "\t");
+			System.out.print(scores[i][1] + "\t");
+			System.out.print(scores[i][2] + "\t");
+			System.out.print(scores[i][3] + "\t");
+			System.out.print(avg[i] + "\n");
+		}
+		sc.close();
+		
+	}
+
+//	학생이름 : 사승원
+//	국어 점수 : 88
+//	영어 점수 : 88
+//	수학 점수 : 88
+//	학생이름 : 사승원
+//	국어 점수 : 77
+//	영어 점수 : 77
+//	수학 점수 : 77
+//	=====================
+//	       성적표           
+//	=====================
+//	성명	국어	영어	수학	총점	평균	
+//	사승원	88	88	88	264	88.0
+//	사승원	77	77	77	231	77.0
+
+```
+
+- 성적표 만들기2(for)
+```js
+package day14;
+
+ import java.util.Scanner;
+
+public class MultiArray {
+
+	public static void main(String[] args) {
+	// String[]name = new String[cnt];
+		String[] names = {"밀키스", "말자", "순자"};
+		String[] subjects = {"국어", "영어", "수학"};
+		
+		int sum = 0;
+		int cnt = names.length; //학생수
+		int[][] scores = new int[cnt][4];
+		double[] avg = new double[cnt] ;
+		Scanner sc = new Scanner(System.in);
+		for(int i = 0 ; i < names.length; i++) {
+			//밀키스 님의 성적을 등록해주세요
+			System.out.println(names[i] + "님의 성적을 등록해주세요");
+			//scores[i][0] = sc.nextInt();
+			//교과목을 위 subjects 배열을 사용해서 입력
+			for(int j = 0; j < subjects.length ; j++) {
+				System.out.println(subjects[j] + "점수 : ");
+				scores[i][j] = sc.nextInt();
+				//sum = scores[0][4];
+				}
+			//각 과목의 점수를 입력 받으면 그 사람의 총점에 누적
+			scores[i][3] = scores[i][0] + scores[i][1] +scores[i][2] ;
+			avg[i] = scores[i][3] / 3.0 ;
+		}
+		//학생 점수 출력
+		System.out.println("========================================");
+		System.out.println("     		  성적표			       ");
+		System.out.println("========================================");
+		System.out.println("성명\t국어\t영어\t수학\t총점\t평균\t");
+		for(int i = 0; i < cnt ; i++) {
+			System.out.print(names[i] + "\t");
+			// 각 점수 및 총점은 score 배열 사용해서 출력
+			for(int j = 0 ; j < subjects.length ; j++ ) {
+			System.out.print(scores[i][j] + "\t");
+		}
+			System.out.print(scores[i][3] + "\t");
+			System.out.println(avg[i]);
+		}
+		sc.close();
+		
+	}
+}
+
+//	밀키스님의 성적을 등록해주세요
+//	국어점수 :
+//	90
+//	영어점수 :
+//	90
+//	수학점수 :
+//	90
+//	말자님의 성적을 등록해주세요
+//	국어점수 :
+//	80
+//	영어점수 :
+//	80
+//	수학점수 :
+//	80
+//	순자님의 성적을 등록해주세요
+//	국어점수 :
+//	70
+//	영어점수 :
+//	70
+//	수학점수 :
+//	70
+//	========================================
+//	     		  성적표			       
+//	========================================
+//	성명	국어	영어	수학	총점	평균	
+//	밀키스	90	90	90	270	90.0
+//	말자	80	80	80	240	80.0
+//	순자	70	70	70	210	70.0
+```
+
+
+- 성적표 만들기3
+```js
+package day14;
+
+ import java.util.Scanner;
+
+public class MultiArray {
+
+	public static void main(String[] args) {
+	// String[]name = new String[cnt];
+		String[] names = {"밀키스", "말자", "순자"};
+		String[] subjects = {"국어", "영어", "수학"};
+		
+		int sum = 0;
+		int cnt = names.length; //학생수
+		int[][] scores = new int[cnt][subjects.length + 1]; //int[여기는 cnt(3)][여기는4(국어,영어,수학+총점이라서 4)]
+		double[] avg = new double[cnt] ;  // 세 명의 평균이 다 필요해서
+		Scanner sc = new Scanner(System.in);
+		for(int i = 0 ; i < names.length; i++) {
+			//밀키스 님의 성적을 등록해주세요
+			System.out.println(names[i] + "님의 성적을 등록해주세요");
+			//scores[i][0] = sc.nextInt();
+			//교과목을 위 subjects 배열을 사용해서 입력
+			for(int j = 0; j < subjects.length ; j++) {
+				System.out.println(subjects[j] + "점수 : ");
+				scores[i][j] = sc.nextInt();
+				scores[i][subjects.length] = scores[i][subjects.length] + scores[i][j] ;
+				//sum = scores[0][4];
+				}
+			//각 과목의 점수를 입력 받으면 그 사람의 총점에 누적	
+			avg[i] = scores[i][3] / 3.0 ;
+		}
+		//학생 점수 출력
+		System.out.println("========================================");
+		System.out.println("     		  성적표			       ");
+		System.out.println("========================================");
+		System.out.println("성명\t국어\t영어\t수학\t총점\t평균\t");
+		for(int i = 0; i < cnt ; i++) {
+			System.out.print(names[i] + "\t");
+			// 각 점수 및 총점은 score 배열 사용해서 출력
+			for(int j = 0 ; j < scores[i].length ; j++ ) { // scores[i].length : 뒤에 배열 가져오기
+			System.out.print(scores[i][j] + "\t");
+		}
+			System.out.println(avg[i]);
+		}
+		sc.close();
+		
+	}
+}
+
+//	밀키스님의 성적을 등록해주세요
+//	국어점수 :
+//	90
+//	영어점수 :
+//	90
+//	수학점수 :
+//	90
+//	말자님의 성적을 등록해주세요
+//	국어점수 :
+//	80
+//	영어점수 :
+//	80
+//	수학점수 :
+//	80
+//	순자님의 성적을 등록해주세요
+//	국어점수 :
+//	70
+//	영어점수 :
+//	70
+//	수학점수 :
+//	70
+//	========================================
+//	     		  성적표			       
+//	========================================
+//	성명	국어	영어	수학	총점	평균	
+//	밀키스	90	90	90	270	90.0
+//	말자	80	80	80	240	80.0
+//	순자	70	70	70	210	70.0
+
+```
+
