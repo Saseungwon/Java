@@ -2483,3 +2483,350 @@ public class MultiArray {
 
 ```
 
+
+
+### 상수 선언
+```js
+package day15;
+
+public class Enum02 {
+	//상수 정적(static final) 선언 대문자, 언더바 (관례)
+	//상수를 사용해 알아보기 쉽게 바꿀 수 있음
+	public static final int CALC_ADD = 1;
+	public static final int CALC_SUBTRACTION = 2;
+	public static final int CALC_MULTIPLE = 3;
+	public static final int CALC_DEVIDE = 4;
+	
+	
+	public static void main(String[] args) {
+		System.out.println("CALC_ADD = " + CALC_ADD);
+		// 상수는 값을 할당 못함 //CALC_ADD = 1
+		
+				int a = 10;
+				int b = 3;
+				System.out.println("calc(a, b, 1)= " + calc(a, b, CALC_ADD));	//calc(a, b, 1)= 13
+				System.out.println("calc(a, b, 1)= " + calc(a, b, CALC_SUBTRACTION));	//calc(a, b, 1)= 7
+				System.out.println("calc(a, b, 1)= " + calc(a, b, CALC_MULTIPLE));	//calc(a, b, 1)= 30
+				System.out.println("calc(a, b, 1)= " + calc(a, b, CALC_DEVIDE));	//calc(a, b, 1)= 3
+				System.out.println("---------------------");
+				System.out.println();
+
+			}
+
+			// 두 숫자 하고 계산방식에 연산 결과 리턴함수
+			public static int calc(int x, int y, int what) {
+				int res = 0;
+				if(what == CALC_ADD) {
+					res = x + y;
+				}else if (what == CALC_SUBTRACTION) {
+					res = x - y ;
+				}else if (what == 3 ) { //상수로 해도됨 CALC_MULTIPLE
+					res = x * y ;
+				}else {
+					res = x / y;
+				}
+				return res;
+			}
+	}
+
+```
+
+
+```js
+package day15;
+
+
+		public class Calc00 {
+			//상수 정적(static final) 선언 대문자, 언더바 (관례)
+			//상수를 사용해 알아보기 쉽게 바꿀 수 있음
+			public static final int CALC_ADD = 1;
+			public static final int CALC_SUBTRACTION = 2;
+			public static final int CALC_MULTIPLE = 3;
+			public static final int CALC_DEVIDE = 4;
+			
+			
+			public static void main(String[] args) {
+						int a = 10;
+						int b = 3;
+						Calc c = Calc.ADD ;
+						System.out.println(calc(a,b,c));
+						c= Calc.SUBTRACTION;
+						
+						
+						System.out.println("calc(a, b, ADD)= " + calc(a, b, Calc.ADD));	//calc(a, b, ADD)= 13
+						System.out.println("calc(a, b, SUBTRACTION)= " + calc(a, b, Calc.SUBTRACTION));	//calc(a, b, SUBTRACTION)= 7
+						System.out.println("calc(a, b, MULTIPLE)= " + calc(a, b, Calc.MULTIPLE));	//calc(a, b, MULTIPLE)= 30
+						System.out.println("calc(a, b, DEVIDE)= " + calc(a, b, Calc.DEVIDE));	//calc(a, b, DEVIDE)= 3
+						System.out.println("---------------------");
+
+					}
+
+					// 두 숫자 하고 계산방식에 연산 결과 리턴함수
+			public static int calc(int x, int y, Calc what) {
+				int res = 0;
+				if(what == Calc.ADD) {
+					res = x + y;
+				}else if (what == Calc.SUBTRACTION) {
+					res = x - y ;
+				}else if (what == Calc.MULTIPLE ) { //상수로 해도됨 CALC_MULTIPLE
+					res = x * y ;
+				}else {
+					res = x / y;
+				}
+				return res;
+					}
+	}
+```
+```js
+package day15;
+
+public enum Calc {//class로 생성해도 나중에 enum으로 바꿔주면 됨
+	ADD,
+	SUBTRACTION,
+	MULTIPLE,
+	DEVIDE
+}
+```
+- enum 
+```js
+package day15;
+
+public class MyLove {
+	//이곳에 문자열 상수 LOVE_NAME에 "말자"를 설정해서 변경해주세요
+	//프로그램에서 반복적으로 사용되며, 변하지 않는 값을 지정
+	//차후 변경이 발생하더라도 쉽게 변경 가능하려면 상수로 지정하자
+	//대표적인 상수 = 파이 : "3.141592....
+	public static final String LOVE_NAME = "말자";	//때에 따라 ""사이 값을 바꿀 수 있음
+	public static final double PI = 3.141592 ;
+	//상수는 고유한 값을 가질 수 있어요
+	//하지만 enum은 안돼요...
+	
+	public static void main(String[] args) {
+		//A 클라이언트에게 납품...(말자)
+		Calc c = Calc.MULTIPLE;
+		System.out.println("c = " + c);
+		System.out.println("name() = " + c.name());
+		System.out.println("ordinal() = " + c.ordinal());
+		System.out.println("compareTo() = " + c.compareTo(Calc.ADD));
+		Calc[] ces = c.values();
+		for(Calc x : ces) {
+			System.out.println(x);
+		}
+		
+		
+		System.out.println("내 첫사랑은 " + LOVE_NAME +"였어요");
+		//B 클라이언트는 "순자"
+		System.out.println(LOVE_NAME);
+		
+	    //"사랑해요 말자" 를 3번 출력
+		lovePrint(3);
+	
+		System.out.println("-------------");
+		//"사랑해요 말자" 를 5번 출력
+		lovePrint(5);
+	}
+	
+	public static void lovePrint(int cnt) {
+		for(int i = 0; i < cnt; i++) {
+			System.out.println("사랑해요 말자");
+		}
+	}
+}
+```
+
+# 🐋 Chapter 6 클래스 
+## 📚 6.1 Class의 용도
+- 데이터 저장
+- 기능(함수, 조작)
+
+```js
+
+package day15;
+
+import java.util.Calendar;
+
+public class Calendar01 {
+
+	public static void main(String[] args) {
+		//Calendar 클래스
+		//LocalDateTime (JDK 8)
+		//현재 시간으로 설정
+		Calendar cal = Calendar.getInstance();
+		System.out.println(cal.get(Calendar.YEAR)); // 1 = YEAR  2021
+		System.out.println(cal.get(1)); // 1 = YEAR	2021
+		System.out.println(cal.get(Calendar.MONTH) + 1); // 2 = MONTH
+		System.out.println(cal.get(Calendar.DAY_OF_MONTH));
+		System.out.println(cal.get(Calendar.DAY_OF_WEEK)); //1:일 ~ 토(7)  오늘 월요일 : 2
+		System.out.println(cal.get(Calendar.DAY_OF_YEAR)); 	
+		
+		//4월로 변경
+		cal.set(Calendar.MONTH, 3); //4월을 하려면 3으로 입력
+		System.out.println(cal.get(Calendar.DAY_OF_MONTH));
+		System.out.println(cal.get(Calendar.DAY_OF_YEAR));
+		System.out.println(cal.get(Calendar.DAY_OF_MONTH));
+	}
+}
+
+```
+### java.time
+
+- java.time 패키지의 핵심 클래스
+- 날짜와 시간을 하나로 표현하는 Calendar클래스와 달리,
+- java.time 패키지에서는 날짜와 시간을 별도의 클래스로 분리해 놓았다.
+- 시간을 표현할 때는 LocalTime 클래스를 사용하고,
+- 날짜를 표현할 때는 LocalDate클래스를 사용한다.
+- 그리고 날짜와 시간이 모두 필요할 때는 LocalDateTime클래스를 사용하면 된다.
+- 만약 여기에 Time-Zone까지 다뤄야 한다면, ZonedDateTime클래스를 사용한다.
+```js
+package day15;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.Date ;
+import java.util.TimeZone;
+
+public class LocalDate01 {
+
+	public static void main(String[] args) {
+		//LocalDate
+		LocalDate date = LocalDate.now();
+		System.out.println(date);
+		date = LocalDate.of(2021, 4, 24);
+		System.out.println(date);
+		System.out.println(date.getYear() + "/" + date.getMonth() + "/" + date.getDayOfYear());
+		
+		// 로컬 컴퓨터의 현재 시간 정보를 저장한 LocalDate 객체를 리턴.
+		LocalTime currentTime = LocalTime.now();   
+
+		// 파라미터로 주어진 시간 정보를 저장한 LocalTime 객체를 리턴.
+		LocalTime targetTime = LocalTime.of(12,33,35,22);
+		// 끝에 4번째 매개변수는 nanoSecond 인데 선택 값이다 굳이 쓰지 않아도 된다.
+		// 결과 : 12:32:33.0000022
+		
+		// 로컬 컴퓨터의 현재 날짜와 시간 정보
+		LocalDateTime currentDateTime = LocalDateTime.now();    
+		// 결과 : 2019-11-12T16:34:30.388
+
+		LocalDateTime targetDateTime = LocalDateTime.of(2019, 11, 12, 12, 32,22,3333);
+		// 여기도 second,nanoSecond 매개변수는 필수가 아닌 선택입니다.
+		// 결과 : 2019-11-12T12:32:22.000003333	
+	}
+}
+```
+
+```js
+
+package day15;
+
+import java.util.Scanner;
+
+public class StudentManager {
+	//학생 3명
+	private Student[] students = new Student[3] ;
+	private int curIdx = 0;
+	
+	//학생 추가 메서드
+	//void method() : 파라미터 X , 반환 X
+	//void method(파라미터....) : 파라미터 O , 반환 X
+	//type method() : 파라미터 X , 반환 O
+	//type method(파라미터....) : 파라미터 O , 반환 O
+	public void addStudent() {
+		// curidx > 2 이면 안돼요.
+		if(curIdx > 2 ) {
+			System.out.println("학생이 이미 꽉 차있어요...");
+			return ; //현재의 메서드를 빠져나간다. return 타입에 따라서 값 리턴
+		}
+		Scanner sc = new Scanner(System.in);
+		//학생 객체 생성
+		
+		Student stu = new Student ();
+		System.out.println("stu.hashcode = " + stu.hashCode() );
+		System.out.print("학생 이름 : " );
+		stu.name = sc.nextLine();
+		System.out.print("국어 점수 : " );
+		stu.kor = Integer.parseInt(sc.nextLine());
+		System.out.print("수학 점수 : " );
+		stu.mat = Integer.parseInt(sc.nextLine());
+		System.out.print("영어 점수 : " );
+		stu.eng = Integer.parseInt(sc.nextLine());
+		
+		stu.total = stu.kor + stu.mat + stu.eng ;
+		stu.avg = (double)stu.total / 3;
+		students[curIdx] = stu ;
+		curIdx++;
+		//sc.close();
+	}
+
+	//등수처리 메서드
+	public void rankProc() {
+		//내 점수가 낮다면 rank 를 ++
+		
+	}
+	
+	//학생점수 출력
+
+	public void viewStudent() {
+		System.out.println("=====================");
+		System.out.println("       성적표           ");
+		System.out.println("=====================");
+		System.out.println("성명\t국어\t영어\t수학\t총점\t평균\t등수");
+		for(int i = 0; i < students.length ; i++) {
+			Student vo = students[i];
+			System.out.print(vo.name + "\t");
+			System.out.print(vo.kor + "\t");
+			System.out.print(vo.mat + "\t");
+			System.out.print(vo.eng + "\t");
+			System.out.print(vo.total + "\t");
+			System.out.print(vo.avg + "\t");
+			System.out.print(vo.rank + "\n");
+		}
+	}
+	
+}
+
+```
+```js
+package day15;
+
+public class Student {
+	
+	//클래스는 대문자로(관례)
+	//한글/영어는 상관 없지만 한글로 만드는 경우는 거의 없다.
+	public String name ;
+	public int kor ;
+	public int eng ;
+	public int mat ;
+	public int total ;
+	public double avg ;
+	public int birthYear;
+	
+	//과제
+	public int rank = 1 ;
+```
+
+```js
+
+package day15;
+
+public class StudentTest {
+
+	public static void main(String[] args) {
+		StudentManager sm = new StudentManager();
+		sm.addStudent();
+		System.out.println("1------------------");
+		sm.addStudent();
+		System.out.println("2------------------");
+		sm.addStudent();
+		System.out.println("3------------------");
+		sm.addStudent();
+		System.out.println("------------------");
+		sm.viewStudent();
+		sm.rankProc();
+		sm.viewStudent();
+		}
+}
+
+```
+
+
