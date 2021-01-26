@@ -2714,7 +2714,7 @@ public class LocalDate01 {
 	}
 }
 ```
-
+- 성적표
 ```js
 
 package day15;
@@ -2827,6 +2827,93 @@ public class StudentTest {
 		}
 }
 
+```
+- 학생 이름과 점수 받아서 순위 매기기
+
+```js
+//성적표 출력(순위)
+package day15;
+
+import java.util.Scanner;
+
+public class StudentManager {
+	//학생 3명
+	private Student[] students = new Student[3] ;
+	private int curIdx = 0;
+	
+	//학생 추가 메서드
+	//void method() : 파라미터 X , 반환 X
+	//void method(파라미터....) : 파라미터 O , 반환 X
+	//type method() : 파라미터 X , 반환 O
+	//type method(파라미터....) : 파라미터 O , 반환 O
+	public void addStudent() {
+		// curidx > 2 이면 안돼요.
+		if(curIdx > 2 ) {
+			System.out.println("학생이 이미 꽉 차있어요...");
+			return ; //현재의 메서드를 빠져나간다. return 타입에 따라서 값 리턴
+		}
+		Scanner sc = new Scanner(System.in);
+		//학생 객체 생성
+		
+		Student stu = new Student ();
+		System.out.println("stu.hashcode = " + stu.hashCode() );
+		System.out.print("학생 이름 : " );
+		stu.name = sc.nextLine();
+		System.out.print("국어 점수 : " );
+		stu.kor = Integer.parseInt(sc.nextLine());
+		System.out.print("수학 점수 : " );
+		stu.mat = Integer.parseInt(sc.nextLine());
+		System.out.print("영어 점수 : " );
+		stu.eng = Integer.parseInt(sc.nextLine());
+		
+		stu.total = stu.kor + stu.mat + stu.eng ;
+		stu.avg = (double)stu.total / 3;
+		students[curIdx] = stu ;
+		curIdx++;
+		//sc.close();
+	}
+
+	//등수처리 메서드
+	public void rankProc() {
+		int len = students.length;
+		for(int i = 0 ; i < len -1 ; i++) {
+			for(int j = 0 ; j < len ; j++) {
+				if(students[i].total < students[j].total ) {
+					Student temp = students[i] ;
+					students[i] = students[j];
+					students[j] = temp;
+					
+				}//for j
+			}//for i
+			students[i].rank = (i + 1);
+		}
+		students[len-1].rank = len;
+		}
+		
+		//내 점수가 낮다면 rank 를 ++
+		
+	
+	
+	//학생점수 출력
+
+	public void viewStudent() {
+		System.out.println("=====================");
+		System.out.println("       성적표           ");
+		System.out.println("=====================");
+		System.out.println("성명\t국어\t영어\t수학\t총점\t평균\t등수");
+		for(int i = 0; i < students.length ; i++) {
+			Student vo = students[i];
+			System.out.print(vo.name + "\t");
+			System.out.print(vo.kor + "\t");
+			System.out.print(vo.mat + "\t");
+			System.out.print(vo.eng + "\t");
+			System.out.print(vo.total + "\t");
+			System.out.print(vo.avg + "\t");
+			System.out.print(vo.rank + "\n");
+		}
+	}
+	
+}
 ```
 
 
