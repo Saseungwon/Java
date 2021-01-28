@@ -2635,6 +2635,81 @@ public class MyLove {
 ```
 
 # 🐋 Chapter 6 클래스 
+
+## 6 클래스
+기계어 : 시스템에서 실행가능코드
+어셈블리어 : 기계어와 일대일 대응이 되는 컴퓨터 프로그래밍의 저급 언어
+절차형 언어 : 절차지향 프로그래밍 패러다임의 일종으로서,
+			프로시저 호출의 개념을 바탕으로 하고있는 프로그래밍 패러다임
+			프로시저는 루틴, 하위프로그램, 서브루틴, 메서드, 함수
+			함수기반의 프로그램(C, 코볼, 파스칼, 포트)
+			
+- 객체지향프로그래밍(OOP:Object Oriented Programming)
+  : 하나하나의 독립된 "객체"들의 그룹으로 생각하면 되고,
+  	객체간의 메시지를 주고 받음으로서 쉽게 연결이 가능하다.
+  	
+- 관점지향프로그래밍(AOP : Aspect Oriented Programming)
+  : 객체지향적으로 프로그래밍을 구성하여도 실제 코드는 중복된 코드가 발생합니다.  
+  	- Core concern(핵심관심사) : 실제 해야할 일
+  	- Cross-cutting Concern(횡단관심사) : 부수적인 일, 하지만 꼭 해야하는 일
+ 1000라인의 코드가 있는데 이중 핵심관심사 200라인도 안됨
+ 나머지 800라인은 로깅처리, 트랜잭션관리, 권한체크 등 횡단관심이 존재한다.
+ - 소스의 가독성이 좋아지고 개발자는 핵심로직에 집중하여 양질의 sw가 만들어짐.
+ AOP는 횡단관심사를 별도의 클래스로 분리해서 작성하고, 실제 실행될 때는 (핵심관심사 + 횡단관심사) 합쳐져서 원래의 의도대로 동작하게 하는 프로그램 기법
+  	
+- OOP에서 부족한 부분을 AOP 통해서 보조할 수 있다.
+  
+  	
+  
+ #### 1. 객체지향언어의 특징
+ 	- 캡슐화(Encapsulation)
+ 	  데이터와 코드의 형태를 외부로부터 알 수 없게 하고,
+ 	  데이터의 구조와 역할, 기능을 하나의 캡슐형태로 만드는 방법이다.
+ 	  멤버(필드,메서드)를 숨길것인지, 노출할 것인지를 접근제한자(public, private, default, protected)로 구현
+ 	  
+ 	- 상속(Inheritance)
+ 	  상위 클래스의 모든걸 하위 클래스가 모두 이어 받는 것
+ 	  즉, 부모 클래스가 자식에게 유전자를 물려주듯 부모의 특징을 자식에게 모두 물려준다.
+ 	  상위클래스를 잘 구성하면 여러 하위 클래스 생성시 효율적이고 개발시간 단축
+ 	  상위클래스를 변경하면 모든 하위클래스에 전파되어 유지보수 시간 단축
+ 	  
+ 	- 다형성(Polymorphism)
+ 	  상속과 연관이 있는 개념으로 한 객체가 다른 여러형태(객체)로 재구성 되는 것을 말한다.
+ 	  쉽게 말해 한 부모의 밑에서 태어난 자식이 똑같지 않은 것과 같은 것
+ 	  자바의 오버로드 또는 오버라이드가 다형성의 대표적인 예라고 할 수 있고,
+ 	  이것을 구현하는 걸 오버로딩과 오버라이딩이라고 한다.
+ 	  - Over-loading : 동일한 메서드지만, 상황에 따라 다른 연산을 수행
+ 	  	(예 swp(int, int), swap(Student, Student), swap(int[], int, int))
+ 	  - Over-riding : 부모의 기능을 확장하는 방법 (재정의)
+ 	 - 추상화(Abstraction)
+ 	  - 객체의 공통적인 속성과 기능을 추출하여 정의하는 것을 말한다.
+ 	  	다시 말하면 실제로 존재하는 객체들을 프로그램으로 만들기 위한 공통적인 특성을 파악해
+ 	  	필요없는 특성을 제거하는 과정을 말함
+ 	  	
+ 	  	
+#### 2. 객체지향 언어의 장점
+ 	 1. 재사용성 : 상속을 통해 프로그래밍 시 코드의 재사용을 높일 수 있음
+ 	 2. 생산성 향상 : 잘 설계된 클래스를 만들어서 독립적인 객체를 사용함으로써 개발의 생산성을 향상시킬 수 있음.   	
+ 	 3. 자연적인 모델링 : 우리 일상생활의 모습의 구조가 객체에 자연스럽게 녹아들어 있기 때문에 생각하고 있는 것을 그대로 자연스럽게 구현할 수 있다.
+	 4. 유지보수의 우수성 : 프로그램 수정시 추가, 수정을 하더라도 캡슐화를 통해 주변 영향이 적기때문에 유지보수가 쉬워서 매우 경제적이라할 수 있다. 	
+ 	  	
+ 	  	
+ #### 3. 객체지향 언어의 단점
+ 	 1. 개발속도가 느린점 : 객체가 처리하려는 것에 대한 정확한 이해가 필요하기에 설계단계부터 많은 시간이 소모 된다.
+	 2. 실행속도가 느린점 : 객체지향언어는 대체적으로 실행속도가 느리다.
+	 3. 코딩난이도 상승 : 다중 상속이 지원되는 C++ 같은 경우에 너무 복잡해져 코딩의 난이도가 상승할 수 있다.
+	
+#### 4. 표기법
+- 클래스 : 대문자 시작, StudentManager : 낙타식 표기법
+- 메서드, 필드 : 소문자 시작, addStudent : 낙타식 표기법
+- 상수 : 문자 : CALC_DEVIDE : 헝가리언 표기법
+- (memName (낙타식), str_mem_name(헝가리언))
+									
+클래스 파일에 여러 클래스 선언 가능
+소스파일과 동일한 클래스에만 public 사용 가능
+단, public 사용 안 됨
+관례적으로 한 파일에 한 클래스만 정의 하자 	
+
 ## 📚 6.1 Class의 용도
 - 데이터 저장
 - 기능(함수, 조작)
@@ -2915,5 +2990,136 @@ public class StudentManager {
 	
 }
 ```
+
+
+	
+### 6.7 생성자
+생성자는 new 연산자와 같이 사용되어 클래스로부터 객체를 생성할 때 호출되어 객체의 초기화를 담당한다. 객체 초기화란 필드를 초기화하거나, 메소드를 호출해서 객체를 사용할 준비를 하는 것을 말한다. 생성자를 실행시키지 않고는 클래스로부터 객체를 만들 수 없다.
+
+#### 6.7.1 기본 생성자
+클래스가 public class로 선언되면 기본 생성자에서도 public이 붙지만, 클래스가 public 없이 class로만 선언되면 기본 생성자에도 public이 붙지 않는다.
+그렇기 때문에 클래스에 생성자를 선언하지 않아도 다음과 같이 new 연산자 뒤에 기본 생성자를 호출해서 객체를 생성시킬 수 있다.
+그러나 클래스에 명시적으로 선언한 생성자가 한 개라도 있으면, 컴파일러는 기본 생성자를 추가하지 않는다.
+
+#### 6.7.2 생성자 선언
+생성자는 메소드와 비슷한 모양이지만, 리턴 타입이 없고 클래스 이름과 동일하다.
+
+#### 6.7.3 필드 초기화
+매개 변수의 이름이 너무 짧으면 코드의 가독성이 좋지 않기 때문에 가능하면 초기화시킬 필드 이름과 비슷하거나 동일한 이름을 사용할 것을 권한다.관례적으로 필드와 동일한 이름을 갖는 매개 변수를 사용한다. 이 경우 필드와 매개 변수 이름이 동일하기 때문에 생성자 내부에서 해당 필드에 접근할 수 없다. 왜냐하면 동일한 이름의 매개 변수가 사용 우선순위가 높기 때문이다. 해결 방법은 필드 앞에 this 를 붙이면 된다.
+
+
+
+
+
+```js
+package day17;
+
+import day15.Student;
+
+public class Member {
+
+
+		//이름, 아이디, 마일리지, Student
+		String memId;
+		String memName;
+		int memMileage;
+		Student student;
+		
+	// 생성자 명시적으로 존재하지 않으면 컴파일러가 기본 생성자를 생성합니다.
+	// public Member(){}
+	// 만약 하나라도 생성자가 있다면, 기본 생성자는 생성되지 않아요. 필요하다면 직접 구현
+		
+		Member(String memId, String memName, int memMileage) {
+			this(memId, memName, memMileage, null);
+			
+			
+		}
+		//public Member(String a, String a) {} 매개변수의 타입과 개수 그리고 선언된 순서가 같을 경우 매개 변수 이름만 바꾸는 것은 생성자 오버로딩이라고 볼 수 없다.(타입이 다르면 가능)
+													// 생성자 오버로딩이란 매개 변수를 달리하는 생성자를 여러 개 선언하는 것을 말한다.
+		   Member (String memId, String memName, int memMileage, Student student ) {
+		
+			// memId = id; 변수를 검색할 때 지역(매개)변수가 우선순위가 높다.
+			this.memId = memId ; // 객체 자신을 뜻하는 this를 사용해야 한다.
+			this.memName = memName ;
+			this.memMileage = memMileage ;
+			student = new Student() ;
+			student.name = memName ;
+			
+		
+
+	//	Member(String memId, String memName, int memMileage){
+			
+			this.memId = memId;
+			this.memName = memName ;
+			this.memMileage = memMileage ;
+			this.student = student ;
+			
+		}
+}
+
+```
+
+```js
+package day17;
+
+import day15.Student;
+
+public class MemberTest {
+
+	public static void main(String[] args) {
+		int[] arr = {12, 34, 34, 45, 67, 99};
+		display(2);
+		display(2, 34);
+		display(2, 34, 56);
+		int r = display(2, 34, 56);
+		System.out.println("r = " + r);
+		display(arr);
+	}
+	public static int display(int...a) { //void : 리턴할 게 없다. //int로 리턴하겠다. new int[3] ={2, 34, 56}
+		int s = 0;
+		//내부적으로 배열입니다.
+		for(int i = 0 ; i < a.length ; i++ ) {
+			System.out.printf("%3d" , a[i]);
+			s = s + a[i];
+		}
+		
+		System.out.println();
+		return s;	//return하려면 void X
+		
+//		  2
+//		  2 34
+//		  2 34 56
+//		 12 34 34 45 67 99
+	}
+	
+//	public static void displayArray(int[] a) {
+//		for (int i = 0 ; i < a.length ; i++ ) {
+//			System.out.printf("%3d, a[i]");
+//		}
+//		
+//	}
+	
+	public static void main2(String[] args) {
+		Member m1 = new Member("b001", "이쁜이",23); //Member class에서 생성자를 가져온다.
+		//Member m2 = new Member();
+		
+		System.out.println(m1.memId);
+		System.out.println(m1.memName);
+		System.out.println(m1.memMileage);
+		System.out.println(m1.student);
+		m1.memId = "a001" ;
+		m1.memName = "김은대";
+		m1.student = new Student() ;
+		//System.out.println(a); // 일반변수는 초기화가 꼭 필요
+		System.out.println(m1.memId);
+		System.out.println(m1.memName);
+		System.out.println(m1.memMileage);
+		System.out.println(m1.student);
+	}
+
+}
+
+```
+
 
 
