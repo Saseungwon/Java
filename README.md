@@ -3120,6 +3120,162 @@ public class MemberTest {
 }
 
 ```
+- 정적 멤버(필드, 메서드)는 클래스 로딩시 메서드 영역에 바로 생성된다.
+- 그래서 객체 생성 없이 바로 사용 가능하다.
+
+- 정적 멤버(필드, 메서드)를 객체에서 접근가능하지만 오해의 소지가 있으므로 클래스로 접근하는 것을 권장합니다.
+```sql
+Student
+StudentManager
+	+ rankProc(Student...) : 랭크 설정
+	+ viewStudent(Student...) : 학생들의 정보를 출력
+```
+- 위 rankProc, vieStudent 는 StudentManager 객체의 필드를 사용하지 않고 단순한 기능만 한다.
+- 정적 메서드로 구성해서 작업
+
+- 정적메서드는 객체 생성 없이 바로 사용 가능한데..어떤 사용자(개발자)가 StudentManager를 생성해서 사용하는 일 발생
+- 객체를 한 개만 생성해서 사용해도 되는데 매번 객체를 생성하면 메모리낭비가 생긴다.
+- 그래서 여러 방법이 생겨났는데 그중 가장 효율적인 방법이 나타났다.(best practice)
+
+- 싱글턴 패턴 : 객체를 하나만 생성 하도록 하며, 생성된 객체를 어디에서든지 참조할 수 있도록 하는 패턴 ex) new xxx() 불가능하게 막음
+  1. 생성자를 Private로 만들어서 막음
+  2. 정적 클래스 변수 생성
+  3. 정적변수를 리턴하는 메서드 생성
+			
+- 객체 생성은 클래스 내부에서 한다.
+- 디자인 패턴 : 프로그램 개발 시에 자주 부딪히는 애로 상황에 대한 일반적이고 재사용 가능한 추상화된 해결책이다.
+이런 해결책들은 일반적인 문제를 해결하기 위한 Best practice를 어느 정도 공식화하고 정의했다고도 할 수 있다.
+- GoF 디자인 패턴(Gangs of Four)
+
+- Member
+```js
+package day19;
+
+
+public class Member {
+		//이름, 아이디, 마일리지
+		//final 필드의 초기값은 선언할 때, 또는 생성자에서
+	    //final 필드가 초기화가 안 되면 에러 발생 	
+		final String memId;
+		String memName;
+		int memMileage;
+		
+		static int memberCount ; // 회원수 : 공용적으로 사용할 변수
+		
+		public Member(String memId, String memName) {
+			this.memId = memId ;
+			this.memName = memName;
+			this.memberCount++;
+		}
+		
+		public String info() {
+			String r = String.format(
+					"아이디 : %s\n성명 : %s\n마일리지 : %d\n회원수 : %d\n",
+					memId, memName, memMileage, memberCount);
+			return r;
+			
+		}
+		
+}
+```
+- MemberService
+
+```js
+package day19;
+
+public class MemberService {
+		//고정적으로 회원 5명을 배열에 담아놓고
+		//회원검색 메서드
+	private static Member[] members = null;
+	
+	static {
+		members = new Member[5] ;
+		members[0] = new Member("malja" , "김말자");
+		members[1] = new Member("nolja" , "야놀자");
+		members[2] = new Member("haja" , "공부하자");
+		members[3] = new Member("gayoung" , "가영엄마");
+		members[4] = new Member("misun" , "지각미선");
+	}
+	
+		public Member findMember(String id) {
+			//Member[] Member = members;
+			Member m = null;
+			int len = members.length ;
+			for(int i = 0 ; i < len; i++) {
+				if(members[i].memId.equals(id)) { //문자열(String) 비교는 .equals()로
+					m = members[i];
+					return m;
+				}
+			}	
+					return m;
+				}
+			//찾으면 해당 객체 리턴
+			//없으면 널을 리턴
+	
+	//정적 클래스 변수(통상 변수이름은 instance)
+	private static MemberService instance = new MemberService();
+	
+	//생성자를 감추어야된다.(Private)
+	private MemberService() {
+		
+	}
+	
+	//해당 정적변수를 리턴하는 메서드 생성 getInstance()
+
+		
+		public static MemberService getInstance() {
+		if(instance == null) instance = new MemberService();
+		return instance;
+	}
+		//두 숫자를 받아서 합을 구해 리턴하는 메서드
+		public int sum(int x, int y) {
+			int s = x + y;
+			return x + y ;
+		}
+		
+		public Member createMember(String id, String name) {
+			Member m = new Member(id, name);
+			return m;
+		}
+		//멤버서비스를 리턴하는 메서드 생성
+		public MemberService createMemberService() {
+		MemberService s = new MemberService() ;
+		return s ;
+	}
+	
+}
+```
+- MemberServiceTest
+ ```js
+package day19;
+
+public class MemberServiceTest {
+
+	public static void main(String[] args) {
+		MemberService ms1 = MemberService.getInstance();
+		MemberService ms2 = MemberService.getInstance();
+		MemberService ms3 = MemberService.getInstance();
+		
+		System.out.println(ms1);
+		System.out.println(ms2);
+		System.out.println(ms3);
+		
+		Member m = ms1.findMember(new String("haja"));
+			if(m !=null) {
+				System.out.println(m.info());
+			}else {
+				System.out.println("해당 회원이 존재하지 않습니다.");
+			}
+			//final 필드는 변경 불가
+			//final 메서드는 오버라이드가 불가능
+			//memId
+		}
+	}
+```
+
+
+
+
 
 
 
