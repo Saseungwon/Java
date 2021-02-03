@@ -3481,6 +3481,323 @@ Public @interface AnnotationName{
 - 리턴 타입 : Constructor[] / 메소드명(매개 변수) : getConstructors() / 설명 : 생성자 정보를 Constructor 배열로 리턴
 - 리턴 타입 : Method[] / 메소드명(매개 변수) : getDeclaredMethods() / 설명 : 메소드 정보를 Method 배열로 리턴
 
+## Chapter 07 상속
+### 7.1 상속 개념
+- 객체 지향 프로그램에서도 부모 클래스의 멤버를 자식 클래스에게 물려줄 수 있다.
+- 상속은 이미 잘 개발된 클래스를 재사용해서 새로운 클래스를 만들기 때문에 코드의 중복을 줄여준다.
+- 부모 클래스
+```js
+public class A {
+	int field1;
+	void method1() {...}
+}
+```
+- 자식 클래스
+```js
+public class B extends A {
+	String field2;
+	void method2() {...}
+}
+```
+
+- 상속을 해도 부모 클래스의 모든 필드와 메소드를 물려받는 것은 아니다. 부모 클래스에서 private 접근 제한을 갖는 필드와 메소드는 상속 대상에서 제외된다.
+
+### 7.2 클래스 상속
+- 현실에서 상속은 부모가 자식을 선택해서 물려주지만, 프로그램에서는 자식이 부모를 선택한다. 자식 클래스를 선언할 때 어떤 부모 클래스를 상속받을 것인지를 결정하고 선택된 부모 클래스는 다음과 같이 extends 뒤에 기술한다.
+```js
+class 자식클래스 extends 부모클래스 {
+	//필드
+	//생성자
+	//메소드
+}
+```
+- 다른 언어와는 달리 잦바는 다중 상속을 허용하지 않는다. 즉 여러 개의 부모 클래스를 상속할 수 없다. 그러므로 다음과 같이 extends 뒤에는 단 하나의 부모 클래스만 와야 한다.
+
+### 7.3 부모 생성자 호출
+- super()는 부모의 기본 생성자를 호출한다.
+- 만약 직접 자식 생성자를 선언하고 명시적으로 부모 생성자를 호출하고 싶다면
+```js
+자식클래스(매개변수선언, …) {
+	super(매개값, …);
+	...
+}
+```
+- super(매개값, ...)는 매개값의 타입과 일치하는 부모 생성자를 호출한다. 만약 매개값이 타입과 일치하는 부모 생성자가 없을 경우 컴파일 오류가 발생한다.
+- super(매개값, ...)는 반드시 자식 생성자 첫 줄에 위치해야 한다.
+#### 계좌 카드, 마이너스 통장, 보너스카드 만들기
+- Account
+```js
+package day22;
+
+
+public class Account {
+	protected String ano;		//계좌번호(읽기 가능, 쓰기 금지)
+	protected String owner;	//소유자(읽기 가능, 쓰기 가능)
+	protected int balance ;	//잔고(읽기 가능, 쓰기 금지)
+	//접근제한자 미선언시 기본 dafault : 하위패키지도 안됩니다.
+
+	
+	public Account(String ano, String owner) {
+		this(ano, owner, 0);
+	}
+	
+	public Account(String ano, String owner, int balance) {
+		this.ano = ano;
+		this.owner = owner;
+		this.balance = balance;
+	}
+	
+	public String getOwner() {
+		return owner;
+	}
+
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+
+	public String getAno() {
+		return ano;
+	}
+
+
+	public int getBalance() {
+		return balance;
+	}
+
+	
+	public void deposit(int amount) {
+		balance = amount + balance;
+	}
+
+	public int withdraw(int amount) {
+		if (amount > balance) {
+			System.out.println("잔고가 부족합니다.");
+			return 0;
+		}
+		
+		balance -= amount;
+		return amount;
+		
+	}
+	
+	public void accountInfo() {
+		System.out.println("--------[계좌정보]--------");
+		System.out.println("계좌정보 : " + this.getAno());
+		System.out.println("소 유 자 : " + this.getOwner());
+		System.out.println("잔   고 : " + String.format("%d", this.getBalance()));
+		
+	}
+	}
+```
+- BonusCard
+```js
+package day22;
+
+public class BonusCard {
+	
+	private String ano;		//계좌번호(읽기 가능, 쓰기 금지)
+	private String owner;	//소유자(읽기 가능, 쓰기 가능)
+	private  int balance ;	//잔고(읽기 가능, 쓰기 금지)
+	private int point;
+
+	
+	public BonusCard(String ano, String owner, int balance, int point) {
+		super();
+		this.ano = ano;
+		this.owner = owner;
+		this.balance = balance;
+		this.point = point;
+	}
+	
+	public int getPoint() {
+		return point;
+	}
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
+
+	public String getAno() {
+		return ano;
+	}
+
+	public int getBalance() {
+		return balance;
+	}
+
+	public int getcreditLimit() {
+		return balance;
+	}
+	
+	public void deposit(int amount) {
+		balance = amount + balance;
+		point = (int)(amount * 0.01);
+	}
+
+	public int withdraw(int amount) {
+		if (amount > balance + point) {
+			System.out.println("잔고가 부족합니다.");
+			return 0;
+		}
+		
+		balance = balance + point - amount;
+		return amount;
+	}
+	
+	public void accountInfo() {
+		System.out.println("--------[계좌정보]--------");
+		System.out.println("계좌정보 : " + this.getAno());
+		System.out.println("소 유 자 : " + this.getOwner());
+		System.out.println("잔   고 : " + String.format("%d", this.getBalance()));
+		System.out.println("포인트 : " + this.getPoint());
+		System.out.println();
+	
+	}
+	}
+```
+- CardTest
+```sql
+package day22;
+
+public class CardTest {
+
+	public static void main(String[] args) {
+		CheckCard checkCard = new CheckCard("2021-0001", "주헌아빠", 100000, "0000-0000-0001");
+		checkCard.deposit(3000);
+		checkCard.withdraw(75000);
+		checkCard.accoutInfo();
+		
+		boolean res = checkCard.pay("0000-0000-0001", 15000);
+		if(res) {
+			System.out.println("카드결제 성공");
+		}else {
+	     	System.out.println("카드결제 실패");
+	    }
+	 	checkCard.accoutInfo();
+	 	
+	 	BonusCard bonusCard = new BonusCard("2021-0002", "호준아빠", 5000, 0);
+	 	bonusCard.deposit(10000);
+	 	bonusCard.accountInfo();
+	 	bonusCard.withdraw(15050);
+	
+	 	MinusAccount minusAccount = new MinusAccount("2021-0003", "태정", 5000);
+	 	minusAccount.deposit(3000);
+	 	minusAccount.accountInfo();
+	 	minusAccount.withdraw(10000);
+	 	minusAccount.accountInfo();
+}
+}
+```
+- CheckCard
+```js
+package day22;
+
+public class CardTest {
+
+	public static void main(String[] args) {
+		CheckCard checkCard = new CheckCard("2021-0001", "주헌아빠", 100000, "0000-0000-0001");
+		checkCard.deposit(3000);
+		checkCard.withdraw(75000);
+		checkCard.accoutInfo();
+		
+		boolean res = checkCard.pay("0000-0000-0001", 15000);
+		if(res) {
+			System.out.println("카드결제 성공");
+		}else {
+	     	System.out.println("카드결제 실패");
+	    }
+	 	checkCard.accoutInfo();
+	 	
+	 	BonusCard bonusCard = new BonusCard("2021-0002", "호준아빠", 5000, 0);
+	 	bonusCard.deposit(10000);
+	 	bonusCard.accountInfo();
+	 	bonusCard.withdraw(15050);
+	
+	 	MinusAccount minusAccount = new MinusAccount("2021-0003", "태정", 5000);
+	 	minusAccount.deposit(3000);
+	 	minusAccount.accountInfo();
+	 	minusAccount.withdraw(10000);
+	 	minusAccount.accountInfo();
+}
+}
+```
+- InheritanceTest
+```js
+package day22;
+
+public class CardTest {
+
+	public static void main(String[] args) {
+		CheckCard checkCard = new CheckCard("2021-0001", "주헌아빠", 100000, "0000-0000-0001");
+		checkCard.deposit(3000);
+		checkCard.withdraw(75000);
+		checkCard.accoutInfo();
+		
+		boolean res = checkCard.pay("0000-0000-0001", 15000);
+		if(res) {
+			System.out.println("카드결제 성공");
+		}else {
+	     	System.out.println("카드결제 실패");
+	    }
+	 	checkCard.accoutInfo();
+	 	
+	 	BonusCard bonusCard = new BonusCard("2021-0002", "호준아빠", 5000, 0);
+	 	bonusCard.deposit(10000);
+	 	bonusCard.accountInfo();
+	 	bonusCard.withdraw(15050);
+	
+	 	MinusAccount minusAccount = new MinusAccount("2021-0003", "태정", 5000);
+	 	minusAccount.deposit(3000);
+	 	minusAccount.accountInfo();
+	 	minusAccount.withdraw(10000);
+	 	minusAccount.accountInfo();
+}
+}
+```
+
+- MinusAccount
+```js
+package day22;
+
+public class MinusAccount extends Account {
+	
+	private int creditLimit;
+
+	public MinusAccount(String ano, String owner, int creditLimit) {
+		super(ano, owner); // 부모생성자 호출, super(), 첫라인\
+		//super(ano, owner)
+	}
+	
+	@Override//부모의 메서드를 재정의 한다. 체크해주세요
+	public int withdraw(int amount) {
+		if((balance + creditLimit) < amount) {
+			System.out.println("잔고가 부족합니다.");
+			return 0;
+		}
+		balance -= amount;
+		return amount;
+	}
+	//accountInfo를 재정의해서 기존내용 + "신용한도 : 20,000"
+	
+	public void accountInfo() {
+		super.accountInfo();
+//		System.out.println("--------[계좌정보]--------");
+//		System.out.println("계좌정보 : " + this.getAno());
+//		System.out.println("소 유 자 : " + this.getOwner());
+//		System.out.println("잔   고 : " + String.format("%d", this.getBalance()));
+		System.out.println("신용한도 : " + String.format("%d", creditLimit));
+		
+	}
+	
+}
+```
+
 
 
 
