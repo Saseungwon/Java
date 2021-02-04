@@ -3798,6 +3798,149 @@ public class MinusAccount extends Account {
 }
 ```
 
+### 7.7 타입 변환과 다형성
+#### 7.7.1 자동 타입 변환
+- 자동 타입 변환은 프로그램 실행 도중에 자동적으로 타입 변환이 일어하는 것을 말한다. 자동 타입 변환은 다음과 같은 조건에서 일어난다.
+```js
+ 	자동 타입 변환
+부모클래스 변수 = 자식클래스타입;
+```
+- 부모 타입으로 자동 타입 변환된 이후에는 부모 클래스에 선언된 필드와 메소드만 접근이 가능하다. 비록 변수는 자식 객체를 참조하지만 변수로 접근 가능한 멤버는 부모 클래스 멤버로만 한정된다. 그러나 예외가 있는데, 메소드가 자식 클래스에서 오버라이딩 되었다면 자식 클래스의 메소드가 대신 호출된다. 이것은 다형성과 관련이 있기 때문에 매우 중요한 성질이다.
+
+#### 7.7.5 강제 타입 변환(Casting)
+- 강제 타입 변환(Casting)은 부모 타입을 자식 타입으로 변환하는 것을 말한다.
+#### 7.7.6 객체 타입 확인(instanceof)
+- 어떤 객체가 어떤 클래스의 인스턴스인지 확인하려면 instanceof 연산자를 사용할 수 있다.
+- instanceof 연산자의 좌항은 객체가 오고, 우항은 타입이 오는데, 좌항의 객체가 우항의 인스턴스이면 즉 우항의 타입으로 객체가 생성되었다면 true를 산출하고 그렇지 않으면 false를 산출한다.
+```js
+boolean result = 좌항(객체) instanceof 우항(타입)
+```
+
+
+```js
+package day23;
+
+import day22.Account;
+import day22.MinusAccount;
+import day22.card.CheckCard;
+
+public class PolymorphismTest {
+	// 부모 타입 변수 = new 자식타입 <- 자동타입변환
+	public static void main(String[] args) {
+		
+		Account acc = new CheckCard("2021-0004" , "사승원", 0 ,"0000-1111-2222") ;
+		acc.deposit(5000);
+		acc.deposit(3200);
+		acc.accountInfo();	// 실 객체의 메서드 호출 (오버라이드 된 경우)
+//		acc.pay("0000-1111-2222", 3000);
+//		acc.accountInfo();
+		
+		//형변환을 통해서 해당 메서드 호출 가능
+		CheckCard cc = (CheckCard)acc;
+		cc.pay("0000-1111-2222", 1200);
+		acc.accountInfo();
+		
+		Account acc2 = new MinusAccount("2021-0005", "사승1", 0);
+		acc2.deposit(5000);
+		acc2.deposit(3200);
+		acc2.accountInfo();
+		// 실제랑 다르게 형 변환, instanceof 연산자를 통해서 확인. "객체 instanceof 타입"  
+		if(acc2 instanceof CheckCard) {
+			CheckCard cc2 = (CheckCard)acc2;
+			cc.pay("0000-1111-2222", 1200);
+			acc.accountInfo();
+		}else {
+			System.out.println("현재 " + acc2.getOwner() + "님의 계정은 체크카드가 아닙니다.(Minus카드)");
+		}
+		
+	}
+}
+```
+```js
+package day23;
+
+import day22.Account;
+import day22.MinusAccount;
+import day22.card.CheckCard;
+
+public class PolymorphismTest2 {
+	public static void main(String[] args) {
+		CheckCard cc1 = new CheckCard("2021-0001" , "사승2", 200 ,"0000-1111-2222") ;
+		CheckCard cc2 = new CheckCard("2021-0002" , "사승3", 1500 ,"0000-1111-2222") ;
+		CheckCard cc3 = new CheckCard("2021-0003" , "사승4", 500 ,"0000-1111-2222") ;
+		MinusAccount ma1 = new MinusAccount("2021-0004" , "사승5", 300, 3000);
+		MinusAccount ma2 = new MinusAccount("2021-0005" , "사승6", 0, 5000);
+
+		CheckCard cc4 = new CheckCard("2021-0003" , "사승7", 500 ,"0000-1111-2222") ;
+		CheckCard cc5 = new CheckCard("2021-0003" , "사승8", 500 ,"0000-1111-2222") ;
+		MinusAccount ma3 = new MinusAccount("2021-0005" , "사승9", 0, 5000);
+		
+//		CheckCard[] cards = {cc1, cc2, cc3, cc4, cc5};
+//		MinusAccount minuses = {ma1, ma2, ma3};
+		Account[] accounts = {cc1, cc2, cc3, cc4, cc5, ma1, ma2, ma3};
+		for (int i = 0; i < accounts.length; i++) {
+			supportFund(accounts[i]);
+			accounts[i].accountInfo();
+		}
+		
+		
+//		for(Account acc : acc) {
+//		supportFund(cc1);
+//		cc1.accountInfo();
+	
+		
+		supportFund(cc1);
+		cc1.accountInfo();
+		supportFund(cc2);
+		cc2.accountInfo();
+		supportFund(cc3);
+		cc3.accountInfo();
+		
+		supportFund(ma1);
+		ma1.accountInfo();
+		supportFund(ma2);
+		ma2.accountInfo();
+		
+		
+		
+		// 재난지원금 전국민 지원(체크카드는 3000, 마이너스통장 5000)
+		
+	}
+	public static void supportFund(Account check) {
+		if(check instanceof CheckCard){
+			check.deposit(3000);
+		}else if(check instanceof MinusAccount)
+			check.deposit(5000);
+
+		
+	}
+	
+}
+```
+
+
+### 7.8 추상 클래스
+####7.8.1 추상 클래스의 개념
+- 클래스에서도 추상 클래스가 존재한다. 객체를 직접 생성할 수 있는 클래스를 실체 클래스라고 한다면 이 클래스들의 공통적인 특성을 추출해서 선언한 클래스를 추상 클래스라고 한다. 추상 클래스와 실체 클래스는 상속의 관계를 가지고 있다. 추상 클래스가 부모이고 실체 클래스가 자식으로 구현되어 실체 클래스는 추상 클래스의 모든 특성을 물려받고,  추가적인 특성을 가질 수 있다.
+- 추상 클래스는 실체 클래스의 공통되는 필드와 메소드를 추출해서 만들었기 때문에 객체를 직접 생성해서 사용할 수 없다. 다시 말해서 추상 클래스는 new 연산자를 사용해서 인스턴스를 생성시키지 못한다.
+
+#### 7.8.2 추상 클래스의 용도
+- 실체 클래스들의 공통된 필드와 메소드의 이름을 통일한 목적
+-- 실체 클래스를 설계하는 사람이 여러 사람일 경우, 실체 클래스마다 필드와 메소드가 제각기 다른 이름을 가질 수 있다. 예를 들어 소유자의 이름을 저장하는 필드를 Telephone에서는 owner라고 하고, SmartPhone에서는 user라고 할 수 있다. 그리고 전원을 켜다라는 메소드를 Telephone에서는 turnOn()으로 설계하고, SmartPhone에서는 powerOn()이라고 설계할 수 있다. 동일한 데이터와 기능임에도 불구하고 이름이 다르다 보니, 객체마다 사용 방법이 달라진다. 이것보다는 Phone이라는 추상 클래스에 소유자인 owner 필드와 turnOn() 메소드를 선언하고, Telephone과 SmartPhone운 Phone을 상속함으로써 필드와 메소드 이름을 통일시킬 수 있다.
+
+#### 7.8.3 추상 클래스 선언
+- 추상 클래스를 선언할 때에는 클래스 선언에 abstract 키워드를 붙여야 한다. abstract를 붙이게 되면 new 연산자를 이용해서 객체를 만들지 못하고 상속을 통해 자식 클래스만 만들 수 있다.
+```js
+public abstract class 클래스 {
+		// 필드
+		// 생성자
+		// 메소드
+}
+```
+
+ 
+
+
 
 
 
