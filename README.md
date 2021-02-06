@@ -3938,7 +3938,188 @@ public abstract class 클래스 {
 }
 ```
 
- 
+ Java
+- RemoteControl
+```js
+package day24;
+
+public interface RemoteControl {
+	//인터페이스의 모든 멤버는 public으로 (정의 안 해도 )
+	//인터페이스의 모든 필드는 상수입니다.
+	public static final int MAX_VOLUME = 10;
+	int MIN_VALUE = 0;
+	
+	//인터페이스의 모든 메서드는 추상메서드 입니다.
+	public abstract void turnOn();
+	public void turnOff() ;
+	void setVolume(int volume);
+	void info();
+	
+	//JDK 8 추가 기능
+	public default void setMute(boolean mute) {
+		if(mute) {
+			System.out.println("현재 무음처리 합니다.");
+		} else {
+			System.out.println("무음처리를 해제합니다.");
+		}
+	}
+	public static void changeBattery() {
+		System.out.println("배터리를 교환합니다");
+	}
+	}
+
+
+```
+- LGRemoteControl
+```js
+package day24;
+
+public class LGRemoteControl implements RemoteControl{
+	
+	String model ;
+	int volume ;
+	
+	public LGRemoteControl(String model) {
+		this.model = model;
+	}
+	
+	@Override
+	public void turnOn() {
+		System.out.println(
+				this.getClass().getSimpleName() + "TV를 켭니다.");
+	}
+
+	@Override
+	public void turnOff() {
+		System.out.println(
+				this.getClass().getSimpleName() + "TV를 끕니다.");
+	}
+
+	@Override
+	public void setVolume(int volume) {
+		if(volume > RemoteControl.MAX_VOLUME) {
+			this.volume = RemoteControl.MAX_VOLUME;
+		}else if(volume < RemoteControl.MIN_VALUE) {
+			this.volume = RemoteControl.MAX_VOLUME;
+		}else {
+			this.volume = volume;
+		}
+		System.out.println("TV 현재 볼륨은 " + this.volume);
+	}
+
+	@Override
+	public void info() {
+		System.out.println("제조사 : LG전자");
+		System.out.println("모델명 : " + model);
+	}
+	
+}
+```
+- SamsungRemoteControl
+```js
+package day24;
+
+public class SamsungRemoteControl implements RemoteControl{
+	
+	String model ;
+	int volume ;
+	
+	public SamsungRemoteControl(String model) {
+		this.model = model;
+	}
+	
+	@Override
+	public void turnOn() {
+		System.out.println(
+				this.getClass().getSimpleName() + "TV를 켭니다.");
+	}
+
+	@Override
+	public void turnOff() {
+		System.out.println(
+				this.getClass().getSimpleName() + "TV를 끕니다.");
+	}
+
+	@Override
+	public void setVolume(int volume) {
+		if(volume > RemoteControl.MAX_VOLUME) {
+			this.volume = RemoteControl.MAX_VOLUME;
+		}else if(volume < RemoteControl.MIN_VALUE) {
+			this.volume = RemoteControl.MAX_VOLUME;
+		}else {
+			this.volume = volume;
+		}
+		System.out.println("TV 현재 볼륨은 " + this.volume);
+	}
+	@Override
+	public void info() {
+		System.out.println("제조사 : 삼성전자");
+		System.out.println("모델명 : " + model);
+	}
+}
+
+```
+- Television
+```js
+package day24;
+
+public class Television {
+	
+	private RemoteControl rc ;
+	
+	public Television(RemoteControl rc) {
+		this.rc = rc;
+	}
+	// 메서드 파라미터는 최대한 부모, 인터페이스로 받도록 노
+	public void tvOn() {
+		System.out.println("리모트 컨트롤러로 TV 켜요");
+		rc.turnOn();
+	}
+	
+	public void tvOff() {
+		System.out.println("리모트 컨트롤러로 TV 꺼요");
+		rc.turnOff();
+	}
+	
+	public void pause(boolean pause) {
+		System.out.println("티비 멈춤" + pause);
+		rc.setMute(pause);
+	}
+	
+	
+	public void changeRemoteControl(RemoteControl rc) {
+		this.rc = rc;
+		System.out.println("리모트 컨트롤러를 교체했습니다.");
+		
+	}
+}
+
+```
+- InterfaceTest2
+```js
+package day24;
+
+public class InterfaceTest2 {
+
+	public static void main(String[] args) {
+		//LGRemoteControl : LG 부평공장에서 파업으로 삼성 걸로 교체해서 판매..
+		RemoteControl lgRc = new SamsungRemoteControl("AKB1004");
+		Television tv = new Television(lgRc) ;
+		tv.tvOn();
+		System.out.println("전화왔다...");
+		tv.pause(true);
+		System.out.println("전화끊었다...");
+		tv.pause(false);
+		tv.tvOff();
+
+	}
+
+}
+
+```
+
+
+
 
 
 
