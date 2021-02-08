@@ -4118,6 +4118,182 @@ public class InterfaceTest2 {
 
 ```
 
+### 10.1 예외와 예외 클래스
+- 컴퓨터 하드웨어의 오동작 또는 고장으로 인해 응용프로그램 실행 오류가 발생하는 것을 자바에서는 에러라고 한다.
+- 자바에서는 에러 이외에 예외(exception)라고 부르는 오류가 있다.  예외란 사용자의 잘못된 조작 또는 개발자의 잘못된 코딩으로 인해 발생하는 프로그램 오류를 말한다. 예외가  발생되면 프로그램은 곧바로 종료된다는 점에서 에러와 동일하다. 그러나 예외는 예외처리를 통해 프로그램을 종료하지 않고 정상 실행 상태가 유지되도록 할 수 있다.
+
+- 예외는 두 가지 종류가 있다.
+1. 일반 예외 : 컴파일러 체크 예외라고도 하는데, 자바 소스를 컴파일하는 과정에서 예외 처리 코드가 필요한지 검사하기 때문이다. 만약 예외 처리 코드가 없다면 컴파일 오류가 발생한다.
+2. 실행 예외 : 실행 예외는 컴파일하는 과정에서 예외 처리 코드를 검사하지 않는 예외를 말한다.
+- 컴파일 시 예외처리를 확인하는 차이일 뿐, 두 가지 예외는 모두 예외 처리가 필요하다. 자바에서는 예외를 클래스로 관리한다. JVM은 프로그램을 실행하는 도중에 예외가 발생하면 해당 예외 클래스로 객체를 생성한다. 그리고 나서 예외 처리 코드에서 예외 객체를 이용할 수 있도록 해준다. 모든 예외 클래스들은 다음과 같이 java.lang.Exception 클래스를 상속받는다.
+- 일반 예외와 실행 예외 클래스를 구별하는 방법은 일반 예외는 Exception을 상속 받지만RuntimeException을 상속받지 않는 클래스들이고, 실행 예외는 RuntimeException 을 상속받은 클래스들이다.
+
+
+
+
+
+### 10.2 실행 예외 (RuntimeException)
+- 실행 예외는 자바 컴파일러가 체크를 하지 않기 때문에 오로지 개발자의 경험에 의해서 예외 처리 코드를 삽입해야 한다. 만약 개발자가 실행 예외에 대해 예외 처리 코드를 넣지 않았을 경우, 해당 예외가 발생하면 프로그램은 곧바로 종료된다.
+```js
+package day25;
+
+public class RuntimeException1 {
+
+	public static void main(String[] args) {
+		int[] arr = {34 ,67};
+		System.out.println("arr[0]" + arr[0]);
+		System.out.println("arr[1]" + arr[1]);
+		System.out.println("arr[2]" + arr[2]);
+
+//		arr[0]34
+//		arr[1]67
+//		Exception in thread "main" java.lang.ArrayIndexOutOfBoundsException: 2
+//			at day25.RuntimeException1.main(RuntimeException1.java:9)
+
+		
+	}
+
+}
+```
+
+#### 10.2.1 NullPointerException
+- 자바 프로그램에서 가장 빈번하게 발생하는 실행 예외는 java.lang.NullPointerException일 것이다. 이것은 객체 참조가 없는 상태, 즉 null 값을 갖는 참조 변수로 객체 접근 연산자인 도트를 사용했을 때 발생한다. 객체가 없는 상태에서 객체를 사용하려 했으니 예외가 발생하는 것이다.
+```js
+package day25;
+
+public class RuntimeException {
+	public static void main(String[] args) {
+		Student st1 = new Student();
+		st1.name = "sa";
+		st1.kor = 78;
+		System.out.println(st1);
+		System.out.println(st1.name + ", " + st1.kor + ", " + st1.eng);
+		System.out.println(st1.name + ", len = " + st1.name.length() + "upper = " + st1.name.toUpperCase());
+		
+//		Student st2 = null;
+//		day25.Student@2a139a55
+//		sa, 78, 0
+//		null
+//		Exception in thread "main" java.lang.NullPointerException
+//			at day25.RuntimeException.main(RuntimeException.java:13)
+		
+		Student st2 = new Student();
+		System.out.println(st2);
+		System.out.println(st2.name + ", " + st2.kor + ", " + st2.eng);
+		System.out.println(st2.name + ", len = " + st2.name.length() + "upper = " + st2.name.toUpperCase());
+		//null 인데 .length나 .toUpperCase(도) 같은 거 쓰면 에러
+		
+		System.out.println("정상종료");
+	}
+
+}
+```
+
+#### 10.2.2 ArrayIndexOutOfBoundsException
+- 배열에서 인덱스 범위를 초과하여 사용할 경우 실행 예외인 java.lang.ArrayIndexOutOfBouyndsException이 발생한다. 예를 들어 길이가 3인 int[] arr = new int[3] 배열을 선언했다면, 배열을 지정하기 위해 arr[0] ~ arr[2] 를 사용할 수 있다. 하지만 arr[3] 을 사용하면 인덱스 범위를 초과했기 때문에 ArrayIndexOutOfBoundsException이 발생한다.
+
+
+```js
+package day25;
+
+public class exceptiond103 {
+
+	public static void main(String[] args) {
+		int[] arr = {34 ,67};
+		
+		try {
+			System.out.println("arr[0]" + arr[0]);
+			System.out.println("arr[1]" + arr[1]);
+			System.out.println("arr[2]" + arr[2]);
+			System.out.println("쉬어");
+		}catch (Exception e) {
+			System.out.println("에러발생");
+			System.out.println("msg = " + e.getMessage());
+			System.out.println("---[예외 trace]---");
+			e.printStackTrace();
+		}
+		System.out.println("정상종료");
+		
+//		arr[0]34
+//		arr[1]67
+//		에러발생
+//		msg = 2			//배열[2]가 잘못 되었다는
+//		---[예외 trace]---
+//		정상종료
+//		java.lang.ArrayIndexOutOfBoundsException: 2
+//			at day25.exceptiond103.main(exceptiond103.java:11)
+
+	}
+}
+```
+
+
+#### 10.2.3 NumberFormatException
+- 프로그램을 개발하다 보면 문자열로 되어 있는 데이터를 숫자로 변경하는 경우가 자주 발생한다.
+- 정적 메소드인 parseXXX() 메소드를 이용하면 문자열을 숫자로 변환할 수 있다. 이 메소드들은 매개값이 문자열이 숫자로 변환될 수 있다면 숫자를 리턴하지만, 숫자로 변환될 수 없는 문자가 포함되어 있다면 java.lang.NumberFormatException을 발생시킨다.
+
+#### 10.2.4 ClassCastException
+- 타입 변환은 상위 클래스와 하위 클래스 간에 발생하고 구현 클래스와 인터페이스 간에도 발생한다. 이러한 관계가 아니라면 클래스는 다른 클래스로 타입 변환할 수 없다. 억지로 타입 변환을 시도할 경우 ClassCastException이 발생한다.
+
+### 10.3 예외 처리 코드
+- 프로그램에서 예외가 발생했을 경우 프로그램의 갑작스러운 종료를 막고, 정상 실행을 유지할 수 있도록 처리하는 코드를 예외 처리 코드라고 한다. 자바 컴파일러는 소스 파일을 컴파일할 때 일반 예외가 발생할 가능성이 있는 코드를 발견하면 컴파일 오류를 발생시켜 개발자로 하여금 강제적으로 예외 처리 코드를 작성하도록 요구한다. 그러나 실행 예외는 컴파일러가 체크주지 않기 때문에 예외 처리 코드를 작성하도록 요구한다. 그러나 실행 예외는 컴파일러가 체크해주지 않기 때문에 예외 처리 코드를 개발자의 경험을 바탕으로 작성해야 한다.
+```js
+try {
+	예외 발생 가능 코드
+} catch(예외클래스 e) {
+	예외 처리
+} finally {
+	항상 실행;
+}
+```
+-  try 블록에는 예외 발생 가능 코드가 위치한다. Try 블록의 코드가 예외 발생 없이 정상 실행되면 catch 블록의 코드는 실행되지 않고 finally 블록의 코드를 실행한다. 만약 try 블록의 코드에서 예외가 발생하면 즉시 실행을 멈추고 catch 블록으로 이동하여 예외 처리 코드를 실행한다. 그리고 finally 블록의 코드를 실행한다. Finally 블록은 옵션으로 생략 가능하다. 예외 발생 여부와 상관없이 항상 실행할 내용이 있을 경우에만 finally 블록을 작성해주면 된다.
+
+```js
+package day25;
+
+public class Exception1031 {
+
+	public static void main(String[] args) {
+		int[] arr = {34 ,67};
+		
+		try {
+			System.out.println("arr[0]" + arr[0]);
+			System.out.println("arr[1]" + arr[1]);
+			System.out.println("arr[2]" + arr[2]);
+			System.out.println("쉬어");
+		}catch (Exception e) {
+			System.out.println("에러발생");
+			System.out.println("msg = " + e.getMessage());
+			System.out.println("---[예외 trace]---");
+			e.printStackTrace();
+		}finally {
+			System.out.println("에러 발생여부 상관없이 출력");
+		}
+		System.out.println("정상종료");
+
+//		arr[0]34
+//		arr[1]67
+//		에러발생
+//		msg = 2
+//		---[예외 trace]---
+//		java.lang.ArrayIndexOutOfBoundsException: 2
+//			at day25.Exception1031.main(Exception1031.java:11)
+//		에러 발생여부 상관없이 출력
+//		정상종료
+
+	}
+
+}
+```
+
+### 10.4 예외 종류에 따른 처리 코드
+#### 10.4.2 catch 순서
+- 다중 catch 블록을 작성할 때 주의할 점은 상위 예외 클래스가 하위 예외 클래스보다 아래쪽에 위치해야 한다.
+
+#### 10.4.3 멀티 catch
+- 자바 7부터 하나의 catch 블록에서 여러 개의 예외 처리할 수 있도록 멀티 catch 기능을 추가했다. Catch 괄호() 안에 동일하게 처리하고 싶은 예외를 |로 연결하면 된다.
+
+
 
 
 
