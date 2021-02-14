@@ -4295,6 +4295,292 @@ public class Exception1031 {
 
 
 
+## Chapter11 기본 API 클래스
+
+### 11.1 자바 API 도큐먼트
+- 프로그램 개발에 자주 사용되는 클래스 및 인터페이스의 모음을 말한다.
+
+### 11.2 java.lang 과 java.util 패키지
+- 자바 애플리케이션을 개발할 때 공통적으로 가장 많이 사용되는 패키지는 java.lang 패키지와 java.util.java.time 패키지 일 것이다.
+
+#### 11.2.1 java.lang 패키지
+- java.lang 패키지는 자바 프로그램의 기본적인 클래스를 담고 있는 패키지이다. 그렇기 때문에 java.lang 패키지에  있는 클래스와 인터페이스는 import 없이 사용할 수 있다. 지금까지 사용한 String과 System 클래스도 java.lang 패키지에 포함되어 있기 때문에 import하지 않고 사용했다.
+--Object : 자바 클래스의 최상위 클래스로 사용
+--System : 출력, 입력할 때 사용
+--Class : 클래스를 메모리로 로딩할 때 사용
+--String : 문자열을 저장하고 여러 가지 정보를 얻을 때 사용
+--StringBuffer, StringBuilder : 문자열을 저장하고 내부 문자열을 조작할 때 사용
+--Math : 수학 함수를 이용할 때 사용
+--Wrapper(Byte, Short, Character, Integer, Float, Double, Boolean, Long) : 기본 타입의 데이터를 갖는 객체를 만들 때 사용, 문자열을 기본 타입으로 변환할 때 사용
+
+#### 11.2.2 java.util 패키지
+-Arrays : 배열을 조작
+-Calendar : 운영체제의 날짜와 시간을 얻음
+-Date : 날짜와 시간 정보를 저장
+-Objects : 객체 비교, 널 여부 등을 조사할 때 사용
+-StringTokenizer : 특정 문자로 구분된 문자열을 뽑아낼 때 사용
+-Random : 난수를 얻을 때 사용
+
+### 11.3 Object 클래스
+- 클래스를 선언할 때 extends 키워드로 다른 클래스를 상속하지 않으면 암시적으로 java.lang.Object 클래스로 상속하게 된다. 따라서 자바의 모든 클래스는 Object 클래스의 자식이거나 자손 클래스다. Object는 자바의 최상위 부모 클래스에 해당한다.
+
+#### 11.3.1 객체 비교(equals())
+- 자바에서는 두 객체를 동등 비교할 때 equals()메소드를 흔히 사용한다. equals()메소드는 두 객체를 비교해서 논리적으로 동등하면 true를 리턴하고, 그렇지 않으면 false를 리턴한다.
+
+```sql
+package day26;
+
+import java.util.HashMap;
+import java.util.Map;
+
+public class Ex02Equals {
+
+	public static void main(String[] args) {
+		Member m1 = new Member("milkis", "밀키스", "042-719-8850",0);
+		Member m2 = new Member("milkis", "밀키스", "042-719-8850",0);
+		Member target = new Member("milkis", "밀키스", "042-719-8850",0);
+		
+		System.out.println("m1.memName = m2.memName" + (m1.memName == m2.memName));
+		System.out.println("m1.memName.equals(m2.memName) =" + (m1.memName.equals(m2.memName)));
+		if(m1 == m2) {
+			System.out.println("m1과 m2는 다르다");
+	} else {
+			System.out.println("m1과 m2는 다르다!!");
+	}
+		
+		
+	//객체간의 물리적인 주소 비교가 아닌
+	//논리적인 비교를 하고 싶다면 equals 메서드를 재정의 하면 된다.
+	if(m1.equals(m2)) {
+		System.out.println("m1.equals(m2)는 같아요");
+	} else {
+		System.out.println("m1.equals(m2)는 달라");
+	}
+	
+	if(m1.equals(target)) {
+		System.out.println("m1.equals(target)는 같아요");
+	} else {
+		System.out.println("m1.equals(target)는 달라");
+		
+		
+}	//Hash 계열의 컬렉션(HashSet, HashMap, HashTable)은 동등한지 비교하기 위해
+	//equals 보다 먼저 두 객체 간의 HashCode를 비교합니다. 그래서
+	//hashcode도 재정의 해야만 올바르게 동등객체인지 인식합니다.
+	System.out.println("------------------------");
+	System.out.println("m1.hashCode() =" + m1.hashCode());
+	System.out.println("m2.hashCode() =" + m2.hashCode());
+	HashMap<Member, String> map = new HashMap<Member, String>();
+	
+	map.put(m1, "어렸을 때 부엌에 라이터를 갖고 놀다 잃어버림");
+	String r = map.get(m1);
+	System.out.println("m1으로 get = " + r);
+	
+	String r2 = map.get(m2);
+	System.out.println("m2으로 get = " + r2);
+}
+}
+```
+
+
+#### 11.3.2 객체 해시코드(hashCode())
+
+#### 11.3.3 객체 문자 정보(toString())
+-Object 클래스의 toString() 메소드는 객체의 문자 정보를 리턴한다. 객체의 문자 정보란 객체를 문자열로 표현한 값을 말한다. 기본적으로 Object 클래스의 toString() 메소드는 “클래스명@16진수해시코드”로 구성된 문자 정보를 말한다.
+```sql
+package day26;
+
+public class Ex03ToString {
+
+	public static void main(String[] args) {
+		Member m1 = new Member("milkis", "밀키스", "042-719-8850",0);
+		Member m2 = new Member("malja", "김말자", "042-719-8851",120);
+		System.out.println(m1);					//day26.Member@1fc883a3
+		System.out.println(m1.toString());		//day26.Member@1fc883a3
+		
+		m1.scores[0] = 100;
+		m1.scores[1] = 99;
+		m1.scores[2] = 77;
+		
+		
+		//조상님은 toString : 클래스명@hashCode로 리턴
+		//String 클래스는 toString 재정의해서 갖고있던 값을 리턴
+		String str = "Hello World";	
+		System.out.println(str);					//Hello World
+		System.out.println(str.toString());		//Hello World
+		
+		//실제 개발시, 업무적으로 운영할 때 예외상황이 발생했을 때 남는건 로그파일이다.
+		//예외 트레이스 e.printStackTrace + 객체정보
+		//여기서 객체정보가 의미없는 해쉬코드보다는 의미있는 정보가 필요하다.
+		//그래서 정보를 담는 vo(DTO, 도메인...) 객체는 toString을 꼭 재정의 해야한다.
+		
+		
+		//java는 기본적으로 CallByReference
+		//단, 기본형(int, byte, boolean...)은 CallByValue
+		//원객체를 보관하려면 복제를 하세요
+		Member mt = m1.getMember();
+		memberInfoChange(mt);
+		System.out.println("m1 = " + m1);
+		Member mt2 = m1;
+		memberInfoChange(mt2);
+		System.out.println("m1 = " + m1);
+	}
+
+	
+	public static void memberInfoChange(Member mem){
+		mem.memName = mem.memName + "사랑해요";
+		mem.memMileage = 1004;
+		mem.scores[0] = 25;
+		mem.scores[1] = 35;
+		mem.scores[2] = 45;
+		
+		System.out.println("memberInfoChange = " + mem);
+	
+}
+}
+```
+
+
+#### 11.3.4 객체 복제(clone())
+- 객체 복제는 원본 객체의 필드값과 동일한 값을 가지는 새로운 객체를 생성하는 것을 말한다. 객체를 복제하는 이유는 원본 객체를 안전하게 보호하기 위해서다 . 복제된 객체의 데이터가 훼손되더라도 원본 객체는 아무런 영향을 받지 않기 때문에 안전하게 데이터를 보호할 수 있게 된다.
+
+#### 11.3.5 객체 소멸자(finalize())
+- 참조하지 않는 배열이나 객체는 쓰레기 수집기(Garbage Collector)가 힙 영역에서 자동적으로 소멸시킨다. 쓰레기 수집기는 객체를 소멸하기 직전에 마지막으로 객체의 소멸자(finalize())를 실행시킨다.
+
+- 실행 결과를 보면 순서대로 소멸시키지 않고 무작위로 소멸시키는 것을 볼 수 있다. 그리고 전부 소멸 시키는 것이 아니라 메모리의 상태를 보고 일부만 소멸시킨다.
+```sql
+package day26;
+
+import java.util.HashMap;
+
+public class Ex04filnalize {
+	
+	public static void main(String[] args) {
+		//11.3.5 객체 소멸자(finalize())
+		for (int i = 0; i < 100; i++) {
+			Member m1 = new Member("id" + i, "밀키스", "042-719-8850", 0);
+			m1 = null; //메모리 제거 대상
+			System.gc();
+
+//			id1객체가 소멸될 때 필요한 자원정리 등이 필요하면 재정의
+//			id16객체가 소멸될 때 필요한 자원정리 등이 필요하면 재정의
+//			id15객체가 소멸될 때 필요한 자원정리 등이 필요하면 재정의
+//			id17객체가 소멸될 때 필요한 자원정리 등이 필요하면 재정의
+//			id19객체가 소멸될 때 필요한 자원정리 등이 필요하면 재정의
+//			id21객체가 소멸될 때 필요한 자원정리 등이 필요하면 재정의 ....
+// 실행 결과를 보면 순서대로 소멸시키지 않고, 무작위로 소멸시키는 것을 볼 수 있다.
+// 그리고 전부 소멸시키는 것이 아니라 메모리의 상태를 보고 일부만 소멸 시킨다.
+
+		}
+	}
+	}
+```
+### 11.9 StringBuffer, StringBuilder 클래스
+- 문자열을 결합하는 + 연산자를 많이 사용하면 할수록 그만큼 String 객체의 수가 늘어나기 때문에, 프로그램 성능을 느리게 하는 요인이 된다. 문자열을 변경하는 작업이 많을 경우에는 String 클래스를 사용하는 것보다는 java.lang 패키지의 StringBuffer 또는 StringBuilder 클래스를 사용하는 것이 좋다. 이 두 클래스는 내부 버퍼에 문자열을 저장해두고, 그 안에서 추가, 수정, 삭제 작업을 할 수 있도록 설계되어 있다.
+- StringBuffer와 StringBuilder의 사용방법은 동일한데 차이점은 StringBuffer는 멀티 스레드환경에서 사용할 수 있도록 동기화가 적용되어 있어 스레드에 안전하지만, StringBuilder는 단일 스레드 환경에서만 사용하도록 설계되어 있다.
+
+```js
+StringBuilder sb = new StringBuilder();
+```
+- StringBuilder 객체가 생성되었다면 다음 메소드를 통해 작업
+```
+append()			문자열 끝에 주어진 매개값을 추가
+insert()				문자열 중간에 주어진 매개값을 추가
+delete()			문자열의 일부분을 삭제
+deleteChartAt()	문자열에서 주어진 index의 문자를 삭제
+replace()			문자열의 일부분을 다른 문자열로 대치
+reverse()			문자열의 순서를 뒤바꿈
+setCharAt()			문자열에서 주어진 index의 문자를 다른 문자로 대치
+```
+- String 과 StringBuffer의 차이(String)
+```sql
+package day26;
+
+
+public class Ex05StringBuffer {
+	
+	public static void main(String[] args) {
+		String str = "";
+		long startTime = System.currentTimeMillis();//1970/1/1시점으로 현재시간을 알려줌
+		for (int i = 0; i < 100000; i++) {
+			str += "사랑해요";
+			//사랑해요 메모리에 생성
+			//사랑해요 사랑해요 메모리에 생성
+			//String을 계속 누적하면 메모리 낭비
+			//String은 문자열을 담는 객체이지, 누적하거나 연산을 위한 전용 객체가 아니다.
+		}
+		System.out.println("str.length = " + str.length());
+		System.out.println("소요시간 = " + (System.currentTimeMillis() - startTime));
+		
+//		str.length = 4000
+//		소요시간 = 6
+		
+//		str.length = 400000
+//		소요시간 = 14081
+
+
+		
+		
+		//문자열을 누적하거나 연산을 위해 전용 객체가 따로 있다.
+	}
+	}
+```
+- String 과 StringBuffer의 차이(StringBuilder)
+```sql
+package day26;
+
+
+public class Ex0StringBuffer2 {
+	
+	public static void main(String[] args) {
+		//문자열을 누적하거나 연산을 위해 전용 객체가 따로 있다.
+		// String에 비해 속도가 빨라서 문자열 연산 작업에는 꼭 StringBuffer, StringBuilder 사용
+		StringBuilder sb = new StringBuilder();
+		long startTime = System.currentTimeMillis();//1970/1/1시점으로 현재시간을 알려줌
+		for (int i = 0; i < 10000000; i++) {
+			sb.append("사랑해요");
+			
+//			sb.length = 400
+//			소요시간 = 0
+
+//			sb.length = 40000000
+//			소요시간 = 234
+		}
+		System.out.println("sb.length = " + sb.length());
+		System.out.println("소요시간 = " + (System.currentTimeMillis() - startTime));
+	
+	}
+	}
+```
+- StringBuilder 메소드
+```sql
+package day26;
+
+
+public class Ex0StringBuffer3 {
+	
+	public static void main(String[] args) {
+		StringBuffer sb = new StringBuffer("1234");
+		System.out.println("sb = " + sb.toString());
+		sb.delete(0, sb.length());
+		System.out.println("delete = " + sb.toString());
+		sb.append("사승원");
+		System.out.println("append = " + sb.toString());
+		sb.insert(3, " 설날");
+		System.out.println("insert = " + sb.toString());
+		sb.replace(6, 7, " 사랑해요");
+		System.out.println("replace = " + sb.toString());
+		
+		
+//		sb = 1234
+//				delete =
+//				append = 사승원
+//				insert = 사승원 설날
+//				replace = 사승원 설날 사랑해요
+
+		
+	}
+	}
+```
 
 
 
