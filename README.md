@@ -4474,6 +4474,440 @@ public class Ex04filnalize {
 	}
 	}
 ```
+
+#### 11.5.3 현재 시각 읽기(currentTimemillis(), nanoTime())
+- system 클래스의 currentTimeMillis() 메소드와 nanoTime() 메소드는 컴퓨터의 시계로부터 현재 시간을 읽어서 밀리세컨드 단위와 나노세컨드 단위의 long 값을 리턴한다.
+
+```js
+long time =  System.currentTimeMillis();
+long time =  System.nanoTime();
+```
+- 리턴 값은 주로 프로그램의 실행 소요 시간 측정에 사용됨
+
+#### 11.5.4 시스템 프로퍼티 읽기(getProperty())
+- 시스템 프로퍼티는 JVM이 시작할 때 자동 설정되는 시스템의 속성값을 말한다.
+- 시스템 프로퍼티를 읽어오기 위해서는 System.getProperty() 메소드를 이용하면 된다. 이 메소드는 시스템 프로퍼티의 키 이름을 매개값으로 받고, 해당 키에 대한 값을 문자열로 리턴한다.
+```js
+String  value = System.getProperty(String key)
+```
+
+#### 11.5.5 환경 변수 읽기(getnv())
+- 환경 변수는 프로그램 상의 변수가 아니라 운영체제에서 이름과 값으로 관리되는 문자열 정보다. 환경변수는 운영체제가 설치될 때 기본적인 내용이 설정되고, 사용자가 직접 설정하거나 응용 프로그램이 설치될 때 자동적으로 추가 설정되기도 한다.
+- 자바 프로그램에서는 환경 변수의 값이 필요한 경우 System.getnv() 메소드를 사용한다. 매개값으로 환경 변수 이름을 주면 값을 리턴한다.
+
+
+```js
+package day27;
+
+import java.util.Map;
+import java.util.Properties;
+import java.util.Set;
+
+public class Ex06Properties {
+	//11.5.4 시스템 프로퍼티 읽기
+	public static void main(String[] args) {
+		String osName = System.getProperty("os.name");
+		String javaHome = System.getProperty("java.home");
+		String userHome = System.getProperty("user.home");
+		String javaVersion = System.getProperty("java.version");
+		System.out.println(osName);
+		System.out.println(javaHome);
+		System.out.println(userHome);
+		System.out.println(javaVersion);
+//		Linux
+//		/usr/lib/jvm/jdk1.8.0_231/jre
+//		/home/pc42-pc
+//		1.8.0_231
+		
+		
+		System.out.println("------------전체 목록--------------");
+		Properties prop = System.getProperties();
+		Set keys = prop.keySet();
+		for(Object key : keys) {
+			String val = System.getProperty(key.toString());
+			System.out.println(key + " : " + val);
+//			------------전체 목록--------------
+//			java.runtime.name : Java(TM) SE Runtime Environment
+//			sun.boot.library.path : /usr/lib/jvm/jdk1.8.0_231/jre/lib/amd64
+//			java.vm.version : 25.231-b11
+//			java.vm.vendor : Oracle Corporation
+//			java.vendor.url : http://java.oracle.com/
+//			path.separator : :
+//			java.vm.name : Java HotSpot(TM) 64-Bit Server VM
+//			file.encoding.pkg : sun.io
+//			user.country : KR
+//			sun.java.launcher : SUN_STANDARD
+//			sun.os.patch.level : unknown
+//			java.vm.specification.name : Java Virtual Machine Specification
+//			user.dir : /home/pc42-pc/eclipse-workspace/chapter01
+//			java.runtime.version : 1.8.0_231-b11
+//			java.awt.graphicsenv : sun.awt.X11GraphicsEnvironment
+//			java.endorsed.dirs : /usr/lib/jvm/jdk1.8.0_231/jre/lib/endorsed
+//			os.arch : amd64
+//			java.io.tmpdir : /tmp
+//			line.separator :
+			//너무 길어서 생략...	
+			
+			
+		}
+		//11.5.5 환경 변수 읽기
+		System.out.println("-------[ENV]-------");
+		String oracleHome = System.getenv("ORACLE HOME");
+		System.out.println("ORACLE HOME" + oracleHome);
+		
+		System.out.println("-------[ENV]-------");
+		String path = System.getenv("PATH");
+		System.out.println("PATH" + path);
+		
+		System.out.println("-------[ENV]-------");
+		Map<String, String> envMap = System.getenv();
+		Set<String> keys1 = envMap.keySet();
+		for(String key : keys1) {
+			String val = System.getenv(key);
+			System.out.println(key + " : " + val);
+			
+//			-------[ENV]-------
+//			ORACLE HOMEnull
+//			-------[ENV]-------
+//			PATH/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/jdk1.8.0_231/bin
+//			-------[ENV]-------
+//			PATH : /usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/usr/lib/jvm/jdk1.8.0_231/bin
+//			XAUTHORITY : /home/pc42-pc/.Xauthority
+//			XMODIFIERS : @im=fcitx
+//			XDG_DATA_DIRS : /usr/share/cinnamon:/usr/share/gnome:/home/pc42-pc/.local/share/flatpak/exports/share:/var/lib/flatpak/exports/share:/usr/local/share:/usr/share
+//			GDMSESSION : cinnamon
+//			GTK_IM_MODULE : fcitx
+//			DBUS_SESSION_BUS_ADDRESS : unix:path=/run/user/1000/bus
+//			XDG_CURRENT_DESKTOP : X-Cinnamon
+//			INSIDE_NEMO_PYTHON :
+//			SSH_AGENT_PID : 1701
+//			QT4_IM_MODULE : fcitx
+//			SESSION_MANAGER : local/pc42pc-B150M-DS3H:@/tmp/.ICE-unix/1628,unix/pc42pc-B150M-DS3H:/tmp/.ICE-unix/1628
+//			LOGNAME : pc42-pc
+//			PWD : /home/pc42-pc
+//			LANGUAGE : ko
+			//너무 길어서 생략
+		}
+		
+		
+	}
+
+}
+```
+
+
+
+
+### 11.6 Class 클래스
+```js
+package day27;
+
+public class Ex07Class {
+
+	public static void main(String[] args) {
+		
+		// Class : 필드, 생성자, 메서드 정보 (메타데이터)를 관리하는 객체다.
+		// Class를 얻는 2가지 방법
+		// Class clz = obj.getClass(); // 객체가 존재하는 경우
+		// Class clz = Class.forName(String); // 완전한 이름의 객체를 알고 있을 때
+		
+		// newInstance() 를 통해 동적객체생성 가능
+		
+	
+	}
+
+}
+```
+
+
+#### 11.6.3  동적 객체 생성(newInstance())
+- Class 객체를 이용하면 new 연산자를 사용하지 않아도 동적으로 객체를 생성할 수 있다. 이 방법은 코드 작성 시에 클래스 이름을 결정할 수 없고, 런타임 시에 클래스 이름이 결정되는 경우에 매우 유용하게 사용된다.
+- Class.forName() 메소드로 Class 객체를 얻은 다음 newInstance() 메소드를 호출하면 Object 타입의 객체를 얻을 수 있다.
+
+```js
+package day27;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
+import java.lang.reflect.Method;
+import java.util.Properties;
+
+import javax.annotation.Resources;
+
+public class Ex08NewInstance {
+	
+	public static void main(String[] args) {
+		String resource = "/day27/action.properties";
+		Properties prop = new Properties();
+		String className = null;
+		
+		try {
+			//설정파일에 실제 실행할 클래스명 또는 설정 정보를 읽어서 실행중에 읽어서 처리
+			InputStream reader = Ex08NewInstance.class.getResourceAsStream(resource);
+			prop.load(reader);
+			 className = prop.getProperty("action");
+			System.out.println(className);
+			 Class clz = Class.forName(className.trim()); //trim : 공백제거
+			 System.out.println("---메소드 정보---");
+			 Method[] methods = clz.getDeclaredMethods();
+			 for(Method met : methods) {
+				 System.out.println("메소드 명 : " + met.getName());
+			 }
+			
+			//객체 생성(new)
+			 Action action = (Action)clz.newInstance();
+			 action.execute();
+					
+		} catch (ClassNotFoundException e) {
+			System.out.println(className + "의 클래스명이 잘못되었습니다.");
+		} catch (IOException e) {
+			System.out.println("파일 로드하는데 실패했습니다.");
+			e.printStackTrace();
+		} catch (InstantiationException | IllegalAccessException e) {
+			System.out.println("객체 생성중 오류 발생가 발생했습니다.");
+			e.printStackTrace();
+		}
+		
+	}
+	
+}
+```
+
+### 11.7 String 클래스
+#### 11.7.1 String 생성자
+```js
+package day27;
+
+public class Ex09String {
+	//11.7.1 String 생성
+	public static void main(String[] args) {
+		byte[] bytes = new byte[10];
+		try {
+			System.out.println("입력 : ");
+			int len = System.in.read(bytes);
+			for(byte b : bytes) {
+				System.out.print(b+ ", ");
+			}
+			System.out.println("입력한 길이 : " + len);
+			String str = new String(bytes, 0 , len -1); //윈도우에선 -2
+			System.out.println("str + " +str);
+		}catch (Exception e) {
+			System.out.println(e.getMessage());
+	}
+	}
+}
+```
+
+#### 11.7.2 String 메소드
+- 문자 추출 : charAt()
+  - 매개값으로 주어진 인덱스의 문자를 리턴함. 여기서 인덱스란 0에서부터 문자열길이 -1 까지의 번호를 말함
+```js
+String subject  = “자바 프로그래밍”;
+char charValue =  subject.charAt(3);
+```
+
+- 바이트 배열로 변환 : getBytes()
+  - 네트워크로 문자열을 전송하거나, 문자열을 암호화할 때 문자열을 바이트 배열로 변환한다.
+```js
+byte[] bytes = “문자열”.getBytes();
+byte[] byte s= “문자열”.getBytes(Charset charset);
+```
+
+- 문자열 찾기 : indexOf()
+  - 매개값으로 주어진 문자열이 시작되는 인덱스를 리턴한다. 만약 주어진 문자열이 포함되어 있지 않으면 -1을 리턴한다.
+  - 이때 index 변수에는 3이 저장되는데, “자바 프로그래밍”에서 “프로그래밍” 문자열의 인덱스 위치가 3이기 때문이다.
+```js
+String subject = “자바프로그래밍”
+int index = subjectOf(“프로그래밍”);
+```
+
+
+- 문자열 대치 : replace()
+  - 첫 번째 매개값인 문자열을 찾아 두 번째 매개값인 문자열로 대치한 새로운 문자열을 생성하고 리턴한다.
+```js
+String oldStr = “자바 프로그래밍”;
+String newStr = oldStr.replace(“자바”, “JAVA”);
+```
+
+- 문자열 잘라내기 : substring()
+  - 주어진 인덱스에서 문자열을 추출한다.
+```js
+String ssn = “880815-1234567”;
+String firstNum = ssn.substring(0, 6);	//0부터 6까지 출력
+String secondNum = ssn.substring(7);	//7부터 끝까지 출력
+```
+
+- 알파벳 대소문자 변경 : toLowerCase() , toUpperCase()
+```js
+String original = “Java Programming”;
+String lowerCase = original.toLowerCase();
+String upperCase = original.toUpperCase();
+```
+
+- 문자열 앞뒤 공백 잘라내기 : trim()
+  - 문자열의 앞뒤 공백을 제거한 새로운 문자열을 생성하고 리턴한다. 하지만 앞뒤 공백만 제거할 뿐 중간 공백은 제거하지 않는다.
+```js
+String oldStr = “         자바 프로그래밍         ”;
+String newStr = oldStr.trim();
+```
+
+- 문자열 변환 : valueOf()
+  - 기본 타입의 값을 문자열로 변환하는 기능
+```js
+static String valueOf(boolean b)
+static String valueOf(char c)
+static String valueOf(int i)
+static String valueOf(long l)
+static String valueOf(double d)
+```  
+
+### 11.8 StringTokenizer 클래스
+#### 11.8.1 split() 메소드
+```js
+String[] result = “문자열”.split(“정규표현식”);
+```
+- &, 쉼표(,), - 를 제외하고 사람 이름을 뽑아내고 싶을 경우
+```js
+홍길동&이수홍, 박연수, 김자바 - 최명호
+String[] names = text.split(“&|,|-”);
+```
+
+#### 11.8.2 StringTokenizer 클래스
+- 문자열이 한 종류의 구분자로 연결되어 있을 경우 StringTokenizer 클래스를 사용하면 손쉽게 문자열을 분리해 낼 수 있다. StringTokenizer 객체를 생성할 때 첫 번째 매개값으로 전체 문자열을 주고, 두 번째 매개값으로 구분자를 주면 된다.
+  - countTokens() : 꺼내지 않고 남아 있는 토큰의 수
+  - hasMoreTokens() : 남아 있는 토큰이 있는지 여부
+  - nextToken() : 토큰을 하나씩 꺼내옴
+```js
+StringTokenizer st = new StringTokenizer(“문자열”, “구분자”);
+```
+```js
+String text = “홍길동/이수홍/박연수”
+StringTokenizer st = new StringTokenizer(text, “/”);  
+```
+
+
+```js
+package day27;
+
+import java.util.StringTokenizer;
+
+public class Ex11StringMethod {
+
+	public static void main(String[] args) {
+		String fileName = "스키장 놀러간";
+		
+		try {
+			//ISO-8859-1 : 서유럽어(라틴어, 컴퓨터 기본 캐릭터)
+			//ISO-8859-2 : 동유럽어
+			//한글 : KSC-5601, EUC-KR, MS949 ...
+			
+			//getBytes : 바이트 배열로 변환
+			//아래 코딩을 해야 한글명 다운로드가 된다.
+			String downloadName = new String(fileName.getBytes("UTF-8"),"ISO-8859-1");
+			System.out.println(downloadName);
+			
+			//charAt : 특정 위치의 문자 리턴
+			char ch = fileName.charAt(5);
+			System.out.println("ch = " + ch);
+			
+			//indexOf : 문자열 내에서 주어진 문자열의 위치를 리턴
+			//만약 주어진 문자열이 포함되어 있지 않으면 -1을 리턴함
+			int pos = fileName.indexOf("놀러간");
+			System.out.println("pos = " + pos);
+			pos = fileName.indexOf("놀러", 3 ); //3번째 이하부터 검색
+			System.out.println("6 after pos = " + pos);
+			System.out.println("-----------------");
+			
+			String badMan = "홍길동, 이수홍, 박연수, 김자비";
+			//split을 통해 각각 출력
+			String[] names = badMan.split(", ");
+			int no = 0;
+			for(String name : names) {
+				System.out.println(++no + " : " + name);
+			}
+			System.out.println("-----------------");
+			StringTokenizer st = new StringTokenizer(badMan, ", ");
+			while(st.hasMoreTokens()) {
+				System.out.println("cnt = " + st.countTokens());
+				System.out.println("token = " + st.nextToken());
+			}
+			
+//			ì¤í¤ì¥ ëë¬ê°
+//			ch = 러
+//			pos = 4
+//			6 after pos = 4
+//			-----------------
+//			1 : 홍길동
+//			2 : 이수홍
+//			3 : 박연수
+//			4 : 김자비
+//			-----------------
+//			cnt = 4
+//			token = 홍길동
+//			cnt = 3
+//			token = 이수홍
+//			cnt = 2
+//			token = 박연수
+//			cnt = 1
+//			token = 김자비
+
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		}
+
+}
+```
+- 문제
+```js
+package day27;
+
+public class Ex11StringExam {
+
+	public static void main(String[] args) {
+		String exam = "mem_MEMORIAL_day";
+		//문제 : 언더바 형식으로된 문자열을 낙타식으로 변환하기
+		//위 문자열 "mem_MEMORIAL_day"를 변환처리하여
+		//"MemMemorialDay" 또는 "memMemorialDay"로 나오면 됨
+		//mem -> Mem
+		//split, toLowerCase, indexOf, charAt, String.join("delim", String[])
+		System.out.println("----------------");
+		
+		String newexam = exam.replace("_", "");
+		System.out.println(newexam);
+		
+		String lowerexam = newexam.toLowerCase();
+		System.out.println(lowerexam);
+		System.out.println("----------------");
+		
+		String ssn1 = lowerexam.substring(0,3) ;
+		System.out.println(ssn1);
+		String ssn2 = lowerexam.substring(3,11) ;
+		System.out.println(ssn2);
+		String ssn3 = lowerexam.substring(11,14) ;
+		System.out.println(ssn3);
+		
+		System.out.println("----------------");
+		
+		String com1 = ssn1.replace("mem", "Mem");
+		String com2 = ssn2.replace("memorial", "Memorial");
+		String com3 = ssn3.replace("day", "Day");
+		
+		
+		System.out.println(com1 + com2 + com3);
+		
+		
+		System.out.println("----------------");
+		 String[] strs = {"Mem", "Memorial", "Day"};
+		 String r = String.join("", strs);
+		 System.out.println(r);
+
+	}
+
+}
+```
+
 ### 11.9 StringBuffer, StringBuilder 클래스
 - 문자열을 결합하는 + 연산자를 많이 사용하면 할수록 그만큼 String 객체의 수가 늘어나기 때문에, 프로그램 성능을 느리게 하는 요인이 된다. 문자열을 변경하는 작업이 많을 경우에는 String 클래스를 사용하는 것보다는 java.lang 패키지의 StringBuffer 또는 StringBuilder 클래스를 사용하는 것이 좋다. 이 두 클래스는 내부 버퍼에 문자열을 저장해두고, 그 안에서 추가, 수정, 삭제 작업을 할 수 있도록 설계되어 있다.
 - StringBuffer와 StringBuilder의 사용방법은 동일한데 차이점은 StringBuffer는 멀티 스레드환경에서 사용할 수 있도록 동기화가 적용되어 있어 스레드에 안전하지만, StringBuilder는 단일 스레드 환경에서만 사용하도록 설계되어 있다.
