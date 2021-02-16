@@ -5016,6 +5016,250 @@ public class Ex0StringBuffer3 {
 	}
 ```
 
+```js
+package day27;
+
+public class Ex12last {
+	public static void main(String[] args) {
+	String str = "mem_MEMORIAL_day";
+			
+		String r = camel(str);
+		System.out.println("r = " + r);
+	}
+	
+	public static String camel(String orig) {
+		String lo = orig.toLowerCase(); //"mem_memorial_day";
+		String[] names = lo.split("_");
+		StringBuilder sb = new StringBuilder();
+		for(String name : names) { // [mem],[memorial],[day]
+			System.out.println(name.substring(0, 1).toUpperCase());
+			System.out.println(name.charAt(0)+ "," + (char)(name.charAt(0)-32));
+			sb.append((char)(name.charAt(0)-32));
+			sb.append(name.substring(1));
+		}
+		return sb.toString();
+		}
+		
+	}
+
+
+```
+
+- 카드 식별..
+```js
+package day28;
+
+public class Ex12StringExam2 {
+
+	public static void main(String[] args) {
+		String jumin = "781225-1475125";
+		//String card = "4673-0902-5031-8168"; // 벤더는 비자카드
+		String card = "5570-4203-9290-3026"; //벤더는 마스터 카드
+		
+		if(isNotDigit(jumin.replace("-", ""))) {
+			System.out.println("숫자로 입력해주세요");
+		}else {
+			if(isCardVerify(card.replace("-", ""))) {
+				System.out.println("올바른 카드입니다");
+				System.out.println("벤더는 " + getCardBender(card));
+			}else {
+				System.out.println("잘못된 카드번호입니다");
+			}
+		}
+	}
+	public static boolean isNotDigit(String number) {
+		return !isDigit(number);
+		
+	}
+	
+	public static boolean isDigit(String number) {
+		// 9440254060327949
+		for(int i = 0 ; i <number.length(); i++){
+			char ch = number.charAt(i);
+			if(ch < '0' || ch > 57) { //0~9 사이인지 확인 ascii 48~57 사이
+				return false;
+				}
+			}
+		return true ;
+	
+	}
+	//주민번호체크
+	public static boolean ssnVerify(String ssn) {
+		//마스크 234567892345
+		//       7812251475125
+		//	14 + 24 + 4 + 10 + 12 + 35 + 8 + 36 + 14 + 15 + 4 = 176
+		// 11 - (176 % 11) = 11
+		// 위 결과가 마지막 주민번호와 같아야 한다.
+		// 위 결과가 10보다 크다고 하면 맨 마지막 숫자만
+		
+			return false;
+			
+	}
+	//카드번호체크
+	public static boolean isCardVerify(String card) {
+		// 2121 2121 2121 1254
+		// 9412 5895 4521 5689
+		// 9 + 4 + 2 + 2 + 1 + 8 + 9 + 5 + 8 + 5 + 4 + 1 + 1 + 6 + 7
+		// 10이 넘으면 각 숫자를 더해야됨  ex) 18 -> 1 + 8 = 9
+		// 10 - (?? % 10) = a
+		// a가 카드 맨 뒷 번호랑 같아야 함
+		int sum = 0 ;
+		int len = card.length();
+		//신용카드는 16글자(일부 15)
+		if(!(len == 15 || len == 16)) {
+			return false;
+		} for(int i = 0; i < (len - 1); i++) {
+			char ch = card.charAt(i);
+			int r = ch -48 ;
+			if((i%2) == 0) { // i = 0, 2, 4, 6..
+				r = r*2 ;
+				if (r >= 10) {
+					r = r - 9 ;
+					//"28" = (28/10) + (28 % 10)
+					//"18" = 1 + 8 -> 9
+				}
+			}
+			sum = sum + r;
+		}
+		int veri = 10 - (sum % 10);
+		if ((veri%10) == (card.charAt(len-1) - 48)){
+			return true;
+		}
+		return false;
+	}
+	//
+	public static String getCardBender(String card) {
+		if(card.startsWith("356")) {
+			return "JCB 카드";
+		}else if(card.startsWith("36")) {
+			return "다이너스 카드";
+		}else if(card.startsWith("37")) {
+			return "아멕스 카드";
+		}else if(card.startsWith("4")) {
+			return "비자 카드";
+		}else if(card.startsWith("5")) {
+			return "마스터 카드";
+		}else if(card.startsWith("62")) {
+			return "유니온페이 카드";
+		}else if(card.startsWith("65")) {
+			return "BC Global 카드";
+		}else if(card.startsWith("9")) {
+			return "국내전용 카드";
+		}
+		
+		return "";
+	}
+}
+```
+
+
+### 11.10 정규 표현식과 Pattern 클래스
+#### 11.10.1 정규표현식 작성 방법
+- 기본적인 기호들
+```sql
+ []		 한 개의 문자			[abc] : abc중 하나의 문자
+							[^abc] : a,b,c 이외의 하나의 문자
+							[a-zA-Z] :   a-z, A-Z 중 하나의 문자
+							[a-zA-Z_0-9] : 한 개의 알파벳 또는 한 개의 숫자
+\d 		 한 개의 숫자			[0-9] 와 동일
+\s 		 공백
+\w 		 한 개의 알파벳 또는 한 개의 숫자	 	[a-zA-Z_0-9] 와 동일
+? 		 없음 또는 한 개 			
+* 		 없음 또는 한 개 이상
++ 		 한 개 이상
+{n} 		 정확히 n개
+{n,}		 최소한 n개 (n개 이상)
+{n, m}     n개에서부터 m개까지
+()		 그룹핑
+```
+- 경계
+```sql
+^ 		 시작(맨 처음에 기술)
+$		 끝(맨 마지막에 기술)
+\b  		 단어경계
+```
+- 그룹핑
+```sql
+() 		 묶어주는 역할, 캡처(Replace)
+```
+
+
+```js
+package day28;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Ex13RugularExpression {
+
+	public static void main(String[] args) {
+		//RugularExpression : 정규표현식
+		/*
+		경계 ^ : 시작을 의미, 처음에 기술
+			 $ : 마지막을 의미, 마지막에 기술
+			 \b \B : 단어의 경계(비경계)
+		문자 [] : 한 문자의 범위
+			[abc] : a|b|c
+			[a-c] : a|b|c
+			[a-zA-Z_0-9] : 일반문자
+			[0-9] : 숫자
+			[^a-z] : ^가 있으면 부정 소문자가 아닌 한문자
+				   . : 임의 한 문자
+	 	반복 ? : 앞의 문자(그룹)가 0번 또는 1번
+	 		 + : 앞의 문자(그룹)가 1번 이상
+	 		 * : 앞의 문자(그룹)가 0번 이상
+	 		{n} : 앞의 문자(그룹) n번
+	 		{n,} : 앞의 문자(그룹) n번 이상
+	 		{n,m} : 앞의 문자(그룹) n번이상 m번 이하
+	 	대체 | : or의 의미
+	 	그룹 () : 묶음처리, 캡처링은 replace 할 때 유용
+	 	역참조 \n : 앞의 그룹과 동일, \1 은 앞의 첫 번째 그룹과 동일
+	 	
+	 	POSIX 규약 정규표현식
+	 	[a-zA-Z0-9_] : [[:alnum:]]
+	 	
+	 	펄언어에서 좀 더 간결한 표기법(PCRE)을 많이 사용함
+	 	\w, \W : [a-zA-Z0-9_]
+ 	 	\d, \D : [0-9]
+ 	 	\s, \S : 공백문자 [ \t\r\n]
+ 	 	\b, \B : 단어의 경계
+		*/
+		
+		
+		String[] loves = {"milkis1004", "sa*(sw", "head coach", "ses", "malja"};
+		String pa = "[a-zA-Z0-9_]{5,12}";
+		//id는 일반문자로 5글자이상 12글자 이하
+	
+		
+		for (int i = 0; i < loves.length; i++) {
+			System.out.println(loves[i] + "");
+			if(Pattern.matches(pa, loves[i])) {
+				System.out.println("패턴이 맞아요");
+			}else {
+				System.out.println("패턴이 틀려요");
+		}
+		}
+		String dummy = "Hello 1004 my name 34 your age 42";
+		Pattern p = Pattern.compile("[0-9] + ");
+		Matcher m = p.matcher(dummy)	;
+		int count = 0 ;
+		while(m.find()) {
+			count++;
+			System.out.println("Matcher Number = " + count);
+			System.out.println("Group = " + m.group());
+			System.out.println("Start = " + m.start());
+			System.out.println("End = " + m.end());
+		}
+		
+		String p2 = "([가-힣]{2,4})\\s+(\\d\\d)(\\d\\d)(\\d\\d).+";
+		String res = "오성현 921014-1356789".replaceAll(p2, "$2년생 $1씨는 $3월 $4일에 태어났어요");
+		
+		System.out.println(res);
+}
+	
+}
+```
+
 
 
 
