@@ -5260,6 +5260,494 @@ public class Ex13RugularExpression {
 }
 ```
 
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<h1>독수리 5형제</h1>
+	
+	<h2>염호준 아찌</h2>
+	항상 뭔가 열심히 하는데.. 뭐를 하는걸까??
+	
+	<h2>송인범 아저씨</h2>
+	Java 빼고 천재
+	<h3>오성현 오빠</h3>
+	성격은 좋은데.. 공부는 열시히 안하고 도망만 다녀요.
+	
+	<h4>김지원 누나</h4>
+	남친때문에 공부를 열심히 안해요
+	
+	<h5>심이안 언니</h5>누나는 설 전날 <h5>나온다고 했는데..</h5> 안 나왔죠..
+	공부는 안하고 매일 도망만 다녀요... 술은 너무 좋아해요.	
+	
+	<h1>쿠데타 오빠</h3>			
+	구글링을 너무 좋아해요....  문제를 이해하고 풀어야 하는데.	
+	
+</body>
+</html>
+
+
+
+find : <h[1-5]>(.+)</h[1-5]>
+repl : <li>$1
+
+
+find : <(h[1-5])>(.+)</\1>
+repl : <li>$1
+
+-non greedy
+find : <(h[1-5])>(.+)</\1>
+repl : <li>$2 $1
+
+	 	역참조 \n : 앞의 그룹과 동일, \1 은 앞의 첫 번째 그룹과 동일
+	 	
+	 	non-greedy : 한정자 뒤에 ?가 사용될 경우
+	 	정규표현식의 한정자는 패턴에 맞는 최대 범위를 찾아서 욕심이 많다(Greedy)
+	 	그걸 없애기 위해 non-greedy 하게 검색(최소로)
+
+
+```
+
+
+### 11.11 Arrays 클래스
+
+```js
+package day29;
+
+import java.util.List;
+import java.util.Arrays;
+
+public class Ex14Arrays {
+
+	public static void main(String[] args) {
+		int[] arr = {23, 45, 55,24, 78, 90};
+		System.out.println("arr = " + arr);
+		//arr = [I@2a139a55
+		System.out.println("Arrays.toString = " + Arrays.toString(arr));
+		//Arrays.toString = [23, 45, 55, 24, 78, 90]
+		
+		int[] clone = Arrays.copyOf(arr, 10);
+		System.out.println("Arrays.toString = " + Arrays.toString(clone));
+		//Arrays.toString = [23, 45, 55, 24, 78, 90, 0, 0, 0, 0]
+		
+		Arrays.fill(clone, 2, 6, 44);
+		System.out.println("clone.toString = " + Arrays.toString(clone));
+		//clone.toString = [23, 45, 44, 44, 44, 44, 0, 0, 0, 0]
+		
+		Arrays.sort(clone);
+		System.out.println("clone.toString = " + Arrays.toString(clone));
+		//clone.toString = [0, 0, 0, 0, 23, 44, 44, 44, 44, 45]
+		
+		System.out.println("-------------------------");
+		
+		Member[] members = {
+				new Member("심이안", 32),
+				new Member("김지원", 31),
+				new Member("오성현", 28),
+				new Member("송인범", 37),
+				new Member("염호준", 38)	
+		};
+		//Comparable 을 구현해야됨
+		Arrays.sort(members);
+		System.out.println("members.toString" + Arrays.toString(members));
+//		members.toString[Member [name = 오성현, age = 28],
+//		                 Member [name = 김지원, age = 31],
+//		                 Member [name = 심이안, age = 32],
+//		                 Member [name = 송인범, age = 37],
+//		                 Member [name = 염호준, age = 38]]
+//		
+		
+		
+		arr = new int[] {23, 45, 55, 24, 78, 90, 67, 43};
+		int idx = Arrays.binarySearch(arr, 67);
+		System.out.println("idx" + idx);
+//		idx-5
+		
+		Arrays.sort(arr);
+		idx = Arrays.binarySearch(arr, 67);
+		System.out.println("arr.toString = " + Arrays.toString(arr));
+//		arr.toString = [23, 24, 43, 45, 55, 67, 78, 90]
+		System.out.println("idx" + idx);
+//		idx5
+		
+		
+		//배열의 단점 : 추가, 삭제 등 불편함
+		List<String> list = Arrays.asList("홍길동", "밀키스", "놀자");
+		System.out.println("list.size = " + list.size());
+//		list.size = 3
+		System.out.println("list = " + list);
+//		list = [홍길동, 밀키스, 놀자]
+		System.out.println("get(1) = " + list.get(1));
+//		get(1) = 밀키스
+		
+		
+	}
+
+}
+
+```
+```js
+package day29;
+
+public class Member implements Comparable<Member>{
+	String name;
+	//int age;
+	Integer age;
+	
+	public Member(String name) {
+		this.name = name ;
+	}
+	
+	public Member(String name, int age) {
+		super();
+		this.name = name;
+		this.age = age;
+	}
+	
+	@Override
+	public int compareTo(Member o) {
+		//23 - 25
+		return this.age - o.age;
+	}
+
+	@Override
+	public String toString() {
+		return "Member [name = " + name + ", age = " + age + "]";
+	}
+	
+	
+	
+}
+
+```
+
+
+
+### 11.12 Wrapper 클래스
+```js
+package day29;
+
+public class Ex15Wrapper {
+
+	public static void main(String[] args) {
+		//DB테이블에 mem_age : NEMBER : NULL
+		//Member 객체에 age(int) 널을 담을 수 있나??
+		//반대로 화면에서 나이를 입력받지 않고 DB에 저장할 경우
+		//null로 저장 안 되고 0으로 저장되는 문제가 발생
+		
+		Member mem = new Member("한석규", 34);
+		System.out.println("mem = " + mem);
+//		mem = Member [name = 한석규, age = 34]
+		
+		mem.name = null;
+		mem.age = null; //오류
+		System.out.println("mem = " + mem);
+//		mem = Member [name = null, age = null]
+		
+		
+//		//Wrapper 클래스 생성
+//		Integer age = new Integer("1004");
+//		Integer age = Integer.valueOf(1004);
+		Integer age = 1004;  //실제로는 이렇게(자동 박싱)
+		int age2 = 1004;
+		System.out.println(age);
+		
+		//기본형으로 꺼낼 때 (언박싱) 기본타입 + Value();
+		//int a2 = age.intValue();
+		int a2 = age; //자동 언박싱
+		System.out.println(a2);
+		Integer a = 35 ;
+		Integer b = 35 ;
+		Integer c = 350 ;
+		Integer d = 350 ;
+		
+		//래퍼객체는 == 으로 비교 안 됨. 단 -128~ + 127 까지는 == 가능
+		System.out.println("a==b " + (a == b));	//a==b true
+		System.out.println("c==d " + (c == d));	//c==d false
+		System.out.println("c.equals(d) = " +  c.equals(d)); //c.equals(d) = true
+		
+		
+		
+	}
+
+}
+
+```
+### 11.13 Math, Random 클래스
+```js
+package day29;
+
+public class Ex16Math {
+
+	public static void main(String[] args) {
+		double a = 74.69;
+		System.out.println("round = " + Math.round(a));
+		System.out.println("ceil = " + Math.ceil(a));
+		System.out.println("random = " + Math.random());
+		// 오라클의 trunc 함수를 구현하고 싶음
+		//745263 myTrunc(745263, 2) = 745200
+		//745263 myTrunc(745263, 3) = 745000
+		int b = 745263;
+		System.out.println("myTrunc = " + myTrunc(b, 3));
+		//System.out.println(Integer.toBinaryString(b));
+		
+	}
+```
+
+
+
+
+## 15. Collection(다시 정리)
+
+- TreeMap
+```js
+package day32;
+
+import java.util.Map;
+import java.util.TreeMap;
+//특정 Map.Entry 찾기
+public class TreeMapExample1 {
+
+	public static void main(String[] args) {
+		//키로 String 탑을 사용하고 값으로 Integer 타입을 사용하는 TreeMap을 다음과 같이 생성
+		TreeMap<Integer, String> scores = new TreeMap<Integer, String>();
+		scores.put(new Integer(87), "홍길동");
+		scores.put(new Integer(98), "이동수");
+		scores.put(new Integer(75), "박길순");
+		scores.put(new Integer(95), "신용권");
+		scores.put(new Integer(80), "김자바");
+		
+		Map.Entry<Integer, String> entry = null;
+		
+		entry = scores.firstEntry();
+		System.out.println("가장 낮은 점수 : " + entry.getKey() + " - " + entry.getValue());
+		
+		entry = scores.lastEntry();
+		System.out.println("가장 높은 점수 : " + entry.getKey() + " - " + entry.getValue());
+		
+		entry = scores.lowerEntry(new Integer(95));
+		System.out.println("95점 아래 점수 : " + entry.getKey() + " - " + entry.getValue());
+		
+		entry = scores.higherEntry(new Integer(95));
+		System.out.println("95점 위의 점수 : " + entry.getKey() + " - " + entry.getValue());
+		
+		entry = scores.floorEntry(new Integer(95));
+		System.out.println("95점 이거나 바로 아래 점수 : " + entry.getKey() + " - " + entry.getValue());
+		
+		while(!scores.isEmpty()) {
+			entry = scores.pollFirstEntry();
+			System.out.println(entry.getKey() + " - (" + entry.getValue() + " 남은 객체 수 : " +
+			scores.size() + ")");
+			
+//			가장 낮은 점수 : 75 - 박길순
+//			가장 높은 점수 : 98 - 이동수
+//			95점 아래 점수 : 87 - 홍길동
+//			95점 위의 점수 : 98 - 이동수
+//			95점 이거나 바로 아래 점수 : 95 - 신용권
+//			75 - (박길순 남은 객체 수 : 4)
+//			80 - (김자바 남은 객체 수 : 3)
+//			87 - (홍길동 남은 객체 수 : 2)
+//			95 - (신용권 남은 객체 수 : 1)
+//			98 - (이동수 남은 객체 수 : 0)
+		}
+	}
+}
+
+```
+
+- TreeSet1
+```js
+package day32;
+
+import java.util.TreeSet;
+//15.5.2 TreeSet
+//특정 객체 찾기
+public class TreeSetExample1 {
+
+	public static void main(String[] args) {
+		TreeSet<Integer> scores = new TreeSet<Integer>();
+		scores.add(new Integer(87));
+		scores.add(new Integer(98));
+		scores.add(new Integer(75));
+		scores.add(new Integer(95));
+		scores.add(new Integer(80));
+		
+		Integer score = null;
+		
+		score = scores.first();
+		System.out.println("가장 낮은 점수 : " + score); //가장 낮은 점수 : 75
+
+		score = scores.last();
+		System.out.println("가장 높은 점수 : " + score); //가장 높은 점수 : 98
+		
+		score = scores.lower(new Integer(95));
+		System.out.println("95점 아래 점수 : " + score); // 95점 아래 점수 : 87
+
+		score = scores.higher(95);
+		System.out.println("95점 위의 점수 : " + score); // 95점 위의 점수 : 98
+		
+		score = scores.floor(new Integer(95));
+		System.out.println("95점 이거나 바로 아래 점수 : " + score); // 95점 이거나 바로 아래 점수 : 95
+		
+		score = scores.ceiling(new Integer(85));
+		System.out.println("85점 이거나 바로 위의 점수 : " + score); // 85점 이거나 바로 위의 점수 : 87
+		
+		while(!scores.isEmpty()) {
+			score = scores.pollFirst(); //pollFirst : 제일 낮은 객체를 꺼내오고 컬렉션에서 제거
+			System.out.println(score + "(남은 객체 수 : " + scores.size() + ")");
+//			75(남은 객체 수 : 4)
+//			80(남은 객체 수 : 3)
+//			87(남은 객체 수 : 2)
+//			95(남은 객체 수 : 1)
+//			98(남은 객체 수 : 0)	
+		}
+
+		while(!scores.isEmpty()) {
+			score = scores.pollLast(); //pollLast : 제일 높은 객체를 꺼내오고 컬렉션에서 제거
+			System.out.println(score + "(남은 객체 수 : " + scores.size() + ")");
+//			98(남은 객체 수 : 4)
+//			95(남은 객체 수 : 3)
+//			87(남은 객체 수 : 2)
+//			80(남은 객체 수 : 1)
+//			75(남은 객체 수 : 0)
+		}
+	}
+}
+
+```
+
+- TreeSet2
+```js
+package day32;
+
+import java.util.NavigableSet;
+import java.util.TreeSet;
+//객체 정렬하기
+public class TreeSetExample2 {
+
+	public static void main(String[] args) {
+		TreeSet<Integer> scores = new TreeSet<Integer>();
+		scores.add(new Integer(87));
+		scores.add(new Integer(98));
+		scores.add(new Integer(75));
+		scores.add(new Integer(95));
+		scores.add(new Integer(80));
+		
+		NavigableSet<Integer> descendingSet = scores.descendingSet(); //내림차순으로 정렬
+		for(Integer score : descendingSet) {
+			System.out.print(score + " "); //98 95 87 80 75
+		}
+		System.out.println();
+		
+		NavigableSet<Integer> ascendingSet = descendingSet.descendingSet(); //오름차순으로 정렬
+		for(Integer score : ascendingSet) {
+			System.out.print(score + " "); //75 80 87 95 98
+		}
+	}
+
+}
+```
+
+- TreeSet3
+```js
+package day32;
+
+import java.util.NavigableSet;
+import java.util.TreeSet;
+
+public class TreeSetExample3 {
+
+	public static void main(String[] args) {
+
+		TreeSet<String> treeSet = new TreeSet<String>();
+		treeSet.add("apple");
+		treeSet.add("forever");
+		treeSet.add("description");
+		treeSet.add("ever");
+		treeSet.add("zoo");
+		treeSet.add("base");
+		treeSet.add("guess");
+		treeSet.add("cherry");
+		
+		System.out.println("[c~f 사이의 단어 검색]");
+		NavigableSet<String> rangeSet = treeSet.subSet("c", true, "f", true); //c <= 검색단어 <= f
+														  // 시작 객체, 포함여부, 끝 객체, 포함여부
+		for(String word : rangeSet) {
+			System.out.println(word);
+//			[c~f 사이의 단어 검색]
+//					cherry
+//					description
+//					ever
+		}
+	}
+}
+
+```
+
+- DB랑 연결
+```js
+package day32;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class Ex02DBbasic {
+
+	public static void main(String[] args) {
+
+		try {
+			//드라이버 로드(적재)
+			//로드가 되어야 DB연결 정보를 파악할 수 있다.
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Connection conn = null;
+			Statement stmt = null;
+			ResultSet rs = null;
+			
+			// DriverManager 를 통해서 커넥션 구하기
+			// Oracle : thin, oci 2개의 접근방법 존재
+			conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:@localhost:1521:xe", "java", "oracle");
+			
+			stmt = conn.createStatement();
+			//select 문이면 executeQuery,
+			//select 문이 아니면 executeUpdate
+			rs = stmt.executeQuery("select * from member3");
+			//이차워적인 파일에 첫 커서(BOF : Begin Of File)
+			//이동 : first, last, previous, next, absolute
+			//기본옵션으로 구매했기해 next만 된다.
+			while(rs.next()) { //EOF ? : End Of File에 다다르면 false리턴
+				//현재 커서위치에서 필드인덱스, 필드명으로 접근 가능
+				System.out.print(rs.getString(1) + ", "); //1base(0 base 아님)
+				System.out.print(rs.getString("mem_id") + ", ");
+				System.out.print(rs.getString("mem_name") + ", ");
+				//요청타입으로 꺼내면 알아서, 단 오류나면 에러발생
+				System.out.print(rs.getString("mem_mileage") + ", "); //문자로
+				System.out.print(rs.getShort("mem_mileage") + ", "); //Short
+				System.out.print(rs.getInt("mem_mileage") + ", "); //int
+				System.out.println();
+
+			}
+			//사용자 자원 해제
+			if(conn != null) conn.close(); // 커넥션 반납이 제일 중요
+			
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+}
+```
 
 
 
