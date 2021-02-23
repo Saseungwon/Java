@@ -5752,6 +5752,260 @@ public class Ex02DBbasic {
 
 
 
+## JDBC
+### JDBC 주로 사용되는 클래스
+
+1. connection : DB 연결을 하는 객체
+2. Statement : SQL 구문을 처리하는 객체 - 보안에 취약, 사용하기 불편하여 거의 사용 안 한다.
+
+3. Statement의 단점을 보완하기 위해 아래의 객체들을 사용
+  (1)PreparedStatement : 가장 많이 사용
+  (2)CallableStatement : 호출(저장프로시저 호출할 때 주로 사용됨)
+ 
+4. ResultSet : 결과객체(Select문)
+5. ResultSetMetadata : 결과개체 메타정보(컬럼명, 사이즈, not null) 출력
+ 
+### Statement의 단점
+1. 보안에 취약 -> SQL Injection 공격 대상, 그래서 Statement 사용 금지
+2. 작은따옴표(') 처리를 위해 replaceAll('   ''   ')
+3. 동일 구문 실행시 불편
+
+### DAO, DTO 패턴 (Data Access Object, Data Transfer Object)
+- 반복되는 쿼리작업을 효율적으로 관리하기 위해
+- DB 테이블과 연관된 작업을 처리하는 전담 클래스 -> DAO
+- DAO 패턴 : 하나의 메서드는 하나의 쿼리만 처리
+- DTO : 조회된 정보(ResultSet) 를 다른 자바에서 사용할 수 없다. 그래서 조회된 결과정보를 자바객체에 담아서 리턴하거나 어플리케이션에서 입력받은 정보를 DB에 보내기 위해 사용하는 자바객체
+
+### 사용자의 정보, DB의 정보를 담는 객체  
+- VO(Value Object), DTO(Data Transfer Object), domain 객체, Java Bean(표준) 객체, Form 객체
+- 위 용어가 서로 똑같지는 않지만, 거의 유사한 용도의 객체로 인식하면 된다.
+
+
+```js
+package day33;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class Ex03Statement {
+	public static void main(String[] args) {
+
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Scanner sc = new Scanner(System.in);
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:@192.168.20.29:1521:xe", "java", "oracle");
+			System.out.println("검색 회원 ID : ");
+			String id = sc.nextLine();
+			String sql = "SELECT * FROM member3 WHERE mem_id =" + "'"
+								+ id.replaceAll("'", "''") + "'";
+			System.out.println("sql = " + sql);
+
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+
+			// PK 조회이므로 while 일 필요없음
+
+			if(rs.next()) {
+				System.out.println("회원이 조회되었습니다.");
+				System.out.println("ID = " + rs.getString("mem_id"));
+				System.out.println("Name = " + rs.getString("mem_name"));
+				System.out.println("Bir = " + rs.getString("mem_bir"));
+
+			}else {
+				System.out.println("해당 회원이 존재하지 않습니다.");
+			}
+			System.out.println("------------------------");
+			System.out.println("두 번째 검색 회원 ID : ");
+			id = sc.nextLine();
+			sql = "SELECT * FROM member3 WHERE mem_id =" + "'"
+					+ id.replaceAll("'", "''") + "'";
+			System.out.println("2 sql = " + sql);
+			rs = stmt.executeQuery(sql);
+			if(rs.next()) {
+				System.out.println("2 회원이 조회되었습니다.");
+				System.out.println("ID = " + rs.getString("mem_id"));
+				System.out.println("Name = " + rs.getString("mem_name"));
+				System.out.println("Bir = " + rs.getString("mem_bir"));
+
+			}else {
+				System.out.println("2 해당 회원이 존재하지 않습니다.");
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			System.out.println("작업 중 오류 발생: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try {rs.close();} catch(SQLException e) {}
+			if(stmt != null) try {rs.close();} catch(SQLException e) {}
+			if(conn != null) try {rs.close();} catch(SQLException e) {}
+		}
+	}
+}
+```
+
+```js
+package day33;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class Ex04PreparedStatement {
+	public static void main(String[] args) {
+		
+		
+		Connection conn = null;
+		
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Scanner sc = new Scanner(System.in);
+		String sql = "SELECT * FROM member3 WHERE mem_id = ?";
+		
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:@192.168.20.29:1521:xe", "java", "oracle");
+			System.out.println("검색 회원 ID : ");
+			String id = sc.nextLine();
+			
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setNString(1, id); // 1번 물음표(매개변수)에 Id를 문자로
+			rs = pstmt.executeQuery();
+//			stmt = conn.createStatement();
+//			rs = stmt.executeQuery(sql);
+			
+			// PK 조회이므로 while 일 필요없음
+			if(rs.next()) {
+				System.out.println("회원이 조회되었습니다.");
+				System.out.println("ID = " + rs.getString("mem_id"));
+				System.out.println("Name = " + rs.getString("mem_name"));
+				System.out.println("Bir = " + rs.getString("mem_bir"));
+
+			}else {
+				System.out.println("해당 회원이 존재하지 않습니다.");
+			}
+			System.out.println("------------------------");
+			System.out.println("두 번째 검색 회원 ID : ");
+			id = sc.nextLine();
+			pstmt.setNString(1, id);
+			rs = pstmt.executeQuery();
+			// rs = stmt.executeQuery(sql);
+			
+			if(rs.next()) {
+				System.out.println("2 회원이 조회되었습니다.");
+				System.out.println("ID = " + rs.getString("mem_id"));
+				System.out.println("Name = " + rs.getString("mem_name"));
+				System.out.println("Bir = " + rs.getString("mem_bir"));
+
+			}else {
+				System.out.println("2 해당 회원이 존재하지 않습니다.");
+			}
+
+		} catch (SQLException | ClassNotFoundException e) {
+			System.out.println("작업 중 오류 발생: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try {rs.close();} catch(SQLException e) {}
+			if(pstmt != null) try {rs.close();} catch(SQLException e) {}
+			if(conn != null) try {rs.close();} catch(SQLException e) {}
+		}
+	}
+}
+```
+
+```js
+package day33;
+
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+
+public class Ex05WhyUsePreparerd {
+	public static void main(String[] args) {
+
+		PreparedStatement pstmt = null;
+		Connection conn = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		Scanner sc = new Scanner(System.in);
+
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection(
+					"jdbc:oracle:thin:@192.168.20.29:1521:xe", "java", "oracle");
+			System.out.println("검색 회원 ID : ");
+			String id = sc.nextLine();
+			
+			//statement로 동일 작업
+			String sql = "SELECT * FROM member3 WHERE mem_id =" + "'" + id + "'";
+			System.out.println("sql = " + sql);
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery(sql);
+
+			// PK 조회이므로 while일 필요없음
+			if(rs.next()) {
+				System.out.println("회원이 조회되었습니다.");
+				System.out.println("ID = " + rs.getString("mem_id"));
+				System.out.println("Name = " + rs.getString("mem_name"));
+				System.out.println("Bir = " + rs.getString("mem_bir"));
+
+			}else {
+				System.out.println("해당 회원이 존재하지 않습니다.");
+			}
+			System.out.println("------------------------");
+			System.out.println("두 번째 검색 회원 ID : ");
+			id = sc.nextLine();
+			sql = "SELECT * FROM member3 WHERE mem_id =" + "'"
+					+ id.replaceAll("'", "''") + "'";
+			System.out.println("2 sql = " + sql);
+			sql = "SELECT * FROM member3 WHERE mem_id = ? " ;
+			System.out.println("2 sql = "  + sql);
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, id);
+			rs = pstmt.executeQuery();
+			
+			
+			if(rs.next()) {
+				System.out.println("2 회원이 조회되었습니다.");
+				System.out.println("ID = " + rs.getString("mem_id"));
+				System.out.println("Name = " + rs.getString("mem_name"));
+				System.out.println("Bir = " + rs.getString("mem_bir"));
+
+			}else {
+				System.out.println("2 해당 회원이 존재하지 않습니다.");
+			}
+			System.out.println("-----------------------");
+
+			
+		} catch (SQLException | ClassNotFoundException e) {
+			System.out.println("작업 중 오류 발생: " + e.getMessage());
+			e.printStackTrace();
+		} finally {
+			if(rs != null) try {rs.close();} catch(SQLException e) {}
+			if(stmt != null) try {rs.close();} catch(SQLException e) {}
+			if(conn != null) try {rs.close();} catch(SQLException e) {}
+			if(pstmt != null) try {rs.close();} catch(SQLException e) {}
+		}
+	}
+}
+```
 
 
 
